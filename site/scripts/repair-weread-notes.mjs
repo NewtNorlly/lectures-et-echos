@@ -280,9 +280,8 @@ function mergeModels(models, metas) {
       byName.get(chapter.name).entries.push(...chapter.entries.map((e) => ({ ...e, reviews: [...e.reviews] })));
     }
   });
-  order.sort((a, b) => chapterOrderKey(a.name) - chapterOrderKey(b.name));
-
   let removed = 0;
+  // ① 章内去重
   for (const chapter of order) {
     const kept = [];
     for (const entry of chapter.entries) {
@@ -304,6 +303,33 @@ function mergeModels(models, metas) {
     for (const h of kept) h.reviews.sort((a, b) => String(a.time).localeCompare(String(b.time)));
     chapter.entries = kept;
   }
+
+  // ② 跨章全局去重：不同副本的章节切分可能不一致（如劣质 PDF 导入本的 _1/_2 占位章名），
+  // 同一条原文会落在不同章名之下，章内去重抓不到。order 按 models 顺序插入（order[0] 基准本
+  // 的章节在前），据此做全书级去重：保留更长文本、并集想法、保留更早时间。
+  const globalSeen = [];
+  for (const chapter of order) {
+    chapter.entries = chapter.entries.filter((entry) => {
+      const key = norm(entry.text);
+      const dup = globalSeen.find((k) => {
+        const kk = norm(k.text);
+        if (kk === key) return true;
+        return Math.min(kk.length, key.length) >= 10 && (kk.includes(key) || key.includes(kk));
+      });
+      if (!dup) { globalSeen.push(entry); return true; }
+      removed += 1;
+      if (entry.text.length > dup.text.length) dup.text = entry.text;
+      const have = new Set(dup.reviews.map((r) => norm(r.content)));
+      for (const r of entry.reviews) if (!have.has(norm(r.content))) dup.reviews.push(r);
+      if (entry.time && (!dup.time || entry.time < dup.time)) dup.time = entry.time;
+      return false;
+    });
+  }
+  // 去重后清空的占位章节不再输出
+  for (let i = order.length - 1; i >= 0; i -= 1) {
+    if (order[i].entries.length === 0) order.splice(i, 1);
+  }
+  order.sort((a, b) => chapterOrderKey(a.name) - chapterOrderKey(b.name));
 
   const standalone = [];
   const seenReview = new Set();
@@ -368,6 +394,22 @@ async function main() {
       order: ['CB_9eI8qk8qv9N46yQ6wwEHX8WT', 'CB_0tf9kp9mZ9N46yQ6ww2SA2kb'],
       shellId: 'CB_9eI8qk8qv9N46yQ6wwEHX8WT',
       removeIds: ['CB_0tf9kp9mZ9N46yQ6ww2SA2kb'],
+    },
+    {
+      // 冯军旗博士论文同一份 Z-Library 导入的两个副本：215 页全本（25 划线，章节完整）为基准/壳，
+      // 另一份只有 1 划线且落在占位章 _5，该划线与全本「第九章结语」同文，靠跨章全局去重去掉。
+      label: '中县干部',
+      order: ['CB_Bq3AExAFY9ZR6yP6ww3HkFQK', 'CB_FYdA1vA319ZR6yP6ww8VK6e1'],
+      shellId: 'CB_Bq3AExAFY9ZR6yP6ww3HkFQK',
+      removeIds: ['CB_FYdA1vA319ZR6yP6ww8VK6e1'],
+    },
+    {
+      // 钱穆《国史大纲》：九州官方繁体本（4 划线，元数据最全，为基准/壳）+ 个人导入简体本（1 划线），
+      // 章节体系一一对应（繁简同书），并集 5 划线、无重复。
+      label: '国史大纲',
+      order: ['23523074', 'CB_ANp3G13DJ9dG6y66wwEZm78h'],
+      shellId: '23523074',
+      removeIds: ['CB_ANp3G13DJ9dG6y66wwEZm78h'],
     },
   ];
   const mergeIdSet = new Set(MERGE_GROUPS.flatMap((g) => g.order));
