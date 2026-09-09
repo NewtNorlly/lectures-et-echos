@@ -1,4 +1,5 @@
 ---
+date: 2026-09-02
 cover:
   image: 文本附件/一个视频看完-DeepSeek-V4-以及它究竟意味着什么-cover-20260531-212314.webp
   actualRatio: '4:3'

@@ -1,6 +1,6 @@
 ---
 import Cover from "../Cover.astro";
-import { getCatalog, type CollectionSummary } from "../../lib/catalog";
+import { getCatalog, noteRecentKey, type CollectionSummary } from "../../lib/catalog";
 import { pinyinInitialOf } from "../../lib/pinyin";
 import { collectionUrl, noteUrl } from "../../lib/url";
 
@@ -40,12 +40,13 @@ const letterGroups: LetterGroup[] = sortedLetters.map((letter) => ({
 
 const kindLabel = (kind: string) => (kind === "series" ? "专题集" : "创作者");
 
-/* 相关文本：网络博主合集下的全部单篇文章，供搜索时作为第二类结果 */
+/* 相关文本：网络博主合集下的全部单篇文章，供搜索时作为第二类结果（最新优先） */
 interface ArticleHit {
   title: string;
   collection: string;
   href: string;
   thumb: string;
+  date: string;
 }
 const articleIndex: ArticleHit[] = collections
   .flatMap((col) =>
@@ -56,9 +57,17 @@ const articleIndex: ArticleHit[] = collections
         collection: col.name,
         href: noteUrl(note.id),
         thumb: note.cover?.thumbnailSrc ?? note.cover?.src ?? "",
+        date: noteRecentKey(note),
       })),
   )
-  .sort((a, b) => a.title.localeCompare(b.title, "zh-CN"));
+  .sort((a, b) => {
+    if (a.date !== b.date) {
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      return b.date.localeCompare(a.date);
+    }
+    return a.title.localeCompare(b.title, "zh-CN");
+  });
 ---
 
 <section
@@ -164,7 +173,7 @@ const articleIndex: ArticleHit[] = collections
   const emptyEl = root?.querySelector<HTMLElement>("[data-blog-empty]") ?? null;
 
   // 相关文本索引（构建期注入）
-  type ArticleHit = { title: string; collection: string; href: string; thumb: string };
+  type ArticleHit = { title: string; collection: string; href: string; thumb: string; date: string };
   let articleIndex: ArticleHit[] = [];
   try {
     const raw = root?.querySelector<HTMLScriptElement>("[data-article-index]")?.textContent ?? "[]";

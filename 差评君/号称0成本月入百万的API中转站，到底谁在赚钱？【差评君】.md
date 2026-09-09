@@ -1,4 +1,5 @@
 ---
+date: 2026-09-02
 cover:
   image: '文本附件/generated-cover-d66928fd1c46-960.webp'
   actualRatio: '3:2'

@@ -305,7 +305,42 @@ function getTopicRefs(collectionName: string, topicNames: string[]): TopicRef[] 
   }));
 }
 
+/** 取 frontmatter date（外部博主文章的入库日期），统一截成 YYYY-MM-DD */
+function frontmatterDate(note: Note): string {
+  const value = note.entry.data.date as unknown;
+  if (typeof value === 'string' && value.trim()) return value.trim().slice(0, 10);
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString().slice(0, 10);
+  return '';
+}
+
+/**
+ * 条目时效键（用户排放习惯：合集 / 专题内部最新文本排最前）。
+ * 外部博主文章用 frontmatter date（入库日期）；微信读书用
+ * lastReadDate → finishedDate → readingDate，与 bookshelf.bookSortKey 同口径；缺失为空串。
+ */
+export function noteRecentKey(note: Note): string {
+  const w = note.weread;
+  return (
+    frontmatterDate(note) ||
+    w?.lastReadDate?.trim() ||
+    w?.finishedDate?.trim() ||
+    w?.readingDate?.trim() ||
+    ''
+  );
+}
+
+/**
+ * 条目排序：时效降序（新→旧，YYYY-MM-DD 可直接字符串比较），无日期条目沉底；
+ * 同日 / 都无日期时按标题拼音升序兜底，保证顺序稳定可复现。
+ */
 function compareNotes(left: Note, right: Note): number {
+  const lk = noteRecentKey(left);
+  const rk = noteRecentKey(right);
+  if (lk !== rk) {
+    if (!lk) return 1;
+    if (!rk) return -1;
+    return rk.localeCompare(lk);
+  }
   return collator.compare(left.title, right.title);
 }
 

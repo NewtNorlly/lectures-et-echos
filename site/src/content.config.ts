@@ -59,6 +59,8 @@ const notes = defineCollection({
       bookmarkCount: z.coerce.number().nullish(),
       author: z.string().nullish(),
       translator: z.string().nullish(),
+      // 外部博主文章的入库/收藏日期（YYYY-MM-DD），用于合集内「最新在最前」排序
+      date: dateish.nullish(),
       category: z.string().nullish(),
       publisher: z.string().nullish(),
       publishTime: dateish.nullish(),
