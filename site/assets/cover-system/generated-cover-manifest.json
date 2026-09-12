@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-09-05T16:27:36.153Z",
+  "generatedAt": "2026-09-12T15:40:28.367Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "sourceArtwork": "site/assets/cover-system/editorial-collage.webp",
   "sourcePrompt": "Contemporary Chinese editorial collage on warm fibrous paper, with ink, torn paper, printmaking grain, archival marks and restrained vermilion; no text, logos, people or watermark.",
   "strategy": "One AI-generated source artwork plus deterministic title-, collection-, topic- and hash-driven local compositions.",
-  "count": 18,
+  "count": 26,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 1531050,
+  "totalBytes": 2137066,
   "records": [
     {
       "markdown": "安森垚/“地狱梗”为啥能这么火？.md",
@@ -34,6 +34,30 @@
       "cover480": "北京大学出版社官方/文本附件/generated-cover-33ace0821faf-480.webp",
       "bytes960": 66790,
       "bytes480": 19388
+    },
+    {
+      "markdown": "超Carry的柴西/在人类禁区哀牢山徒步，据说里面1h等于外面60分钟.md",
+      "title": "在人类禁区哀牢山徒步，据说里面1h等于外面60分钟",
+      "collection": "超Carry的柴西",
+      "topic": null,
+      "category": "general",
+      "seed": "99661010d8a9",
+      "cover960": "超Carry的柴西/文本附件/generated-cover-99661010d8a9-960.webp",
+      "cover480": "超Carry的柴西/文本附件/generated-cover-99661010d8a9-480.webp",
+      "bytes960": 67076,
+      "bytes480": 19306
+    },
+    {
+      "markdown": "超Carry的柴西/自驾穿越美国加州，遭遇野生黑熊，住进绿皮书里汽车hotel.md",
+      "title": "自驾穿越美国加州，遭遇野生黑熊，住进绿皮书里汽车hotel",
+      "collection": "超Carry的柴西",
+      "topic": null,
+      "category": "society",
+      "seed": "d1ef941c00c5",
+      "cover960": "超Carry的柴西/文本附件/generated-cover-d1ef941c00c5-960.webp",
+      "cover480": "超Carry的柴西/文本附件/generated-cover-d1ef941c00c5-480.webp",
+      "bytes960": 70778,
+      "bytes480": 20138
     },
     {
       "markdown": "程序员鱼皮/如何开发小程序，有哪些方法，需要学点啥？程序员硬核讲解.md",
@@ -84,6 +108,42 @@
       "bytes480": 17760
     },
     {
+      "markdown": "东风烈谈/三轮大清洗：于东来如何打掉干部特权？.md",
+      "title": "三轮大清洗：于东来如何打掉干部特权？",
+      "collection": "东风烈谈",
+      "topic": null,
+      "category": "general",
+      "seed": "271595171852",
+      "cover960": "东风烈谈/文本附件/generated-cover-271595171852-960.webp",
+      "cover480": "东风烈谈/文本附件/generated-cover-271595171852-480.webp",
+      "bytes960": 64726,
+      "bytes480": 17646
+    },
+    {
+      "markdown": "多焱观察局/假如“未成年男团”变“女团”，追星女变追星男，会怎样？.md",
+      "title": "假如“未成年男团”变“女团”，追星女变追星男，会怎样？",
+      "collection": "多焱观察局",
+      "topic": null,
+      "category": "culture",
+      "seed": "5a0ff75293d3",
+      "cover960": "多焱观察局/文本附件/generated-cover-5a0ff75293d3-960.webp",
+      "cover480": "多焱观察局/文本附件/generated-cover-5a0ff75293d3-480.webp",
+      "bytes960": 63834,
+      "bytes480": 18462
+    },
+    {
+      "markdown": "高耳机的诗Gorky/失业一年，你会失去什么，又会得到什么？【0基础失业指南】.md",
+      "title": "失业一年，你会失去什么，又会得到什么？【0基础失业指南】",
+      "collection": "高耳机的诗Gorky",
+      "topic": null,
+      "category": "culture",
+      "seed": "5544498f3f79",
+      "cover960": "高耳机的诗Gorky/文本附件/generated-cover-5544498f3f79-960.webp",
+      "cover480": "高耳机的诗Gorky/文本附件/generated-cover-5544498f3f79-480.webp",
+      "bytes960": 63466,
+      "bytes480": 17620
+    },
+    {
       "markdown": "何解毒/聊一聊现代汉语当中有哪些通用语是来自南方方言的.md",
       "title": "聊一聊现代汉语当中有哪些通用语是来自南方方言的",
       "collection": "何解毒",
@@ -96,6 +156,30 @@
       "bytes480": 18352
     },
     {
+      "markdown": "花狸狐说/全世界都在长高，只有日本人在悄悄变矮？从日本身高变化看懂，正在“变小”的日本国运！.md",
+      "title": "全世界都在长高，只有日本人在悄悄变矮？从日本身高变化看懂，正在“变小”的日本国运！",
+      "collection": "花狸狐说",
+      "topic": null,
+      "category": "history",
+      "seed": "6624f9f1b590",
+      "cover960": "花狸狐说/文本附件/generated-cover-6624f9f1b590-960.webp",
+      "cover480": "花狸狐说/文本附件/generated-cover-6624f9f1b590-480.webp",
+      "bytes960": 70020,
+      "bytes480": 19898
+    },
+    {
+      "markdown": "麦橘TEL/当我用大学生的方式，打开苹果发布会.md",
+      "title": "当我用大学生的方式，打开苹果发布会",
+      "collection": "麦橘TEL",
+      "topic": null,
+      "category": "society",
+      "seed": "c27411251ba8",
+      "cover960": "麦橘TEL/文本附件/generated-cover-c27411251ba8-960.webp",
+      "cover480": "麦橘TEL/文本附件/generated-cover-c27411251ba8-480.webp",
+      "bytes960": 62322,
+      "bytes480": 16952
+    },
+    {
       "markdown": "猫村猫村/受不了吧唧嘴，头上不能有刘海原来是感官过载.md",
       "title": "受不了吧唧嘴，头上不能有刘海原来是感官过载",
       "collection": "猫村猫村",
@@ -106,6 +190,18 @@
       "cover480": "猫村猫村/文本附件/generated-cover-90f3a12cf622-480.webp",
       "bytes960": 61288,
       "bytes480": 17186
+    },
+    {
+      "markdown": "毛怪老师/【被解雇1小时狂删96台服务器】天才程序员的“自毁式”复仇之路.md",
+      "title": "【被解雇1小时狂删96台服务器】天才程序员的“自毁式”复仇之路",
+      "collection": "毛怪老师",
+      "topic": null,
+      "category": "general",
+      "seed": "9d2a69dcd57d",
+      "cover960": "毛怪老师/文本附件/generated-cover-9d2a69dcd57d-960.webp",
+      "cover480": "毛怪老师/文本附件/generated-cover-9d2a69dcd57d-480.webp",
+      "bytes960": 64972,
+      "bytes480": 17738
     },
     {
       "markdown": "日新说Copernicium/高市早苗第二？是谁把藤森庆子推上了秘鲁总统宝座 【日新说030】.md",
