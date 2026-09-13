@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, readdir, stat, writeFile, rm } from "node:fs/promises";
+import { statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,6 +18,7 @@ const concurrency = 4;
 const args = process.argv.slice(2);
 const previewMode = args.includes("--preview");
 const regenerateAll = args.includes("--regenerate-all");
+const checkMode = args.includes("--check");
 const previewDirectory = path.join(siteDirectory, "assets", "cover-system", "previews");
 
 const skippedDirectories = new Set([
@@ -162,6 +164,23 @@ function hasCover(frontmatter) {
   return Boolean(v);
 }
 
+// 封面引用是否可解析：远程 URL 视为可解析；本地路径必须真实存在（相对 md 目录或仓库根）。
+// 返回 true 表示「有封面且文件真实存在 / 远程」，false 表示「本地引用失效，需要重新生成」。
+function coverResolvable(markdownPath, imagePath) {
+  if (!imagePath) return false;
+  const value = String(imagePath).trim().replace(/^["']|["']$/g, "");
+  if (/^https?:\/\//i.test(value)) return true;
+  const mdDir = path.dirname(markdownPath);
+  for (const candidate of [path.resolve(mdDir, value), path.resolve(repositoryRoot, value)]) {
+    try {
+      if (statSync(candidate).isFile()) return true;
+    } catch {
+      // 不存在，继续尝试下一个候选路径
+    }
+  }
+  return false;
+}
+
 function replaceOrInsertCover(raw, coverBlock) {
   const parsed = parseFrontmatter(raw);
   const { bom, text, newline, match } = parsed;
@@ -169,7 +188,8 @@ function replaceOrInsertCover(raw, coverBlock) {
     return `${bom}---${newline}${coverBlock.join(newline)}${newline}---${newline}${newline}${text}`;
   }
   const lines = parsed.frontmatter.split(/\r?\n/);
-  const coverIndex = lines.findIndex((line) => /^cover:[ \t]*/i.test(line));
+  // 兼容两种 key 形态：标准 `cover:` 块，以及历史 bug 写出的裸 `cover` 块（无冒号），都要原地替换。
+  const coverIndex = lines.findIndex((line) => /^cover[ \t]*:?[ \t]*$/i.test(line));
   if (coverIndex >= 0) {
     let endIndex = coverIndex + 1;
     while (endIndex < lines.length && (!lines[endIndex].trim() || /^[ \t]/.test(lines[endIndex]))) {
@@ -388,7 +408,7 @@ async function createCover(note) {
   }
 
   const coverBlock = [
-    "cover",
+    "cover:",
     `  image: ${yamlString(`文本附件/${path.basename(note.output960)}`)}`,
     "  actualRatio: '3:2'",
     `  pixelWidth: ${width}`,
@@ -438,6 +458,7 @@ async function main() {
 
     const imagePath = coverImagePath(parsed.frontmatter);
     const usesGenerated = Boolean(imagePath && /(^|\/)generated-cover-/.test(imagePath));
+    const hasCoverFlag = hasCover(parsed.frontmatter);
 
     if (regenerateAll) {
       // 只重生成当前引用 generated-cover 的已发布 md；无封面 md 走默认模式。
@@ -445,7 +466,8 @@ async function main() {
     } else if (previewMode) {
       // preview：取若干代表 md（不依赖是否已有封面）。
     } else {
-      if (hasCover(parsed.frontmatter)) continue;
+      // 有封面且（远程 URL / 本地文件真实存在）→ 跳过；本地引用失效视为缺封面，重新生成。
+      if (hasCoverFlag && coverResolvable(markdownPath, imagePath)) continue;
     }
 
     const pathParts = relativePath.split("/");
@@ -464,10 +486,27 @@ async function main() {
       output960: path.join(attachmentDirectory, `${baseName}-960.webp`),
       output480: path.join(attachmentDirectory, `${baseName}-480.webp`),
       rewriteFrontmatter: !regenerateAll && !previewMode,
+      missingReason: hasCoverFlag ? "cover-file-missing" : "no-cover",
+      coverRef: imagePath,
     });
   }
 
   notes.sort((left, right) => left.relativePath.localeCompare(right.relativePath, "zh-CN"));
+
+  if (checkMode) {
+    const missing = notes.filter((note) => note.missingReason === "no-cover");
+    const broken = notes.filter((note) => note.missingReason === "cover-file-missing");
+    console.log("=== 封面完整性检查（只报告，不写入）===");
+    for (const note of missing) console.log(`[缺封面] ${note.relativePath}`);
+    for (const note of broken) console.log(`[封面引用失效] ${note.relativePath} -> ${note.coverRef}`);
+    if (notes.length) {
+      console.log(`需处理 ${notes.length} 篇（缺封面 ${missing.length}，封面引用失效 ${broken.length}）；请运行本脚本（不带 --check）补全。`);
+      process.exitCode = 1;
+    } else {
+      console.log("全部已发布 Markdown 封面完整（无缺封面、无失效引用）。");
+    }
+    return;
+  }
 
   if (!notes.length) {
     console.log(regenerateAll ? "没有发现引用 generated-cover 的 Markdown。" : "没有发现缺封面的已发布 Markdown。");
