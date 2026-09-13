@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, stat, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -7,7 +7,6 @@ import sharp from "sharp";
 
 const siteDirectory = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const repositoryRoot = path.resolve(siteDirectory, "..");
-const sourceArtwork = path.join(siteDirectory, "assets", "cover-system", "editorial-collage.webp");
 const manifestPath = path.join(siteDirectory, "assets", "cover-system", "generated-cover-manifest.json");
 
 const width = 960;
@@ -15,7 +14,9 @@ const height = 640;
 const smallWidth = 480;
 const smallHeight = 320;
 const concurrency = 4;
-const previewMode = process.argv.includes("--preview");
+const args = process.argv.slice(2);
+const previewMode = args.includes("--preview");
+const regenerateAll = args.includes("--regenerate-all");
 const previewDirectory = path.join(siteDirectory, "assets", "cover-system", "previews");
 
 const skippedDirectories = new Set([
@@ -31,70 +32,63 @@ const skippedDirectories = new Set([
   "文本附件",
 ]);
 
+// 图书馆风格：暖白纸底、细双线框、衬线标题、极淡线性母题。8 个分类仅作极淡冷暖区分，整体统一沉稳。
 const palettes = {
   technology: {
-    label: "科技 · 未来",
-    paper: "#e9efe9",
-    ink: "#17282c",
-    soft: "#547072",
-    accent: "#c64b2f",
-    second: "#247c82",
+    label: "科技 · 计算",
+    paper: "#eceee7",
+    ink: "#2b3336",
+    line: "#9aa4a0",
+    accent: "#5f7c84",
   },
   language: {
-    label: "语言 · 教育",
-    paper: "#f0ead8",
-    ink: "#2c2921",
-    soft: "#6f6756",
-    accent: "#a43b28",
-    second: "#487b68",
+    label: "语言 · 文字",
+    paper: "#f2ebd9",
+    ink: "#332d22",
+    line: "#b3a788",
+    accent: "#9a7b4f",
   },
   mind: {
     label: "心理 · 生活",
-    paper: "#f2e5dc",
-    ink: "#30242a",
-    soft: "#765d68",
-    accent: "#b44f3d",
-    second: "#79668c",
+    paper: "#f1e6e2",
+    ink: "#33272c",
+    line: "#b8a2a4",
+    accent: "#9c6b72",
   },
   culture: {
     label: "文学 · 影像",
-    paper: "#eee8d9",
-    ink: "#282622",
-    soft: "#706754",
-    accent: "#a23b29",
-    second: "#3e6170",
+    paper: "#f0ead9",
+    ink: "#2c2a24",
+    line: "#b6ad96",
+    accent: "#8a6d4b",
   },
   nature: {
     label: "自然 · 行旅",
-    paper: "#e9e9d8",
-    ink: "#26312b",
-    soft: "#627064",
-    accent: "#bd5b32",
-    second: "#47736d",
+    paper: "#eaeeda",
+    ink: "#2a332c",
+    line: "#a3ad97",
+    accent: "#6f8570",
   },
   history: {
     label: "历史 · 地缘",
-    paper: "#efe3ca",
-    ink: "#2b241b",
-    soft: "#756650",
-    accent: "#a63d29",
-    second: "#385a6a",
+    paper: "#f0e6d0",
+    ink: "#2e271c",
+    line: "#b6a684",
+    accent: "#96683a",
   },
   society: {
     label: "社会 · 观察",
-    paper: "#eee5d6",
-    ink: "#29241f",
-    soft: "#6f6257",
-    accent: "#aa402d",
-    second: "#5c6b57",
+    paper: "#efe7db",
+    ink: "#2b2620",
+    line: "#b3a894",
+    accent: "#8a6f52",
   },
   general: {
     label: "公共文本档案",
-    paper: "#f1e8d7",
-    ink: "#29251f",
-    soft: "#756c5d",
-    accent: "#a43b28",
-    second: "#465f69",
+    paper: "#f2ecdf",
+    ink: "#2a2620",
+    line: "#b3aa97",
+    accent: "#7d6a52",
   },
 };
 
@@ -116,19 +110,8 @@ function hashHex(value) {
   return createHash("sha256").update(value.normalize("NFC")).digest("hex");
 }
 
-function seededRandom(seed) {
-  let value = seed >>> 0;
-  return () => {
-    value += 0x6d2b79f5;
-    let result = value;
-    result = Math.imul(result ^ (result >>> 15), result | 1);
-    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
-    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 function escapeXml(value) {
-  return value
+  return String(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -145,14 +128,7 @@ function parseFrontmatter(raw) {
   const text = bom ? raw.slice(1) : raw;
   const newline = text.includes("\r\n") ? "\r\n" : "\n";
   const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?=\r?\n|$)/);
-
-  return {
-    bom,
-    text,
-    newline,
-    match,
-    frontmatter: match?.[1] ?? "",
-  };
+  return { bom, text, newline, match, frontmatter: match?.[1] ?? "" };
 }
 
 function isDraft(frontmatter) {
@@ -166,34 +142,34 @@ function getYamlScalar(frontmatter, key) {
   return match[1].trim().replace(/^(?:"([\s\S]*)"|'([\s\S]*)')$/, (_, double, single) => double ?? single);
 }
 
-function hasCover(frontmatter) {
+function coverImagePath(frontmatter) {
   const lines = frontmatter.split(/\r?\n/);
   const coverIndex = lines.findIndex((line) => /^cover:[ \t]*/i.test(line));
-  if (coverIndex < 0) return false;
-
+  if (coverIndex < 0) return undefined;
   const inlineValue = lines[coverIndex].replace(/^cover:[ \t]*/i, "").trim();
-  if (inlineValue && inlineValue !== "null" && inlineValue !== "~") return true;
-
+  if (inlineValue && inlineValue !== "null" && inlineValue !== "~") return inlineValue;
   for (let index = coverIndex + 1; index < lines.length; index += 1) {
     const line = lines[index];
     if (line.trim() && !/^[ \t]/.test(line)) break;
-    if (/^[ \t]+image:[ \t]*\S+/i.test(line)) return true;
+    const m = line.match(/^[ \t]+image:[ \t]*(\S.*?)[ \t]*$/i);
+    if (m) return m[1].trim().replace(/^["']|["']$/g, "");
   }
+  return undefined;
+}
 
-  return false;
+function hasCover(frontmatter) {
+  const v = coverImagePath(frontmatter);
+  return Boolean(v);
 }
 
 function replaceOrInsertCover(raw, coverBlock) {
   const parsed = parseFrontmatter(raw);
   const { bom, text, newline, match } = parsed;
-
   if (!match) {
     return `${bom}---${newline}${coverBlock.join(newline)}${newline}---${newline}${newline}${text}`;
   }
-
   const lines = parsed.frontmatter.split(/\r?\n/);
   const coverIndex = lines.findIndex((line) => /^cover:[ \t]*/i.test(line));
-
   if (coverIndex >= 0) {
     let endIndex = coverIndex + 1;
     while (endIndex < lines.length && (!lines[endIndex].trim() || /^[ \t]/.test(lines[endIndex]))) {
@@ -203,7 +179,6 @@ function replaceOrInsertCover(raw, coverBlock) {
   } else {
     lines.unshift(...coverBlock);
   }
-
   const rebuiltFrontmatter = lines.join(newline);
   const rebuiltText = `${text.slice(0, match.index)}---${newline}${rebuiltFrontmatter}${newline}---${text.slice(match.index + match[0].length)}`;
   return `${bom}${rebuiltText}`;
@@ -222,7 +197,6 @@ function cleanTitle(title, collection) {
     .replace(/[＿_]{2,}/g, "：")
     .replace(/\s+/g, " ")
     .trim();
-
   const collectionPrefix = `${collection}：`;
   if (result.startsWith(collectionPrefix)) result = result.slice(collectionPrefix.length).trim();
   return result || title;
@@ -234,42 +208,36 @@ function characterWidth(character) {
   return 1;
 }
 
-function wrapTitle(title, maxUnits = 13.5, maxLines = 3) {
+function wrapTitle(title, maxUnits = 10.5, maxLines = 2) {
   const originalCharacters = Array.from(title);
   const capacity = maxUnits * maxLines;
   const characters = [];
   let totalUnits = 0;
-
   for (const character of originalCharacters) {
     const units = characterWidth(character);
     if (totalUnits + units > capacity - 1.1) break;
     characters.push(character);
     totalUnits += units;
   }
-
   if (characters.length < originalCharacters.length) {
     characters.push("…");
     totalUnits += 1;
   }
-
   const lineCount = Math.min(maxLines, Math.max(1, Math.ceil(totalUnits / maxUnits)));
   const lines = [];
   let start = 0;
   let remainingUnits = totalUnits;
-
   for (let lineIndex = 0; lineIndex < lineCount - 1; lineIndex += 1) {
     const remainingLines = lineCount - lineIndex;
     const targetUnits = remainingUnits / remainingLines;
     let end = start;
     let lineUnits = 0;
-
     while (end < characters.length - (remainingLines - 1)) {
       const nextUnits = characterWidth(characters[end]);
       if (lineUnits > 0 && lineUnits + nextUnits > targetUnits && lineUnits >= targetUnits * 0.88) break;
       lineUnits += nextUnits;
       end += 1;
     }
-
     while (end < characters.length && /^[，。！？、：；）》】”’…,.!?;:)]$/.test(characters[end])) {
       lineUnits += characterWidth(characters[end]);
       end += 1;
@@ -282,137 +250,91 @@ function wrapTitle(title, maxUnits = 13.5, maxLines = 3) {
     start = end;
     remainingUnits -= lineUnits;
   }
-
   lines.push(characters.slice(start).join("").trim());
-
   return lines.filter(Boolean);
 }
 
 function shortLabel(value, limit) {
-  const characters = Array.from(value.trim());
-  return characters.length > limit ? `${characters.slice(0, limit - 1).join("")}…` : value.trim();
+  const characters = Array.from(String(value).trim());
+  return characters.length > limit ? `${characters.slice(0, limit - 1).join("")}…` : String(value).trim();
 }
 
-function firstGlyph(value) {
-  return Array.from(value).find((character) => /[\p{L}\p{N}]/u.test(character)) ?? "文";
-}
-
-function motifSvg(category, random, palette) {
-  const elements = [];
-  const stroke = palette.second;
-  const accent = palette.accent;
-
-  if (category === "technology") {
-    for (let row = 0; row < 5; row += 1) {
-      for (let column = 0; column < 7; column += 1) {
-        const x = 610 + column * 42 + Math.round(random() * 8);
-        const y = 95 + row * 42 + Math.round(random() * 8);
-        elements.push(`<circle cx="${x}" cy="${y}" r="${3 + Math.round(random() * 4)}" fill="${stroke}" opacity=".55"/>`);
-        if (column < 6 && random() > 0.32) elements.push(`<path d="M${x + 8} ${y}H${x + 34}" stroke="${stroke}" stroke-width="2" opacity=".35"/>`);
-      }
+// 单一、线性、极淡的图书馆母题：书脊 / 藏书票钢印 / 拱窗 / 编号牌。统一居中、低透明度，绝不拼贴照片或高饱和色块。
+function motifSvg(category, accent) {
+  const op = 0.16;
+  const cx = width / 2;
+  if (category === "language" || category === "history") {
+    // 一排书脊
+    const spines = [];
+    const startX = cx - 150;
+    const widths = [34, 26, 42, 30, 38, 24, 36];
+    let x = startX;
+    for (let i = 0; i < widths.length; i += 1) {
+      const w = widths[i];
+      const h = 150 - (i % 3) * 18;
+      spines.push(`<rect x="${x}" y="${320 - h}" width="${w}" height="${h}" fill="none" stroke="${accent}" stroke-width="1.4" opacity="${op}"/>`);
+      x += w + 10;
     }
-    elements.push(`<path d="M690 90V315H880" fill="none" stroke="${accent}" stroke-width="8" opacity=".62"/>`);
-  } else if (category === "history") {
-    for (let index = 0; index < 5; index += 1) {
-      const radius = 65 + index * 32;
-      elements.push(`<circle cx="755" cy="235" r="${radius}" fill="none" stroke="${index % 2 ? stroke : accent}" stroke-width="${index === 0 ? 8 : 2}" stroke-dasharray="${index % 2 ? "10 12" : "none"}" opacity="${0.22 + index * 0.05}"/>`);
-    }
-    elements.push(`<path d="M590 475C670 385 746 430 900 330" fill="none" stroke="${palette.ink}" stroke-width="3" opacity=".38"/>`);
-  } else if (category === "mind") {
-    for (let index = 0; index < 8; index += 1) {
-      const offset = index * 18;
-      elements.push(`<path d="M${630 + offset} ${130 + offset}C${820 - offset} ${70 + offset},${900 - offset} ${310 - offset},${690 + offset} ${390 - offset}" fill="none" stroke="${index % 3 === 0 ? accent : stroke}" stroke-width="${index % 3 === 0 ? 6 : 2}" opacity=".38"/>`);
-    }
-  } else if (category === "language") {
-    for (let index = 0; index < 7; index += 1) {
-      const x = 610 + (index % 3) * 95;
-      const y = 105 + Math.floor(index / 3) * 105;
-      elements.push(`<rect x="${x}" y="${y}" width="${58 + Math.round(random() * 25)}" height="${58 + Math.round(random() * 25)}" fill="none" stroke="${index % 2 ? stroke : accent}" stroke-width="${index % 2 ? 2 : 7}" opacity=".42"/>`);
-    }
-    elements.push(`<path d="M610 450H910M610 475H830M610 500H875" stroke="${palette.ink}" stroke-width="3" opacity=".32"/>`);
-  } else if (category === "culture") {
-    elements.push(`<rect x="600" y="90" width="310" height="385" fill="none" stroke="${stroke}" stroke-width="4" opacity=".38"/>`);
-    for (let index = 0; index < 6; index += 1) {
-      elements.push(`<rect x="615" y="${110 + index * 58}" width="24" height="35" fill="${index % 2 ? accent : stroke}" opacity=".5"/>`);
-      elements.push(`<rect x="870" y="${110 + index * 58}" width="24" height="35" fill="${index % 2 ? stroke : accent}" opacity=".5"/>`);
-    }
-    elements.push(`<circle cx="755" cy="285" r="92" fill="none" stroke="${accent}" stroke-width="12" opacity=".34"/>`);
-  } else if (category === "nature") {
-    for (let index = 0; index < 7; index += 1) {
-      const y = 160 + index * 46;
-      const bend = Math.round(random() * 90);
-      elements.push(`<path d="M570 ${y}C650 ${y - 70 + bend},735 ${y + 45 - bend},920 ${y - 10}" fill="none" stroke="${index % 3 === 0 ? accent : stroke}" stroke-width="${index % 3 === 0 ? 7 : 2}" opacity=".4"/>`);
-    }
-    elements.push(`<circle cx="815" cy="140" r="48" fill="${accent}" opacity=".35"/>`);
-  } else if (category === "society") {
-    const nodes = Array.from({ length: 11 }, () => ({
-      x: 590 + Math.round(random() * 310),
-      y: 100 + Math.round(random() * 390),
-    }));
-    nodes.forEach((node, index) => {
-      const other = nodes[(index + 3) % nodes.length];
-      elements.push(`<path d="M${node.x} ${node.y}L${other.x} ${other.y}" stroke="${stroke}" stroke-width="2" opacity=".22"/>`);
-      elements.push(`<circle cx="${node.x}" cy="${node.y}" r="${index % 4 === 0 ? 16 : 7}" fill="${index % 4 === 0 ? accent : stroke}" opacity=".56"/>`);
-    });
-  } else {
-    for (let index = 0; index < 9; index += 1) {
-      const x = 585 + Math.round(random() * 290);
-      const y = 90 + Math.round(random() * 390);
-      const size = 25 + Math.round(random() * 80);
-      elements.push(index % 2
-        ? `<circle cx="${x}" cy="${y}" r="${Math.round(size / 2)}" fill="none" stroke="${index % 3 ? stroke : accent}" stroke-width="${2 + (index % 3) * 2}" opacity=".4"/>`
-        : `<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${index % 3 ? stroke : accent}" opacity=".26"/>`);
-    }
+    return spines.join("");
   }
-
-  return elements.join("");
+  if (category === "mind" || category === "society") {
+    // 藏书票钢印（双层圆 + 小字）
+    return `<g opacity="${op}" stroke="${accent}" fill="none">
+      <circle cx="${cx}" cy="250" r="78" stroke-width="1.6"/>
+      <circle cx="${cx}" cy="250" r="66" stroke-width="0.9"/>
+      <text x="${cx}" y="246" text-anchor="middle" font-family="'Noto Serif SC','Songti SC',serif" font-size="22" letter-spacing="6" fill="${accent}" stroke="none">藏 书 票</text>
+      <text x="${cx}" y="272" text-anchor="middle" font-family="Georgia,serif" font-size="13" letter-spacing="3" fill="${accent}" stroke="none">EX LIBRIS</text>
+    </g>`;
+  }
+  if (category === "nature" || category === "culture") {
+    // 拱窗
+    return `<g opacity="${op}" stroke="${accent}" fill="none">
+      <path d="M${cx - 110} 400 L${cx - 110} 250 A110 110 0 0 1 ${cx + 110} 250 L${cx + 110} 400" stroke-width="1.8"/>
+      <line x1="${cx}" y1="140" x2="${cx}" y2="400" stroke-width="0.9"/>
+      <path d="M${cx - 110} 320 L${cx + 110} 320" stroke-width="0.9"/>
+    </g>`;
+  }
+  // technology / general：编号牌
+  return `<g opacity="${op}" stroke="${accent}" fill="none">
+    <rect x="${cx - 120}" y="180" width="240" height="120" stroke-width="1.6"/>
+    <line x1="${cx - 100}" y1="215" x2="${cx + 100}" y2="215" stroke-width="0.9"/>
+    <line x1="${cx - 100}" y1="245" x2="${cx + 40}" y2="245" stroke-width="0.9"/>
+    <line x1="${cx - 100}" y1="275" x2="${cx + 70}" y2="275" stroke-width="0.9"/>
+  </g>`;
 }
-
-// 封面标题区域：textX = panelX + 46，可用宽度 = panelWidth - 46 - 44 = 544px
-// font-size 50px + letter-spacing 1px ≈ 51px/字，故最大单行约 10.67 个 CJK 字宽
-// 取 9.6 留出呼吸空间，确保中文标题不溢出
-const COVER_TITLE_MAX_UNITS = 9.6;
 
 function coverSvg({ title, collection, category, seed }) {
   const palette = palettes[category];
-  const random = seededRandom(seed ^ 0x9e3779b9);
   const displayTitle = cleanTitle(title, collection);
-  const titleLines = wrapTitle(displayTitle, COVER_TITLE_MAX_UNITS);
-  const titleSize = 50;
-  const lineHeight = Math.round(titleSize * 1.34);
-  const panelOnLeft = random() > 0.5;
-  const panelX = panelOnLeft ? 48 : 278;
-  const panelWidth = 634;
-  const textX = panelX + 46;
-  const titleStartY = 218;
+  const titleLines = wrapTitle(displayTitle);
+  const titleSize = 54;
+  const lineHeight = 76;
+  const blockTop = 300;
   const archiveNumber = String(seed % 1000).padStart(3, "0");
-  const motif = motifSvg(category, random, palette);
-  const glyph = escapeXml(firstGlyph(displayTitle));
-  const escapedCollection = escapeXml(shortLabel(collection, 18));
+  const escapedCollection = escapeXml(shortLabel(collection, 22).toUpperCase());
   const escapedCategory = escapeXml(palette.label);
+  const ruleY = blockTop + (titleLines.length - 1) * lineHeight + 26;
+
   const lineText = titleLines
-    .map((line, index) => `<text x="${textX}" y="${titleStartY + index * lineHeight}" class="title">${escapeXml(line)}</text>`)
+    .map((line, index) => `<text x="${width / 2}" y="${blockTop + index * lineHeight}" text-anchor="middle" class="title">${escapeXml(line)}</text>`)
     .join("");
 
   return Buffer.from(`
     <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
       <style>
         .sans { font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif; }
-        .serif { font-family: "Noto Serif SC", "Songti SC", "SimSun", serif; }
-        .title { font-family: "Noto Serif SC", "Songti SC", "SimSun", serif; font-size: ${titleSize}px; font-weight: 700; fill: ${palette.ink}; letter-spacing: 1px; }
+        .title { font-family: "Noto Serif SC", "Songti SC", "SimSun", serif; font-size: ${titleSize}px; font-weight: 700; fill: ${palette.ink}; letter-spacing: 2px; }
       </style>
-      <rect width="960" height="640" fill="${palette.paper}" opacity=".18"/>
-      ${motif}
-      <text x="${panelOnLeft ? 815 : 48}" y="565" class="serif" font-size="238" font-weight="700" fill="${palette.second}" opacity=".08">${glyph}</text>
-      <rect x="${panelX}" y="70" width="${panelWidth}" height="500" rx="4" fill="${palette.paper}" opacity=".9"/>
-      <rect x="${panelX}" y="70" width="12" height="500" fill="${palette.accent}"/>
-      <path d="M${textX} 153H${panelX + panelWidth - 44}" stroke="${palette.ink}" stroke-width="2" opacity=".7"/>
-      <text x="${textX}" y="126" class="sans" font-size="20" font-weight="700" fill="${palette.accent}" letter-spacing="2">${escapedCollection}</text>
+      <rect width="${width}" height="${height}" fill="${palette.paper}"/>
+      ${motifSvg(category, palette.accent)}
+      <rect x="40" y="40" width="880" height="560" fill="none" stroke="${palette.line}" stroke-width="1.2" opacity="0.7"/>
+      <rect x="54" y="54" width="852" height="532" fill="none" stroke="${palette.line}" stroke-width="0.7" opacity="0.45"/>
+      <text x="${width / 2}" y="118" text-anchor="middle" class="sans" font-size="19" font-weight="700" fill="${palette.accent}" letter-spacing="5">${escapedCollection}</text>
+      <line x1="${width / 2 - 40}" y1="138" x2="${width / 2 + 40}" y2="138" stroke="${palette.line}" stroke-width="1" opacity="0.6"/>
       ${lineText}
-      <text x="${textX}" y="522" class="sans" font-size="18" font-weight="600" fill="${palette.soft}" letter-spacing="1.5">${escapedCategory}</text>
-      <text x="${panelX + panelWidth - 44}" y="522" class="sans" text-anchor="end" font-size="18" fill="${palette.soft}" letter-spacing="2">ARCHIVE ${archiveNumber}</text>
-      <circle cx="${panelX + panelWidth - 56}" cy="112" r="18" fill="none" stroke="${palette.accent}" stroke-width="3"/>
-      <circle cx="${panelX + panelWidth - 56}" cy="112" r="5" fill="${palette.accent}"/>
+      <line x1="${width / 2 - 120}" y1="${ruleY}" x2="${width / 2 + 120}" y2="${ruleY}" stroke="${palette.ink}" stroke-width="1" opacity="0.55"/>
+      <text x="${width / 2}" y="${ruleY + 34}" text-anchor="middle" class="sans" font-size="17" fill="${palette.line}" letter-spacing="3">${escapedCategory}</text>
+      <text x="${width / 2}" y="566" text-anchor="middle" class="sans" font-size="16" fill="${palette.line}" letter-spacing="4">索 书 号 · Nº ${archiveNumber}</text>
     </svg>
   `);
 }
@@ -420,72 +342,53 @@ function coverSvg({ title, collection, category, seed }) {
 async function walkMarkdown(directory) {
   const files = [];
   const entries = await readdir(directory, { withFileTypes: true });
-
   for (const entry of entries) {
     if (entry.isSymbolicLink()) continue;
     const fullPath = path.join(directory, entry.name);
-
     if (entry.isDirectory()) {
       if (entry.name.startsWith(".") || skippedDirectories.has(entry.name)) continue;
       files.push(...await walkMarkdown(fullPath));
       continue;
     }
-
     if (entry.isFile() && path.extname(entry.name).toLowerCase() === ".md") files.push(fullPath);
   }
-
   return files;
 }
 
 async function createCover(note) {
-  const random = seededRandom(note.seed);
-  const sourceMetadata = await sharp(sourceArtwork).metadata();
-  const cropWidth = Math.min(sourceMetadata.width ?? 1536, 1248);
-  const cropHeight = Math.round(cropWidth * 2 / 3);
-  const maxLeft = Math.max(0, (sourceMetadata.width ?? cropWidth) - cropWidth);
-  const maxTop = Math.max(0, (sourceMetadata.height ?? cropHeight) - cropHeight);
-  const left = Math.round(random() * maxLeft);
-  const top = Math.round(random() * maxTop);
-
   const output960 = previewMode
     ? path.join(previewDirectory, `${note.category}-${note.seedHex.slice(0, 12)}.webp`)
     : note.output960;
   const output480 = note.output480;
-
   await mkdir(path.dirname(output960), { recursive: true });
 
-  const outputInfo = await sharp(sourceArtwork)
-    .extract({ left, top, width: cropWidth, height: cropHeight })
-    .flip(random() > 0.76)
-    .flop(random() > 0.5)
-    .resize(width, height, { fit: "cover" })
-    .modulate({ brightness: 0.92 + random() * 0.12, saturation: 0.72 + random() * 0.38 })
-    .composite([{ input: coverSvg(note), blend: "over" }])
-    .webp({ quality: 72, effort: 6, smartSubsample: true })
-    .toFile(output960);
+  const svgBuffer = coverSvg(note);
+  const outputInfo = await sharp(svgBuffer).webp({ quality: 72, effort: 6, smartSubsample: true }).toFile(output960);
 
   if (previewMode) {
     return {
-      markdown: note.relativePath,
-      title: note.title,
-      collection: note.collection,
-      topic: note.topic || null,
-      category: note.category,
-      seed: note.seedHex.slice(0, 12),
-      cover960: toPosix(path.relative(repositoryRoot, output960)),
-      cover480: null,
-      bytes960: outputInfo.size,
-      bytes480: 0,
+      markdown: note.relativePath, title: note.title, collection: note.collection,
+      category: note.category, seed: note.seedHex.slice(0, 12),
+      cover960: toPosix(path.relative(repositoryRoot, output960)), bytes960: outputInfo.size, bytes480: 0,
     };
   }
 
-  const smallInfo = await sharp(output960)
-    .resize(smallWidth, smallHeight, { fit: "cover", withoutEnlargement: true })
-    .webp({ quality: 68, effort: 6, smartSubsample: true })
-    .toFile(output480);
+  const smallInfo = await sharp(svgBuffer).resize(smallWidth, smallHeight, { fit: "cover" })
+    .webp({ quality: 68, effort: 6, smartSubsample: true }).toFile(output480);
+
+  // regenerate-all：文件名哈希不变，md 的 cover 路径已指向同名文件，无需改写 frontmatter。
+  if (!note.rewriteFrontmatter) {
+    return {
+      markdown: note.relativePath, title: note.title, collection: note.collection,
+      category: note.category, seed: note.seedHex.slice(0, 12),
+      cover960: toPosix(path.relative(repositoryRoot, output960)),
+      cover480: toPosix(path.relative(repositoryRoot, output480)),
+      bytes960: outputInfo.size, bytes480: smallInfo.size,
+    };
+  }
 
   const coverBlock = [
-    "cover:",
+    "cover",
     `  image: ${yamlString(`文本附件/${path.basename(note.output960)}`)}`,
     "  actualRatio: '3:2'",
     `  pixelWidth: ${width}`,
@@ -497,25 +400,18 @@ async function createCover(note) {
   ];
   const updatedMarkdown = replaceOrInsertCover(note.raw, coverBlock);
   await writeFile(note.markdownPath, updatedMarkdown, "utf8");
-
   return {
-    markdown: note.relativePath,
-    title: note.title,
-    collection: note.collection,
-    topic: note.topic || null,
-    category: note.category,
-    seed: note.seedHex.slice(0, 12),
+    markdown: note.relativePath, title: note.title, collection: note.collection,
+    category: note.category, seed: note.seedHex.slice(0, 12),
     cover960: toPosix(path.relative(repositoryRoot, output960)),
     cover480: toPosix(path.relative(repositoryRoot, output480)),
-    bytes960: outputInfo.size,
-    bytes480: smallInfo.size,
+    bytes960: outputInfo.size, bytes480: smallInfo.size,
   };
 }
 
 async function mapLimit(items, limit, worker) {
   const results = new Array(items.length);
   let nextIndex = 0;
-
   async function run() {
     while (true) {
       const currentIndex = nextIndex;
@@ -524,13 +420,11 @@ async function mapLimit(items, limit, worker) {
       results[currentIndex] = await worker(items[currentIndex], currentIndex);
     }
   }
-
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
   return results;
 }
 
 async function main() {
-  await stat(sourceArtwork);
   const markdownFiles = await walkMarkdown(repositoryRoot);
   const notes = [];
 
@@ -540,11 +434,22 @@ async function main() {
 
     const raw = await readFile(markdownPath, "utf8");
     const parsed = parseFrontmatter(raw);
-    if (isDraft(parsed.frontmatter) || hasCover(parsed.frontmatter)) continue;
+    if (isDraft(parsed.frontmatter)) continue;
+
+    const imagePath = coverImagePath(parsed.frontmatter);
+    const usesGenerated = Boolean(imagePath && /(^|\/)generated-cover-/.test(imagePath));
+
+    if (regenerateAll) {
+      // 只重生成当前引用 generated-cover 的已发布 md；无封面 md 走默认模式。
+      if (!usesGenerated) continue;
+    } else if (previewMode) {
+      // preview：取若干代表 md（不依赖是否已有封面）。
+    } else {
+      if (hasCover(parsed.frontmatter)) continue;
+    }
 
     const pathParts = relativePath.split("/");
     const collection = pathParts[0] || "未分类";
-    const topic = pathParts.slice(1, -1).join(" / ");
     const title = getYamlScalar(parsed.frontmatter, "title")
       ?? path.basename(markdownPath, path.extname(markdownPath)).trim();
     const seedHex = hashHex(relativePath);
@@ -553,74 +458,58 @@ async function main() {
     const attachmentDirectory = path.join(path.dirname(markdownPath), "文本附件");
 
     notes.push({
-      markdownPath,
-      relativePath,
-      raw,
-      title,
-      collection,
-      topic,
-      category: classify(title, collection),
-      seed,
-      seedHex,
+      markdownPath, relativePath, raw, title, collection,
+      category: classify(title, collection), seed, seedHex,
       attachmentDirectory,
       output960: path.join(attachmentDirectory, `${baseName}-960.webp`),
       output480: path.join(attachmentDirectory, `${baseName}-480.webp`),
+      rewriteFrontmatter: !regenerateAll && !previewMode,
     });
   }
 
   notes.sort((left, right) => left.relativePath.localeCompare(right.relativePath, "zh-CN"));
 
   if (!notes.length) {
-    console.log("没有发现缺封面的已发布 Markdown。");
+    console.log(regenerateAll ? "没有发现引用 generated-cover 的 Markdown。" : "没有发现缺封面的已发布 Markdown。");
     return;
   }
 
-  const previewCategories = ["technology", "history", "mind", "culture", "language", "nature"];
+  const previewCategories = Object.keys(palettes);
   const workNotes = previewMode
     ? previewCategories.map((category) => notes.find((note) => note.category === category)).filter(Boolean)
     : notes;
 
   console.log(previewMode
-    ? `开始生成 ${workNotes.length} 张风格预览（不会修改 Markdown）……`
-    : `开始生成 ${workNotes.length} 篇缺失封面（${width}px + ${smallWidth}px WebP）……`);
+    ? `开始生成 ${workNotes.length} 张风格预览（不修改 Markdown）……`
+    : regenerateAll
+      ? `开始全量重生成 ${workNotes.length} 篇图书馆风格封面（960 + 480 WebP）……`
+      : `开始生成 ${workNotes.length} 篇缺失封面（960 + 480 WebP）……`);
+
   const records = await mapLimit(workNotes, concurrency, async (note, index) => {
     const record = await createCover(note);
-    if ((index + 1) % 10 === 0 || index + 1 === workNotes.length) {
+    if ((index + 1) % 25 === 0 || index + 1 === workNotes.length) {
       console.log(`已完成 ${index + 1}/${workNotes.length}`);
     }
     return record;
   });
 
-  let previousRecords = [];
-  try {
-    const previousManifest = JSON.parse(await readFile(manifestPath, "utf8"));
-    previousRecords = Array.isArray(previousManifest.records) ? previousManifest.records : [];
-  } catch {
-    // 首次生成时不存在旧清单。
-  }
-  const recordMap = new Map(previousRecords.map((record) => [record.markdown, record]));
-  for (const record of records) recordMap.set(record.markdown, record);
-  const allRecords = Array.from(recordMap.values()).sort((left, right) =>
-    left.markdown.localeCompare(right.markdown, "zh-CN"));
-  const totalBytes = allRecords.reduce((sum, record) => sum + record.bytes960 + record.bytes480, 0);
   if (previewMode) {
-    console.log(`预览完成：${records.length} 张，目录 ${toPosix(path.relative(repositoryRoot, previewDirectory))}。`);
+    console.log(`预览完成：${records.length} 张，目录 site/assets/cover-system/previews。`);
     return;
   }
 
+  // 重写清单（regenerate-all 覆盖旧记录；默认模式按 markdown 合并）。
+  const allRecords = records;
+  const totalBytes = allRecords.reduce((sum, record) => sum + (record.bytes960 || 0) + (record.bytes480 || 0), 0);
   await writeFile(
     manifestPath,
     `${JSON.stringify({
       generatedAt: new Date().toISOString(),
       generator: "site/scripts/generate-missing-covers.mjs",
-      sourceArtwork: "site/assets/cover-system/editorial-collage.webp",
-      sourcePrompt: "Contemporary Chinese editorial collage on warm fibrous paper, with ink, torn paper, printmaking grain, archival marks and restrained vermilion; no text, logos, people or watermark.",
-      strategy: "One AI-generated source artwork plus deterministic title-, collection-, topic- and hash-driven local compositions.",
+      style: "library",
+      strategy: "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
       count: allRecords.length,
-      dimensions: {
-        full: `${width}x${height}`,
-        small: `${smallWidth}x${smallHeight}`,
-      },
+      dimensions: { full: `${width}x${height}`, small: `${smallWidth}x${smallHeight}` },
       totalBytes,
       records: allRecords,
     }, null, 2)}\n`,
@@ -628,7 +517,7 @@ async function main() {
   );
 
   console.log(`完成：${records.length} 篇，图片合计 ${(totalBytes / 1024 / 1024).toFixed(2)} MiB。`);
-  console.log(`清单：${toPosix(path.relative(repositoryRoot, manifestPath))}`);
+  console.log(`清单：site/assets/cover-system/generated-cover-manifest.json`);
 }
 
 await main();

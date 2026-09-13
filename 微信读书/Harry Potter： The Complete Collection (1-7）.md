@@ -11,11 +11,8 @@ progress: "34%"
 readingTime: "1小时"
 readingDate: 2025-08-23
 lastReadDate: 2025-08-23
-isbn: "9781781106464"
 category: "文学-外国文学"
-publisher: "Pottermore Publishing"
 publishTime: "2015-12-14 00:00:00"
-rating: "92%"
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 ---
 
@@ -25,12 +22,8 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 > - ![Harry Potter： The Complete Collection (1-7）|200](https://cdn.weread.qq.com/weread/cover/10/yuewen_834436/t6_yuewen_8344361704792300.jpg)
 > - 书名：Harry Potter： The Complete Collection (1-7）
 > - 作者：J.K. Rowling
-> - 简介：All seven eBooks in the multi-award winning, internationally bestselling Harry Potter series, available as one download with stunning cover art by Olly Moss. Enjoy the stories that have captured the imagination of millions worldwide.
 > - 出版时间：2015-12-14 00:00:00
-> - ISBN：9781781106464
 > - 分类：文学-外国文学
-> - 出版社：Pottermore Publishing
-> - 微信读书评分：92%
 > - 阅读进度：34%
 > - 阅读时长：1小时
 > - 最后阅读：2025-08-23
