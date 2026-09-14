@@ -1,80 +1,47 @@
 {
-  "generatedAt": "2026-09-13T05:47:05.071Z",
+  "generatedAt": "2026-09-14T12:59:12.962Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 6,
+  "count": 3,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 78680,
+  "totalBytes": 41354,
   "records": [
     {
-      "markdown": "青落同学/美国对中国有多好？.md",
-      "title": "美国对中国有多好？",
-      "collection": "青落同学",
-      "category": "society",
-      "seed": "1746dd3af796",
-      "cover960": "青落同学/文本附件/generated-cover-1746dd3af796-960.webp",
-      "cover480": "青落同学/文本附件/generated-cover-1746dd3af796-480.webp",
-      "bytes960": 6888,
-      "bytes480": 2748
-    },
-    {
-      "markdown": "青落同学/沙俄和苏联对中国有多好？（已删减）.md",
-      "title": "沙俄和苏联对中国有多好？（已删减）",
-      "collection": "青落同学",
-      "category": "society",
-      "seed": "62ee134bb216",
-      "cover960": "青落同学/文本附件/generated-cover-62ee134bb216-960.webp",
-      "cover480": "青落同学/文本附件/generated-cover-62ee134bb216-480.webp",
-      "bytes960": 10842,
-      "bytes480": 4296
-    },
-    {
-      "markdown": "青山聊影视/足以封神的一集！单集9.8分神作！.md",
-      "title": "足以封神的一集！单集9.8分神作！",
-      "collection": "青山聊影视",
+      "markdown": "多焱观察局/啥人都能开演唱会？我勒个菠萝蜜.md",
+      "title": "啥人都能开演唱会？我勒个菠萝蜜",
+      "collection": "多焱观察局",
       "category": "general",
-      "seed": "95c2074724f1",
-      "cover960": "青山聊影视/文本附件/generated-cover-95c2074724f1-960.webp",
-      "cover480": "青山聊影视/文本附件/generated-cover-95c2074724f1-480.webp",
-      "bytes960": 9596,
-      "bytes480": 3872
+      "seed": "56059995ee53",
+      "cover960": "多焱观察局/文本附件/generated-cover-56059995ee53-960.webp",
+      "cover480": "多焱观察局/文本附件/generated-cover-56059995ee53-480.webp",
+      "bytes960": 11162,
+      "bytes480": 4288
     },
     {
-      "markdown": "微信读书/微信读书阅读统计.md",
-      "title": "微信读书阅读统计",
-      "collection": "微信读书",
-      "category": "general",
-      "seed": "f4539c5698b5",
-      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
-      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
-      "bytes960": 7438,
-      "bytes480": 2854
+      "markdown": "历史纵横谈/第48期古代大官告老回乡后，当地的地方官有没有权力去管他们？.md",
+      "title": "第48期古代大官告老回乡后，当地的地方官有没有权力去管他们？",
+      "collection": "历史纵横谈",
+      "category": "history",
+      "seed": "56d9ed10d33f",
+      "cover960": "历史纵横谈/文本附件/generated-cover-56d9ed10d33f-960.webp",
+      "cover480": "历史纵横谈/文本附件/generated-cover-56d9ed10d33f-480.webp",
+      "bytes960": 11690,
+      "bytes480": 4824
     },
     {
-      "markdown": "知识暴躁哥/盘点电脑上真正好用的免费软件.md",
-      "title": "盘点电脑上真正好用的免费软件",
-      "collection": "知识暴躁哥",
+      "markdown": "旋风凉水/也许，世界本该如此.md",
+      "title": "也许，世界本该如此",
+      "collection": "旋风凉水",
       "category": "general",
-      "seed": "1b087438893a",
-      "cover960": "知识暴躁哥/文本附件/generated-cover-1b087438893a-960.webp",
-      "cover480": "知识暴躁哥/文本附件/generated-cover-1b087438893a-480.webp",
-      "bytes960": 9548,
-      "bytes480": 3950
-    },
-    {
-      "markdown": "智能路障/全世界的资本家们，勾结起来！他们如何杀死玩家的游戏？【游戏之外】.md",
-      "title": "全世界的资本家们，勾结起来！他们如何杀死玩家的游戏？【游戏之外】",
-      "collection": "智能路障",
-      "category": "general",
-      "seed": "6160b706cba3",
-      "cover960": "智能路障/文本附件/generated-cover-6160b706cba3-960.webp",
-      "cover480": "智能路障/文本附件/generated-cover-6160b706cba3-480.webp",
-      "bytes960": 11850,
-      "bytes480": 4798
+      "seed": "4c7c45fac69d",
+      "cover960": "旋风凉水/文本附件/generated-cover-4c7c45fac69d-960.webp",
+      "cover480": "旋风凉水/文本附件/generated-cover-4c7c45fac69d-480.webp",
+      "bytes960": 6686,
+      "bytes480": 2704
     }
   ]
 }
