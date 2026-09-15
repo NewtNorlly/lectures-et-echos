@@ -19,6 +19,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=00542c5224d505f5758535f33
 > - ![波兰球Polandball|200](http://wx.qlogo.cn/mmhead/Q3auHgzwzM6kByt1nang38SdjA63V5Xa11IrnaewGQvTXVVficKAYew/0)
 > - 书名：波兰球Polandball
 > - 作者：公众号
+> - 简介：波兰不能上太空
 > - 阅读进度：0%
 > - 阅读时长：3分钟
 > - 最后阅读：2026-09-11

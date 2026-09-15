@@ -1,47 +1,91 @@
 {
-  "generatedAt": "2026-09-14T12:59:12.962Z",
+  "generatedAt": "2026-09-15T17:09:55.516Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 3,
+  "count": 7,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 41354,
+  "totalBytes": 91132,
   "records": [
     {
-      "markdown": "多焱观察局/啥人都能开演唱会？我勒个菠萝蜜.md",
-      "title": "啥人都能开演唱会？我勒个菠萝蜜",
-      "collection": "多焱观察局",
+      "markdown": "啊粥粥啊粥/啊粥粥啊粥：大战小雷音！佛教内部矛盾重重，弥勒佛为什么不开心？.md",
+      "title": "啊粥粥啊粥：大战小雷音！佛教内部矛盾重重，弥勒佛为什么不开心？",
+      "collection": "啊粥粥啊粥",
       "category": "general",
-      "seed": "56059995ee53",
-      "cover960": "多焱观察局/文本附件/generated-cover-56059995ee53-960.webp",
-      "cover480": "多焱观察局/文本附件/generated-cover-56059995ee53-480.webp",
-      "bytes960": 11162,
-      "bytes480": 4288
+      "seed": "a0df357056e1",
+      "cover960": "啊粥粥啊粥/文本附件/generated-cover-a0df357056e1-960.webp",
+      "cover480": "啊粥粥啊粥/文本附件/generated-cover-a0df357056e1-480.webp",
+      "bytes960": 12374,
+      "bytes480": 4948
     },
     {
-      "markdown": "历史纵横谈/第48期古代大官告老回乡后，当地的地方官有没有权力去管他们？.md",
-      "title": "第48期古代大官告老回乡后，当地的地方官有没有权力去管他们？",
-      "collection": "历史纵横谈",
-      "category": "history",
-      "seed": "56d9ed10d33f",
-      "cover960": "历史纵横谈/文本附件/generated-cover-56d9ed10d33f-960.webp",
-      "cover480": "历史纵横谈/文本附件/generated-cover-56d9ed10d33f-480.webp",
-      "bytes960": 11690,
-      "bytes480": 4824
+      "markdown": "啊粥粥啊粥/啊粥粥啊粥：以众生的名义，如来佛祖如何布局“西天取经”？.md",
+      "title": "啊粥粥啊粥：以众生的名义，如来佛祖如何布局“西天取经”？",
+      "collection": "啊粥粥啊粥",
+      "category": "general",
+      "seed": "ea0393c4b425",
+      "cover960": "啊粥粥啊粥/文本附件/generated-cover-ea0393c4b425-960.webp",
+      "cover480": "啊粥粥啊粥/文本附件/generated-cover-ea0393c4b425-480.webp",
+      "bytes960": 11156,
+      "bytes480": 4684
     },
     {
-      "markdown": "旋风凉水/也许，世界本该如此.md",
-      "title": "也许，世界本该如此",
-      "collection": "旋风凉水",
+      "markdown": "大猿取经/人设最可怕的地方，是你演久了以后，开始替它看门.md",
+      "title": "人设最可怕的地方，是你演久了以后，开始替它看门",
+      "collection": "大猿取经",
       "category": "general",
-      "seed": "4c7c45fac69d",
-      "cover960": "旋风凉水/文本附件/generated-cover-4c7c45fac69d-960.webp",
-      "cover480": "旋风凉水/文本附件/generated-cover-4c7c45fac69d-480.webp",
-      "bytes960": 6686,
-      "bytes480": 2704
+      "seed": "fd64bbce5850",
+      "cover960": "大猿取经/文本附件/generated-cover-fd64bbce5850-960.webp",
+      "cover480": "大猿取经/文本附件/generated-cover-fd64bbce5850-480.webp",
+      "bytes960": 10900,
+      "bytes480": 4520
+    },
+    {
+      "markdown": "大猿取经/只有形式，没有本质.md",
+      "title": "只有形式，没有本质",
+      "collection": "大猿取经",
+      "category": "general",
+      "seed": "a15509a4b5b5",
+      "cover960": "大猿取经/文本附件/generated-cover-a15509a4b5b5-960.webp",
+      "cover480": "大猿取经/文本附件/generated-cover-a15509a4b5b5-480.webp",
+      "bytes960": 6764,
+      "bytes480": 2678
+    },
+    {
+      "markdown": "大猿取经/PDF转成word？做不到.md",
+      "title": "PDF转成word？做不到",
+      "collection": "大猿取经",
+      "category": "general",
+      "seed": "ceda9f97a045",
+      "cover960": "大猿取经/文本附件/generated-cover-ceda9f97a045-960.webp",
+      "cover480": "大猿取经/文本附件/generated-cover-ceda9f97a045-480.webp",
+      "bytes960": 7554,
+      "bytes480": 3034
+    },
+    {
+      "markdown": "大猿取经/PDF转word一定要做，怎么办？.md",
+      "title": "PDF转word一定要做，怎么办？",
+      "collection": "大猿取经",
+      "category": "general",
+      "seed": "8490cdecb03f",
+      "cover960": "大猿取经/文本附件/generated-cover-8490cdecb03f-960.webp",
+      "cover480": "大猿取经/文本附件/generated-cover-8490cdecb03f-480.webp",
+      "bytes960": 8640,
+      "bytes480": 3588
+    },
+    {
+      "markdown": "微信读书/微信读书阅读统计.md",
+      "title": "微信读书阅读统计",
+      "collection": "微信读书",
+      "category": "general",
+      "seed": "f4539c5698b5",
+      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
+      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
+      "bytes960": 7438,
+      "bytes480": 2854
     }
   ]
 }
