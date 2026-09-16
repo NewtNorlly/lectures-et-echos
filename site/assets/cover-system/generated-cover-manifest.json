@@ -1,91 +1,58 @@
 {
-  "generatedAt": "2026-09-15T17:09:55.516Z",
+  "generatedAt": "2026-09-16T08:38:18.749Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 7,
+  "count": 4,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 91132,
+  "totalBytes": 66660,
   "records": [
     {
-      "markdown": "啊粥粥啊粥/啊粥粥啊粥：大战小雷音！佛教内部矛盾重重，弥勒佛为什么不开心？.md",
-      "title": "啊粥粥啊粥：大战小雷音！佛教内部矛盾重重，弥勒佛为什么不开心？",
-      "collection": "啊粥粥啊粥",
-      "category": "general",
-      "seed": "a0df357056e1",
-      "cover960": "啊粥粥啊粥/文本附件/generated-cover-a0df357056e1-960.webp",
-      "cover480": "啊粥粥啊粥/文本附件/generated-cover-a0df357056e1-480.webp",
-      "bytes960": 12374,
-      "bytes480": 4948
+      "markdown": "巴黎姆学研究院/21次提中国！2027法国大选首场辩论，七大候选人谁对华强硬？谁来接班马克龙？.md",
+      "title": "21次提中国！2027法国大选首场辩论，七大候选人谁对华强硬？谁来接班马克龙？",
+      "collection": "巴黎姆学研究院",
+      "category": "society",
+      "seed": "206bc455baee",
+      "cover960": "巴黎姆学研究院/文本附件/generated-cover-206bc455baee-960.webp",
+      "cover480": "巴黎姆学研究院/文本附件/generated-cover-206bc455baee-480.webp",
+      "bytes960": 11936,
+      "bytes480": 4840
     },
     {
-      "markdown": "啊粥粥啊粥/啊粥粥啊粥：以众生的名义，如来佛祖如何布局“西天取经”？.md",
-      "title": "啊粥粥啊粥：以众生的名义，如来佛祖如何布局“西天取经”？",
-      "collection": "啊粥粥啊粥",
-      "category": "general",
-      "seed": "ea0393c4b425",
-      "cover960": "啊粥粥啊粥/文本附件/generated-cover-ea0393c4b425-960.webp",
-      "cover480": "啊粥粥啊粥/文本附件/generated-cover-ea0393c4b425-480.webp",
-      "bytes960": 11156,
-      "bytes480": 4684
+      "markdown": "历史纵横谈/第49期 为什么蒙古人能逃回草原，而满人却不能逃回东北❓.md",
+      "title": "第49期 为什么蒙古人能逃回草原，而满人却不能逃回东北❓",
+      "collection": "历史纵横谈",
+      "category": "nature",
+      "seed": "4dce33b2fbd0",
+      "cover960": "历史纵横谈/文本附件/generated-cover-4dce33b2fbd0-960.webp",
+      "cover480": "历史纵横谈/文本附件/generated-cover-4dce33b2fbd0-480.webp",
+      "bytes960": 12070,
+      "bytes480": 4902
     },
     {
-      "markdown": "大猿取经/人设最可怕的地方，是你演久了以后，开始替它看门.md",
-      "title": "人设最可怕的地方，是你演久了以后，开始替它看门",
-      "collection": "大猿取经",
-      "category": "general",
-      "seed": "fd64bbce5850",
-      "cover960": "大猿取经/文本附件/generated-cover-fd64bbce5850-960.webp",
-      "cover480": "大猿取经/文本附件/generated-cover-fd64bbce5850-480.webp",
-      "bytes960": 10900,
-      "bytes480": 4520
+      "markdown": "历史纵横谈/第51期 《世界通史》中对我国哪位皇帝评价最高❓.md",
+      "title": "第51期 《世界通史》中对我国哪位皇帝评价最高❓",
+      "collection": "历史纵横谈",
+      "category": "history",
+      "seed": "130062d3099c",
+      "cover960": "历史纵横谈/文本附件/generated-cover-130062d3099c-960.webp",
+      "cover480": "历史纵横谈/文本附件/generated-cover-130062d3099c-480.webp",
+      "bytes960": 12234,
+      "bytes480": 5028
     },
     {
-      "markdown": "大猿取经/只有形式，没有本质.md",
-      "title": "只有形式，没有本质",
-      "collection": "大猿取经",
-      "category": "general",
-      "seed": "a15509a4b5b5",
-      "cover960": "大猿取经/文本附件/generated-cover-a15509a4b5b5-960.webp",
-      "cover480": "大猿取经/文本附件/generated-cover-a15509a4b5b5-480.webp",
-      "bytes960": 6764,
-      "bytes480": 2678
-    },
-    {
-      "markdown": "大猿取经/PDF转成word？做不到.md",
-      "title": "PDF转成word？做不到",
-      "collection": "大猿取经",
-      "category": "general",
-      "seed": "ceda9f97a045",
-      "cover960": "大猿取经/文本附件/generated-cover-ceda9f97a045-960.webp",
-      "cover480": "大猿取经/文本附件/generated-cover-ceda9f97a045-480.webp",
-      "bytes960": 7554,
-      "bytes480": 3034
-    },
-    {
-      "markdown": "大猿取经/PDF转word一定要做，怎么办？.md",
-      "title": "PDF转word一定要做，怎么办？",
-      "collection": "大猿取经",
-      "category": "general",
-      "seed": "8490cdecb03f",
-      "cover960": "大猿取经/文本附件/generated-cover-8490cdecb03f-960.webp",
-      "cover480": "大猿取经/文本附件/generated-cover-8490cdecb03f-480.webp",
-      "bytes960": 8640,
-      "bytes480": 3588
-    },
-    {
-      "markdown": "微信读书/微信读书阅读统计.md",
-      "title": "微信读书阅读统计",
-      "collection": "微信读书",
-      "category": "general",
-      "seed": "f4539c5698b5",
-      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
-      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
-      "bytes960": 7438,
-      "bytes480": 2854
+      "markdown": "穆金荣-穷历史/大清国歌《巩金瓯》， 为何沦为笑柄？.md",
+      "title": "大清国歌《巩金瓯》， 为何沦为笑柄？",
+      "collection": "穆金荣-穷历史",
+      "category": "history",
+      "seed": "15459e946a9f",
+      "cover960": "穆金荣-穷历史/文本附件/generated-cover-15459e946a9f-960.webp",
+      "cover480": "穆金荣-穷历史/文本附件/generated-cover-15459e946a9f-480.webp",
+      "bytes960": 11180,
+      "bytes480": 4470
     }
   ]
 }
