@@ -1,58 +1,47 @@
 {
-  "generatedAt": "2026-09-16T08:38:18.749Z",
+  "generatedAt": "2026-09-16T09:28:47.444Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 4,
+  "count": 3,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 66660,
+  "totalBytes": 33900,
   "records": [
     {
-      "markdown": "巴黎姆学研究院/21次提中国！2027法国大选首场辩论，七大候选人谁对华强硬？谁来接班马克龙？.md",
-      "title": "21次提中国！2027法国大选首场辩论，七大候选人谁对华强硬？谁来接班马克龙？",
-      "collection": "巴黎姆学研究院",
-      "category": "society",
-      "seed": "206bc455baee",
-      "cover960": "巴黎姆学研究院/文本附件/generated-cover-206bc455baee-960.webp",
-      "cover480": "巴黎姆学研究院/文本附件/generated-cover-206bc455baee-480.webp",
-      "bytes960": 11936,
-      "bytes480": 4840
+      "markdown": "哔哩名人演讲录/李敖北京大学演讲录.md",
+      "title": "李敖北京大学演讲录",
+      "collection": "哔哩名人演讲录",
+      "category": "language",
+      "seed": "381b89092976",
+      "cover960": "哔哩名人演讲录/文本附件/generated-cover-381b89092976-960.webp",
+      "cover480": "哔哩名人演讲录/文本附件/generated-cover-381b89092976-480.webp",
+      "bytes960": 8156,
+      "bytes480": 3068
     },
     {
-      "markdown": "历史纵横谈/第49期 为什么蒙古人能逃回草原，而满人却不能逃回东北❓.md",
-      "title": "第49期 为什么蒙古人能逃回草原，而满人却不能逃回东北❓",
-      "collection": "历史纵横谈",
-      "category": "nature",
-      "seed": "4dce33b2fbd0",
-      "cover960": "历史纵横谈/文本附件/generated-cover-4dce33b2fbd0-960.webp",
-      "cover480": "历史纵横谈/文本附件/generated-cover-4dce33b2fbd0-480.webp",
-      "bytes960": 12070,
-      "bytes480": 4902
+      "markdown": "哔哩名人演讲录/李敖复旦大学演讲录.md",
+      "title": "李敖复旦大学演讲录",
+      "collection": "哔哩名人演讲录",
+      "category": "language",
+      "seed": "dfe24a45672b",
+      "cover960": "哔哩名人演讲录/文本附件/generated-cover-dfe24a45672b-960.webp",
+      "cover480": "哔哩名人演讲录/文本附件/generated-cover-dfe24a45672b-480.webp",
+      "bytes960": 8086,
+      "bytes480": 3030
     },
     {
-      "markdown": "历史纵横谈/第51期 《世界通史》中对我国哪位皇帝评价最高❓.md",
-      "title": "第51期 《世界通史》中对我国哪位皇帝评价最高❓",
-      "collection": "历史纵横谈",
-      "category": "history",
-      "seed": "130062d3099c",
-      "cover960": "历史纵横谈/文本附件/generated-cover-130062d3099c-960.webp",
-      "cover480": "历史纵横谈/文本附件/generated-cover-130062d3099c-480.webp",
-      "bytes960": 12234,
-      "bytes480": 5028
-    },
-    {
-      "markdown": "穆金荣-穷历史/大清国歌《巩金瓯》， 为何沦为笑柄？.md",
-      "title": "大清国歌《巩金瓯》， 为何沦为笑柄？",
-      "collection": "穆金荣-穷历史",
-      "category": "history",
-      "seed": "15459e946a9f",
-      "cover960": "穆金荣-穷历史/文本附件/generated-cover-15459e946a9f-960.webp",
-      "cover480": "穆金荣-穷历史/文本附件/generated-cover-15459e946a9f-480.webp",
-      "bytes960": 11180,
-      "bytes480": 4470
+      "markdown": "哔哩名人演讲录/李敖清华大学演讲录.md",
+      "title": "李敖清华大学演讲录",
+      "collection": "哔哩名人演讲录",
+      "category": "language",
+      "seed": "1c16c128901f",
+      "cover960": "哔哩名人演讲录/文本附件/generated-cover-1c16c128901f-960.webp",
+      "cover480": "哔哩名人演讲录/文本附件/generated-cover-1c16c128901f-480.webp",
+      "bytes960": 8394,
+      "bytes480": 3166
     }
   ]
 }
