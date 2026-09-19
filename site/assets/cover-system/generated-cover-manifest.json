@@ -1,47 +1,25 @@
 {
-  "generatedAt": "2026-09-19T06:10:53.312Z",
+  "generatedAt": "2026-09-19T13:09:32.840Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 3,
+  "count": 1,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 46856,
+  "totalBytes": 10292,
   "records": [
     {
-      "markdown": "酒痴东梦/北边拳头大，南边大拳头！日本军部为何选择进攻东南亚？.md",
-      "title": "北边拳头大，南边大拳头！日本军部为何选择进攻东南亚？",
-      "collection": "酒痴东梦",
-      "category": "history",
-      "seed": "95f893c887c4",
-      "cover960": "酒痴东梦/文本附件/generated-cover-95f893c887c4-960.webp",
-      "cover480": "酒痴东梦/文本附件/generated-cover-95f893c887c4-480.webp",
-      "bytes960": 11396,
-      "bytes480": 4668
-    },
-    {
-      "markdown": "酒痴东梦/瘟疫爆发了也要泡澡？罗马帝国如何开进下水道1【意大利为何这么菜01】.md",
-      "title": "瘟疫爆发了也要泡澡？罗马帝国如何开进下水道1【意大利为何这么菜01】",
-      "collection": "酒痴东梦",
-      "category": "history",
-      "seed": "42e6625ff7c1",
-      "cover960": "酒痴东梦/文本附件/generated-cover-42e6625ff7c1-960.webp",
-      "cover480": "酒痴东梦/文本附件/generated-cover-42e6625ff7c1-480.webp",
-      "bytes960": 12414,
-      "bytes480": 5032
-    },
-    {
-      "markdown": "燕三嘤嘤嘤/印度的实力已经跟不上他的野心了.md",
-      "title": "印度的实力已经跟不上他的野心了",
-      "collection": "燕三嘤嘤嘤",
+      "markdown": "微信读书/微信读书阅读统计.md",
+      "title": "微信读书阅读统计",
+      "collection": "微信读书",
       "category": "general",
-      "seed": "539ee720bc2c",
-      "cover960": "燕三嘤嘤嘤/文本附件/generated-cover-539ee720bc2c-960.webp",
-      "cover480": "燕三嘤嘤嘤/文本附件/generated-cover-539ee720bc2c-480.webp",
-      "bytes960": 9468,
-      "bytes480": 3878
+      "seed": "f4539c5698b5",
+      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
+      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
+      "bytes960": 7438,
+      "bytes480": 2854
     }
   ]
 }
