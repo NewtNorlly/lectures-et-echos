@@ -228,12 +228,11 @@
 
 /* ── 微信读书三类内容卡：一眼可辨，各自带 Emoji 徽标 ── */
 
-/* ① 📌 原文高亮卡：vermillion 左竖线 + 淡纸面 */
+/* ① 📌 原文高亮卡：淡纸面圆角卡（无左侧竖线） */
 .prose .quote-card {
   padding: 1.15rem 1.5rem;
   border: 0;
-  border-left: 3px solid var(--vermillion);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: var(--radius-sm);
   background: hsl(var(--muted) / 0.45);
   color: var(--ink-prose);
 }
@@ -255,12 +254,12 @@
   letter-spacing: 0.03em;
 }
 
-/* ② 💭 我的想法/评论：卡内内联批注块，墨色竖条 + 次级底，与原文区分 */
+/* ② 💭 我的想法/评论：卡内内联批注块，次级底与原文区分（无左侧竖线） */
 .prose .quote-card .quote-thought {
   margin: 0.95rem 0 0;
   padding: 0.75rem 1rem;
-  border-left: 2px solid hsl(var(--ink) / 0.42);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border: 0;
+  border-radius: var(--radius-sm);
   background: hsl(var(--secondary) / 0.55);
   color: var(--ink-soft);
 }
@@ -270,14 +269,13 @@
   margin-right: 0.45em;
 }
 
-/* ③ 📚 读书笔记（章节点评与书评下的独立笔记）：深强调色竖条 + 纸面卡 */
+/* ③ 📚 读书笔记（章节点评与书评下的独立笔记）：纸面圆角卡（无左侧竖线） */
 .prose .note-card__body {
   margin: 0;
   padding: 1.05rem 1.4rem 0.85rem;
   background: hsl(var(--muted) / 0.45);
   border: 0;
-  border-left: 3px solid var(--vermillion);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: var(--radius-sm);
   color: var(--ink-prose);
 }
 
@@ -295,8 +293,7 @@
   padding: 0.55rem 1.4rem 0.8rem;
   background: hsl(var(--muted) / 0.45);
   border: 0;
-  border-left: 3px solid var(--vermillion);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: var(--radius-sm);
   font-size: var(--text-min);
   color: var(--ink-faint);
   letter-spacing: 0.02em;
@@ -337,13 +334,9 @@
   margin: 0.4rem auto 0.9rem;
 }
 
+/* 元数据 callout 的小标题（书名）与正文首条"书名："重复，直接隐藏 */
 .prose .callout-title {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--vermillion-dark);
-  font-family: var(--font-sans);
-  font-size: var(--text-min);
-  letter-spacing: 0.08em;
+  display: none;
 }
 
 .prose img {
