@@ -371,10 +371,13 @@ async function main() {
   // 合并组：同一本书的多个副本（官方本 / 个人导入 CB_ 本）合并为一本
   const MERGE_GROUPS = [
     {
+      // 全量重导后 CB_ 副本会被导入器重建，且常把干净文件名占走、导致官方本带 -bookId 后缀；
+      // 固定 outFile 为干净名并把 shellId 一并列入 removeIds，可幂等得到单一《白鹿原.md》（bookId=34631906）。
       label: '白鹿原',
       order: ['34631906', 'CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
       shellId: '34631906',
-      removeIds: ['CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
+      outFile: '白鹿原.md',
+      removeIds: ['34631906', 'CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
     },
     {
       label: '巨婴国',
@@ -384,10 +387,12 @@ async function main() {
       removeIds: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036'],
     },
     {
+      // 同上：固定干净文件名《研究生论文写作与时间管理.md》（bookId=3004247422 官方本），删除带后缀壳文件与 CB_ 副本。
       label: '研究生论文写作与时间管理',
       order: ['CB_3TmBTGBVhB5k76075A7Gi2mb', '3004247422'],
       shellId: '3004247422',
-      removeIds: ['CB_3TmBTGBVhB5k76075A7Gi2mb'],
+      outFile: '研究生论文写作与时间管理.md',
+      removeIds: ['3004247422', 'CB_3TmBTGBVhB5k76075A7Gi2mb'],
     },
     {
       label: '社会学与生活',

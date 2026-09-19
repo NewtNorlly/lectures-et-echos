@@ -1,47 +1,25 @@
 {
-  "generatedAt": "2026-09-16T09:28:47.444Z",
+  "generatedAt": "2026-09-19T05:41:02.499Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 3,
+  "count": 1,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 33900,
+  "totalBytes": 10292,
   "records": [
     {
-      "markdown": "哔哩名人演讲录/李敖北京大学演讲录.md",
-      "title": "李敖北京大学演讲录",
-      "collection": "哔哩名人演讲录",
-      "category": "language",
-      "seed": "381b89092976",
-      "cover960": "哔哩名人演讲录/文本附件/generated-cover-381b89092976-960.webp",
-      "cover480": "哔哩名人演讲录/文本附件/generated-cover-381b89092976-480.webp",
-      "bytes960": 8156,
-      "bytes480": 3068
-    },
-    {
-      "markdown": "哔哩名人演讲录/李敖复旦大学演讲录.md",
-      "title": "李敖复旦大学演讲录",
-      "collection": "哔哩名人演讲录",
-      "category": "language",
-      "seed": "dfe24a45672b",
-      "cover960": "哔哩名人演讲录/文本附件/generated-cover-dfe24a45672b-960.webp",
-      "cover480": "哔哩名人演讲录/文本附件/generated-cover-dfe24a45672b-480.webp",
-      "bytes960": 8086,
-      "bytes480": 3030
-    },
-    {
-      "markdown": "哔哩名人演讲录/李敖清华大学演讲录.md",
-      "title": "李敖清华大学演讲录",
-      "collection": "哔哩名人演讲录",
-      "category": "language",
-      "seed": "1c16c128901f",
-      "cover960": "哔哩名人演讲录/文本附件/generated-cover-1c16c128901f-960.webp",
-      "cover480": "哔哩名人演讲录/文本附件/generated-cover-1c16c128901f-480.webp",
-      "bytes960": 8394,
-      "bytes480": 3166
+      "markdown": "微信读书/微信读书阅读统计.md",
+      "title": "微信读书阅读统计",
+      "collection": "微信读书",
+      "category": "general",
+      "seed": "f4539c5698b5",
+      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
+      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
+      "bytes960": 7438,
+      "bytes480": 2854
     }
   ]
 }
