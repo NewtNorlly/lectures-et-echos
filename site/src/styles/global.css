@@ -640,15 +640,15 @@
     color: var(--ink-soft);
   }
 
-  /* 站底宫崎骏风多层视差水彩横带：远云/中丘树屋/近草书灯，三层不同速度右→左无缝，主题低饱和，不挡点击 */
+  /* 站底手绘动画风成品风景横带：远云飞鸟/中丘树木屋/近草野花三层视差无缝漂移，落叶与小黑毛球随风飘过 */
   .footer-band {
     position: relative;
-    height: 11rem;
+    height: clamp(10rem, 15vw, 12.5rem);
     overflow: hidden;
     pointer-events: none;
     user-select: none;
-    color: hsl(var(--story-accent) / 0.34);
     border-bottom: 1px solid hsl(var(--border) / 0.45);
+    background: hsl(var(--card) / 0.35);
   }
 
   .footer-layer {
@@ -657,24 +657,39 @@
     display: flex;
     width: 200%;
     height: 100%;
+    will-change: transform;
   }
 
-  .footer-layer--far  { animation: band-drift 130s linear infinite; }
-  .footer-layer--mid  { animation: band-drift 85s  linear infinite; }
-  .footer-layer--near { animation: band-drift 50s  linear infinite; }
+  .footer-layer--far  { z-index: 1; animation: band-drift 140s linear infinite; }
+  .footer-layer--mid  { z-index: 2; animation: band-drift 88s  linear infinite; }
+  .footer-layer--near { z-index: 3; animation: band-drift 52s  linear infinite; }
 
   .footer-band__art {
     width: 50%;
     height: 100%;
     flex: none;
+    object-fit: cover;
+    object-position: center bottom;
   }
 
-  .footer-layer path,
-  .footer-layer circle {
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  /* 远层：蓝天白云，顶部淡入页面背景 */
+  .footer-layer--far .footer-band__art {
+    object-position: center 30%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
+  }
+
+  /* 中层：草坡大树木屋，上部溶入远层天空 */
+  .footer-layer--mid .footer-band__art {
+    object-position: center 55%;
+    -webkit-mask-image: linear-gradient(to top, #000 52%, rgba(0, 0, 0, 0.5) 68%, transparent 85%);
+    mask-image: linear-gradient(to top, #000 52%, rgba(0, 0, 0, 0.5) 68%, transparent 85%);
+  }
+
+  /* 近层：底部野花野草 fringe，上部溶入中景草坡 */
+  .footer-layer--near .footer-band__art {
+    -webkit-mask-image: linear-gradient(to top, #000 38%, rgba(0, 0, 0, 0.5) 54%, transparent 72%);
+    mask-image: linear-gradient(to top, #000 38%, rgba(0, 0, 0, 0.5) 54%, transparent 72%);
   }
 
   @keyframes band-drift {
@@ -682,9 +697,111 @@
     to { transform: translate3d(-50%, 0, 0); }
   }
 
+  /* 漂浮落叶与小黑毛球精灵 */
+  .footer-floaties {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+  }
+
+  .footer-float {
+    position: absolute;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    will-change: transform;
+  }
+
+  .footer-float--leaf {
+    width: clamp(20px, 2.1vw, 30px);
+    height: clamp(20px, 2.1vw, 30px);
+  }
+
+  .footer-float--leaf-a {
+    top: 26%;
+    background-image: url("/footer/leaf-1.png");
+    animation: footer-leaf-a 21s linear infinite;
+  }
+
+  .footer-float--leaf-b {
+    top: 48%;
+    width: clamp(17px, 1.8vw, 26px);
+    height: clamp(17px, 1.8vw, 26px);
+    background-image: url("/footer/leaf-2.png");
+    animation: footer-leaf-b 27s linear infinite;
+    animation-delay: -9s;
+  }
+
+  .footer-float--leaf-c {
+    top: 12%;
+    width: clamp(16px, 1.7vw, 24px);
+    height: clamp(16px, 1.7vw, 24px);
+    background-image: url("/footer/leaf-2.png");
+    animation: footer-leaf-a 33s linear infinite;
+    animation-delay: -20s;
+  }
+
+  .footer-float--soot {
+    width: clamp(24px, 2.5vw, 36px);
+    height: auto;
+    aspect-ratio: 190 / 167;
+  }
+
+  .footer-float--soot-a {
+    top: 30%;
+    background-image: url("/footer/soot-1.png");
+    animation: footer-soot-a 38s linear infinite;
+    animation-delay: -6s;
+  }
+
+  .footer-float--soot-b {
+    top: 58%;
+    width: clamp(20px, 2.1vw, 30px);
+    aspect-ratio: 190 / 164;
+    background-image: url("/footer/soot-2.png");
+    animation: footer-soot-b 47s linear infinite;
+    animation-delay: -24s;
+  }
+
+  @keyframes footer-leaf-a {
+    0%   { transform: translateX(-10vw) rotate(-20deg); }
+    25%  { transform: translateX(22vw) translateY(16px) rotate(100deg); }
+    50%  { transform: translateX(52vw) translateY(-12px) rotate(200deg); }
+    75%  { transform: translateX(80vw) translateY(10px) rotate(300deg); }
+    100% { transform: translateX(112vw) rotate(380deg); }
+  }
+
+  @keyframes footer-leaf-b {
+    0%   { transform: translateX(-10vw) translateY(0) rotate(10deg); }
+    30%  { transform: translateX(28vw) translateY(-18px) rotate(140deg); }
+    60%  { transform: translateX(60vw) translateY(12px) rotate(250deg); }
+    100% { transform: translateX(112vw) translateY(-6px) rotate(370deg); }
+  }
+
+  @keyframes footer-soot-a {
+    0%   { transform: translateX(-8vw) translateY(0) scale(1); }
+    25%  { transform: translateX(24vw) translateY(-14px) scale(1.06); }
+    50%  { transform: translateX(52vw) translateY(8px) scale(0.96); }
+    75%  { transform: translateX(78vw) translateY(-10px) scale(1.04); }
+    100% { transform: translateX(108vw) translateY(0) scale(1); }
+  }
+
+  @keyframes footer-soot-b {
+    0%   { transform: translateX(-8vw) translateY(0) scale(0.92); }
+    30%  { transform: translateX(30vw) translateY(12px) scale(1); }
+    60%  { transform: translateX(62vw) translateY(-12px) scale(0.95); }
+    100% { transform: translateX(108vw) translateY(4px) scale(0.92); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .footer-layer {
+    .footer-layer,
+    .footer-float {
       animation: none;
+    }
+
+    .footer-floaties {
+      display: none;
     }
   }
 
