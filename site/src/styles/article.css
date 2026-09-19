@@ -1,5 +1,5 @@
 .article-shell {
-  width: min(calc(100% - 2.5rem), 90rem);
+  width: min(calc(100% - 2.5rem), 74rem);
   margin-inline: auto;
 }
 
@@ -46,10 +46,10 @@
 
 .article-layout {
   display: grid;
-  /* 正文阅读列贴左、目录沉右，中间留舒展气口；大屏阅读列加宽至约46rem（每行约40字） */
-  grid-template-columns: minmax(0, var(--reading)) minmax(12rem, 15rem);
-  justify-content: space-between;
-  gap: clamp(2rem, 5vw, 5rem);
+  /* 阅读列加宽至约55rem（每行约44字）；目录紧贴正文右侧、整组居中，消除中部空洞 */
+  grid-template-columns: minmax(0, var(--reading)) minmax(11rem, 12.5rem);
+  justify-content: center;
+  gap: clamp(1.75rem, 3.5vw, 3.25rem);
   padding-top: clamp(3.5rem, 8vw, 7rem);
 }
 
