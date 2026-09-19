@@ -345,6 +345,8 @@ function nodePlainText(node) {
 // 💭想法 / 🕰想法时间」全塞进同一段、靠空格换行。这里按标记拆成
 // 「引文(.quote-text) / 时间戳(.quote-meta) / 我的想法(.quote-thought)」
 // 三个有序块，交给 CSS 排成出版级引文卡。仅处理含 📌 的块引用，其余原样。
+// 卡片带 --quote 修饰类：📌 原文引用卡；💭 想法是卡内「我的评论」内联块，
+// 两者用不同色条 / 底色一眼区分（Emoji 徽标由 CSS ::before 呈现，内容零丢失）。
 const HIGHLIGHT_MARKERS = ['📌', '💭', '🕰', '⏱'];
 function transformHighlightQuotes(tree) {
   visit(tree, 'blockquote', (node) => {
@@ -381,7 +383,7 @@ function transformHighlightQuotes(tree) {
 
     node.data = {
       ...(node.data ?? {}),
-      hProperties: { className: ['quote-card'] },
+      hProperties: { className: ['quote-card', 'quote-card--quote'] },
     };
     node.children = blocks.map((block) => ({
       type: 'paragraph',
@@ -389,6 +391,82 @@ function transformHighlightQuotes(tree) {
       children: [{ type: 'text', value: block.text.join(' ') }],
     }));
   });
+}
+
+// 「章节点评与书评」下的独立读书笔记：md 里是 一段正文 + 一条 `> 记录于 …` 时间戳。
+// 这里按章节归属把它们标成 .note-card 系列（首段 .note-card__head 带 📚 徽标，
+// 时间戳段 .note-card__meta），CSS 把两段拼成一张与 📌/💭 都不同的「读书笔记卡」。
+// 不删任何内容：无 `记录于` 尾随时间戳的段落原样保留。
+function transformWereadNotes(tree) {
+  let section = null;
+  visit(tree, (node) => {
+    if (node.type === 'heading' && node.depth === 2) {
+      const text = nodePlainText(node);
+      section = text.includes('高亮划线')
+        ? 'highlights'
+        : text.includes('章节点评与书评')
+          ? 'reviews'
+          : 'other';
+      return;
+    }
+    if (section !== 'reviews') return;
+    if (node.type !== 'paragraph' || !node.children) return;
+    // 已处理过的段落跳过，避免重复挂徽标
+    if (node.data?.hProperties?.className?.some((c) => c.startsWith('note-card'))) return;
+
+    const siblings = tree.children;
+    const idx = siblings.indexOf(node);
+    if (idx === -1) return;
+
+    // 向后收：连续段落 + 尾随 `记录于` 块引用
+    let j = idx;
+    const paras = [];
+    while (j < siblings.length && siblings[j].type === 'paragraph') {
+      paras.push(siblings[j]);
+      j++;
+    }
+    let meta = null;
+    if (j < siblings.length && siblings[j].type === 'blockquote') {
+      const mt = nodePlainText(siblings[j]);
+      if (mt.includes('记录于')) {
+        meta = siblings[j];
+        j++;
+      }
+    }
+    if (!meta || paras.length === 0) return;
+
+    paras.forEach((p, i) => {
+      const cls = i === 0 ? ['note-card__body', 'note-card__head'] : ['note-card__body'];
+      p.data = { ...(p.data ?? {}), hProperties: { className: cls } };
+    });
+    meta.data = {
+      ...(meta.data ?? {}),
+      hProperties: { className: ['note-card', 'note-card__meta'] },
+    };
+  });
+}
+
+// 展示层剥离微信读书外链：元数据 callout 里的「微信读书：https://weread.qq.com/…」
+// 清单项与正文里指向 weread.qq.com/book-detail 的链接一律不渲染（源 md 不动）。
+// 边遍历边删会跳节点，故先收集再逆序删除。
+function stripWereadSourceLinks(tree) {
+  const removals = [];
+  visit(tree, 'listItem', (node, index, parent) => {
+    if (!parent?.children || index === undefined) return;
+    const text = nodePlainText(node);
+    if (text.includes('weread.qq.com/book-detail')) {
+      removals.push({ parent, index });
+    }
+  });
+  visit(tree, 'link', (node, index, parent) => {
+    if (!parent?.children || index === undefined) return;
+    if (/weread\.qq\.com\/book-detail/u.test(node.url)) {
+      removals.push({ parent, index });
+    }
+  });
+  removals
+    .sort((a, b) => b.index - a.index)
+    .forEach(({ parent, index }) => parent.children.splice(index, 1));
 }
 
 function transformTextNodes(tree, sourcePath, base) {
@@ -448,6 +526,8 @@ export function remarkObsidian(options = {}) {
     transformSeparators(tree);
     transformCallouts(tree);
     transformHighlightQuotes(tree);
+    transformWereadNotes(tree);
+    stripWereadSourceLinks(tree);
     transformTextNodes(tree, sourcePath, base);
     transformImages(tree, sourcePath, base);
     transformMarkdownLinks(tree, sourcePath, base);

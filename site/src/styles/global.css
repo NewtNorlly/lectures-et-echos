@@ -65,6 +65,8 @@
 @layer tokens {
   /* ── 主题无关：排版 / 形状 / 动效（学 MMV 设计文档） ── */
   :root {
+    /* 产品决策：永远明亮主题。即使系统/父页切到暗色，浏览器滚动条与表单控件也按亮色渲染 */
+    color-scheme: light;
     --font-serif: "Source Han Serif CN", "思源宋体 CN", "Source Han Serif SC",
       "Songti SC", "STSong", "Noto Serif CJK SC", serif;
     --font-sans: var(--font-serif);
@@ -78,7 +80,7 @@
     --radius-md: 18px;
     --radius-lg: 28px;
     --shell: 76rem;
-    --reading: 42rem;
+    --reading: 46rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
     --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -638,30 +640,63 @@
     color: var(--ink-soft);
   }
 
+  /* 站底无限横向视带动图：右→左无缝循环，主题色低饱和线条剪影，不挡点击 */
+  .footer-band {
+    position: relative;
+    height: 9rem;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    color: hsl(var(--story-accent) / 0.32);
+    border-bottom: 1px solid hsl(var(--border) / 0.45);
+  }
+
+  .footer-band__track {
+    display: flex;
+    width: 200%;
+    height: 100%;
+    animation: footer-drift 80s linear infinite;
+  }
+
+  .footer-band__art {
+    width: 50%;
+    height: 100%;
+    flex: none;
+  }
+
+  .footer-band__art path,
+  .footer-band__art circle,
+  .footer-band__art rect {
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @keyframes footer-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-band__track {
+      animation: none;
+    }
+  }
+
   .site-footer__inner {
     display: flex;
-    min-height: 10rem;
+    min-height: 7.5rem;
     align-items: center;
-    justify-content: space-between;
-    gap: 3rem;
+    justify-content: center;
   }
 
-  .site-footer__title {
-    color: var(--ink);
-    font-family: var(--font-latin);
-    font-size: var(--text-lead);
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .site-footer__note,
-  .site-footer__meta {
+  .site-footer__mark {
     color: var(--footer-muted);
+    font-family: var(--font-latin);
     font-size: var(--text-min);
-  }
-
-  .site-footer__meta {
-    text-align: right;
+    font-weight: 600;
+    letter-spacing: 0.12em;
   }
 
   .site-footer a {

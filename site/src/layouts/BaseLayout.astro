@@ -102,15 +102,58 @@ const canonicalUrl = canonicalPath !== false && Astro.site
     </main>
 
     <footer class="site-footer">
-      <div class="shell site-footer__inner">
-        <div>
-          <p class="site-footer__title">Lectures &amp; Échos</p>
-          <p class="site-footer__note">我的书架 · 微信读书归档｜网络博主 · 创作者档案</p>
+      {/* 站底无限横向视带动图：书/灯/胶片/放映机/声波线条剪影，右→左无缝循环，纯 CSS/SVG */}
+      <div class="footer-band" aria-hidden="true">
+        <div class="footer-band__track">
+          <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none">
+            <!-- 打开的书 -->
+            <path d="M120 108 Q160 86 200 106 Q240 86 280 108 M200 106 L200 132" />
+            <!-- 台灯 -->
+            <path d="M430 132 L430 84 M430 84 L468 66 M468 66 L502 86 M408 132 L452 132" />
+            <!-- 胶片盘 -->
+            <circle cx="640" cy="96" r="36" />
+            <circle cx="640" cy="96" r="9" />
+            <!-- 声波 -->
+            <path d="M752 96 q13 -26 26 0 q13 26 26 0 q13 -26 26 0 q13 26 26 0" />
+            <!-- 叠放的书 -->
+            <rect x="918" y="118" width="96" height="13" />
+            <rect x="930" y="100" width="84" height="13" />
+            <rect x="924" y="82" width="90" height="13" />
+            <!-- 放映机 + 光束 -->
+            <rect x="1092" y="86" width="72" height="42" />
+            <circle cx="1107" cy="107" r="10" />
+            <path d="M1164 107 L1206 98 M1164 107 L1206 116" />
+            <!-- 弯月 -->
+            <path d="M1304 66 a28 28 0 1 0 18 48 a23 23 0 1 1 -18 -48" />
+            <!-- 音符 -->
+            <path d="M1446 108 L1446 64 M1446 64 L1480 58" />
+            <circle cx="1446" cy="108" r="6.5" />
+            <circle cx="1480" cy="58" r="6.5" />
+            <!-- 地平线 -->
+            <path d="M40 146 H1560" stroke-dasharray="2 10" />
+          </svg>
+          <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+            <path d="M120 108 Q160 86 200 106 Q240 86 280 108 M200 106 L200 132" />
+            <path d="M430 132 L430 84 M430 84 L468 66 M468 66 L502 86 M408 132 L452 132" />
+            <circle cx="640" cy="96" r="36" />
+            <circle cx="640" cy="96" r="9" />
+            <path d="M752 96 q13 -26 26 0 q13 26 26 0 q13 -26 26 0 q13 26 26 0" />
+            <rect x="918" y="118" width="96" height="13" />
+            <rect x="930" y="100" width="84" height="13" />
+            <rect x="924" y="82" width="90" height="13" />
+            <rect x="1092" y="86" width="72" height="42" />
+            <circle cx="1107" cy="107" r="10" />
+            <path d="M1164 107 L1206 98 M1164 107 L1206 116" />
+            <path d="M1304 66 a28 28 0 1 0 18 48 a23 23 0 1 1 -18 -48" />
+            <path d="M1446 108 L1446 64 M1446 64 L1480 58" />
+            <circle cx="1446" cy="108" r="6.5" />
+            <circle cx="1480" cy="58" r="6.5" />
+            <path d="M40 146 H1560" stroke-dasharray="2 10" />
+          </svg>
         </div>
-        <p class="site-footer__meta">
-          内容以仓库原始文件为准<br />
-          <a href="https://github.com/NewtNorlly/Bilibili-YouTube-Collection">查看 GitHub 仓库</a>
-        </p>
+      </div>
+      <div class="shell site-footer__inner">
+        <p class="site-footer__mark">Lectures &amp; Échos</p>
       </div>
     </footer>
 

@@ -264,7 +264,14 @@ function getDescription(data: RawData, body: string | undefined): string | undef
   if (!body) return undefined;
 
   const wereadIntroduction = body.match(/^\s*>?\s*-?\s*简介[：:]\s*(.+)$/m)?.[1];
-  return trimExcerpt(wereadIntroduction ?? body);
+  const source = wereadIntroduction ?? body;
+  // 摘要里不暴露 weread.qq.com 外链（与正文层剥离保持一致）
+  const cleaned = source
+    .replace(/https?:\/\/\S*weread\.qq\.com\S*/g, '')
+    .replace(/微信读书[：:]\s*$/gm, '')
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+  return trimExcerpt(cleaned);
 }
 
 function getSourceUrl(data: RawData, body: string | undefined): string | undefined {

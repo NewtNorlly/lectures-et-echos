@@ -1,5 +1,5 @@
 .article-shell {
-  width: min(calc(100% - 2.5rem), 84rem);
+  width: min(calc(100% - 2.5rem), 90rem);
   margin-inline: auto;
 }
 
@@ -46,8 +46,9 @@
 
 .article-layout {
   display: grid;
-  /* 正文阅读列贴左对齐头部文本，目录沉入右侧页边距，栅格对齐 */
-  grid-template-columns: minmax(0, var(--reading)) minmax(0, 1fr);
+  /* 正文阅读列贴左、目录沉右，中间留舒展气口；大屏阅读列加宽至约46rem（每行约40字） */
+  grid-template-columns: minmax(0, var(--reading)) minmax(12rem, 15rem);
+  justify-content: space-between;
   gap: clamp(2rem, 5vw, 5rem);
   padding-top: clamp(3.5rem, 8vw, 7rem);
 }
@@ -225,11 +226,13 @@
   color: var(--ink-soft);
 }
 
-/* 微信读书高亮引文卡：左侧 vermillion 竖线 + 淡纸面 */
+/* ── 微信读书三类内容卡：一眼可辨，各自带 Emoji 徽标 ── */
+
+/* ① 📌 原文高亮卡：vermillion 左竖线 + 淡纸面 */
 .prose .quote-card {
   padding: 1.15rem 1.5rem;
   border: 0;
-  border-left: 2px solid var(--vermillion);
+  border-left: 3px solid var(--vermillion);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   background: hsl(var(--muted) / 0.45);
   color: var(--ink-prose);
@@ -237,6 +240,11 @@
 
 .prose .quote-card .quote-text {
   margin: 0;
+}
+
+.prose .quote-card .quote-text::before {
+  content: "📌";
+  margin-right: 0.45em;
 }
 
 /* 时间戳：收小、退到次要层 */
@@ -247,12 +255,58 @@
   letter-spacing: 0.03em;
 }
 
-/* 我的想法：以虚线与引文隔开，颜色转柔，像边注 */
+/* ② 💭 我的想法/评论：卡内内联批注块，墨色竖条 + 次级底，与原文区分 */
 .prose .quote-card .quote-thought {
   margin: 0.95rem 0 0;
-  padding-top: 0.9rem;
-  border-top: 1px dashed var(--line-soft);
+  padding: 0.75rem 1rem;
+  border-left: 2px solid hsl(var(--ink) / 0.42);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: hsl(var(--secondary) / 0.55);
   color: var(--ink-soft);
+}
+
+.prose .quote-card .quote-thought::before {
+  content: "💭";
+  margin-right: 0.45em;
+}
+
+/* ③ 📚 读书笔记（章节点评与书评下的独立笔记）：深强调色竖条 + 纸面卡 */
+.prose .note-card__body {
+  margin: 0;
+  padding: 1.05rem 1.4rem 0.85rem;
+  background: hsl(var(--card) / 0.85);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-left: 3px solid hsl(var(--accent-fg) / 0.85);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  color: var(--ink-prose);
+}
+
+.prose .note-card__body + .note-card__body {
+  border-top: 0;
+}
+
+.prose .note-card__head::before {
+  content: "📚";
+  margin-right: 0.45em;
+}
+
+.prose .note-card__meta {
+  margin: 0;
+  padding: 0.55rem 1.4rem 0.8rem;
+  background: hsl(var(--card) / 0.85);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-left: 3px solid hsl(var(--accent-fg) / 0.85);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  font-size: var(--text-min);
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+/* 两张读书笔记卡之间留呼吸 */
+.prose .note-card__meta + .note-card__body {
+  margin-top: 1.5rem;
 }
 
 .prose blockquote > :first-child,
