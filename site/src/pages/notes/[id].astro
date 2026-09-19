@@ -28,9 +28,7 @@ const tableOfContents = headings
   .filter((heading) => heading.depth === 2 || heading.depth === 3)
   .slice(0, 24);
 const kindLabel = note.kind === "book" ? "阅读笔记" : note.kind === "stats" ? "阅读统计" : "影像文本";
-const sourceLabel = note.kind === "book" ? "查看原始来源" : "观看原视频";
-/* 微信读书的 sourceUrl 是 weread.qq.com/book-detail 外链，详情页不再渲染；博主视频源（bilibili 等）保留 */
-const externalSource = note.sourceUrl && !/weread\.qq\.com/u.test(note.sourceUrl) ? note.sourceUrl : undefined;
+
 
 /* 返回导航：书架类书籍回「我的书架」，博主文章回「网络博主」；博主文章另带「返回上级」到该博主的归档页 */
 const isBookshelf = note.kind === "book" || note.kind === "stats";
@@ -58,11 +56,7 @@ const parentUrl = isBookshelf ? undefined : collectionUrl(note.collectionId);
         {note.description && (
           <p class="article-header__description">{note.description}</p>
         )}
-        {externalSource && (
-          <div class="article-header__links">
-            <a href={externalSource} target="_blank" rel="noreferrer">{sourceLabel}</a>
-          </div>
-        )}
+
         {note.weread && (
           <dl class="weread-facts" aria-label="阅读信息">
             {note.weread.author && <div><dt>作者</dt><dd>{note.weread.author}</dd></div>}

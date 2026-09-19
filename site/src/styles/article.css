@@ -1,5 +1,5 @@
 .article-shell {
-  width: min(calc(100% - 2.5rem), 74rem);
+  width: min(calc(100% - 2.5rem), 98rem);
   margin-inline: auto;
 }
 
@@ -46,7 +46,7 @@
 
 .article-layout {
   display: grid;
-  /* 阅读列加宽至约55rem（每行约44字）；目录紧贴正文右侧、整组居中，消除中部空洞 */
+  /* 阅读列约83rem（46rem×1.8）；目录紧贴正文右侧、整组居中，消除中部空洞 */
   grid-template-columns: minmax(0, var(--reading)) minmax(11rem, 12.5rem);
   justify-content: center;
   gap: clamp(1.75rem, 3.5vw, 3.25rem);
@@ -274,11 +274,10 @@
 .prose .note-card__body {
   margin: 0;
   padding: 1.05rem 1.4rem 0.85rem;
-  background: hsl(var(--card) / 0.85);
-  border: 1px solid var(--line);
-  border-bottom: 0;
-  border-left: 3px solid hsl(var(--accent-fg) / 0.85);
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: hsl(var(--muted) / 0.45);
+  border: 0;
+  border-left: 3px solid var(--vermillion);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--ink-prose);
 }
 
@@ -294,11 +293,10 @@
 .prose .note-card__meta {
   margin: 0;
   padding: 0.55rem 1.4rem 0.8rem;
-  background: hsl(var(--card) / 0.85);
-  border: 1px solid var(--line);
-  border-top: 0;
-  border-left: 3px solid hsl(var(--accent-fg) / 0.85);
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: hsl(var(--muted) / 0.45);
+  border: 0;
+  border-left: 3px solid var(--vermillion);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: var(--text-min);
   color: var(--ink-faint);
   letter-spacing: 0.02em;
@@ -334,8 +332,9 @@
 }
 
 .prose .callout .markdown-image {
+  display: block;
   width: 180px;
-  margin: 0.4rem 0 0.9rem;
+  margin: 0.4rem auto 0.9rem;
 }
 
 .prose .callout-title {

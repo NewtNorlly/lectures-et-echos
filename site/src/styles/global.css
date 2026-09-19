@@ -80,7 +80,7 @@
     --radius-md: 18px;
     --radius-lg: 28px;
     --shell: 76rem;
-    --reading: 55rem;
+    --reading: 83rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
     --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -640,23 +640,28 @@
     color: var(--ink-soft);
   }
 
-  /* 站底无限横向视带动图：右→左无缝循环，主题色低饱和线条剪影，不挡点击 */
+  /* 站底宫崎骏风多层视差水彩横带：远云/中丘树屋/近草书灯，三层不同速度右→左无缝，主题低饱和，不挡点击 */
   .footer-band {
     position: relative;
-    height: 9rem;
+    height: 11rem;
     overflow: hidden;
     pointer-events: none;
     user-select: none;
-    color: hsl(var(--story-accent) / 0.32);
+    color: hsl(var(--story-accent) / 0.34);
     border-bottom: 1px solid hsl(var(--border) / 0.45);
   }
 
-  .footer-band__track {
+  .footer-layer {
+    position: absolute;
+    inset: 0;
     display: flex;
     width: 200%;
     height: 100%;
-    animation: footer-drift 80s linear infinite;
   }
+
+  .footer-layer--far  { animation: band-drift 130s linear infinite; }
+  .footer-layer--mid  { animation: band-drift 85s  linear infinite; }
+  .footer-layer--near { animation: band-drift 50s  linear infinite; }
 
   .footer-band__art {
     width: 50%;
@@ -664,22 +669,21 @@
     flex: none;
   }
 
-  .footer-band__art path,
-  .footer-band__art circle,
-  .footer-band__art rect {
+  .footer-layer path,
+  .footer-layer circle {
     stroke: currentColor;
     stroke-width: 1.6;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
-  @keyframes footer-drift {
+  @keyframes band-drift {
     from { transform: translate3d(0, 0, 0); }
     to { transform: translate3d(-50%, 0, 0); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .footer-band__track {
+    .footer-layer {
       animation: none;
     }
   }

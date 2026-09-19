@@ -102,58 +102,68 @@ const canonicalUrl = canonicalPath !== false && Astro.site
     </main>
 
     <footer class="site-footer">
-      {/* 站底无限横向视带动图：书/灯/胶片/放映机/声波线条剪影，右→左无缝循环，纯 CSS/SVG */}
+      {/* 站底宫崎骏风多层视差水彩横带：远云飞鸟/中丘陵树屋/近草书灯飘落纸，三层不同速度右→左无缝，主题低饱和 */}
       <div class="footer-band" aria-hidden="true">
-        <div class="footer-band__track">
-          <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none">
-            <!-- 打开的书 -->
-            <path d="M120 108 Q160 86 200 106 Q240 86 280 108 M200 106 L200 132" />
-            <!-- 台灯 -->
-            <path d="M430 132 L430 84 M430 84 L468 66 M468 66 L502 86 M408 132 L452 132" />
-            <!-- 胶片盘 -->
-            <circle cx="640" cy="96" r="36" />
-            <circle cx="640" cy="96" r="9" />
-            <!-- 声波 -->
-            <path d="M752 96 q13 -26 26 0 q13 26 26 0 q13 -26 26 0 q13 26 26 0" />
-            <!-- 叠放的书 -->
-            <rect x="918" y="118" width="96" height="13" />
-            <rect x="930" y="100" width="84" height="13" />
-            <rect x="924" y="82" width="90" height="13" />
-            <!-- 放映机 + 光束 -->
-            <rect x="1092" y="86" width="72" height="42" />
-            <circle cx="1107" cy="107" r="10" />
-            <path d="M1164 107 L1206 98 M1164 107 L1206 116" />
-            <!-- 弯月 -->
-            <path d="M1304 66 a28 28 0 1 0 18 48 a23 23 0 1 1 -18 -48" />
-            <!-- 音符 -->
-            <path d="M1446 108 L1446 64 M1446 64 L1480 58" />
-            <circle cx="1446" cy="108" r="6.5" />
-            <circle cx="1480" cy="58" r="6.5" />
-            <!-- 地平线 -->
-            <path d="M40 146 H1560" stroke-dasharray="2 10" />
-          </svg>
-          <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
-            <path d="M120 108 Q160 86 200 106 Q240 86 280 108 M200 106 L200 132" />
-            <path d="M430 132 L430 84 M430 84 L468 66 M468 66 L502 86 M408 132 L452 132" />
-            <circle cx="640" cy="96" r="36" />
-            <circle cx="640" cy="96" r="9" />
-            <path d="M752 96 q13 -26 26 0 q13 26 26 0 q13 -26 26 0 q13 26 26 0" />
-            <rect x="918" y="118" width="96" height="13" />
-            <rect x="930" y="100" width="84" height="13" />
-            <rect x="924" y="82" width="90" height="13" />
-            <rect x="1092" y="86" width="72" height="42" />
-            <circle cx="1107" cy="107" r="10" />
-            <path d="M1164 107 L1206 98 M1164 107 L1206 116" />
-            <path d="M1304 66 a28 28 0 1 0 18 48 a23 23 0 1 1 -18 -48" />
-            <path d="M1446 108 L1446 64 M1446 64 L1480 58" />
-            <circle cx="1446" cy="108" r="6.5" />
-            <circle cx="1480" cy="58" r="6.5" />
-            <path d="M40 146 H1560" stroke-dasharray="2 10" />
-          </svg>
-        </div>
-      </div>
-      <div class="shell site-footer__inner">
-        <p class="site-footer__mark">Lectures &amp; Échos</p>
+        <div class="footer-layer footer-layer--far">
+      <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none">
+        <path d="M180 62 q18 -26 46 -18 q10 -22 38 -16 q26 -2 30 20 q22 2 20 22 q-4 12 -22 12 l-96 0 q-24 0 -22 -20 z"/>
+        <path d="M660 40 q14 -20 36 -14 q8 -18 30 -12 q20 -2 24 16 q18 2 16 18 q-4 10 -18 10 l-76 0 q-20 0 -16 -18 z"/>
+        <path d="M1140 66 q16 -22 40 -16 q9 -18 30 -12 q22 -1 25 17 q17 1 15 17 q-4 9 -16 9 l-84 0 q-20 0 -15 -15 z"/>
+        <path d="M520 58 q6 -6 12 0 q6 -6 12 0"/>
+        <path d="M560 44 q5 -5 10 0 q5 -5 10 0"/>
+        <path d="M1010 52 q6 -6 12 0 q6 -6 12 0"/>
+      </svg>      <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+        <path d="M180 62 q18 -26 46 -18 q10 -22 38 -16 q26 -2 30 20 q22 2 20 22 q-4 12 -22 12 l-96 0 q-24 0 -22 -20 z"/>
+        <path d="M660 40 q14 -20 36 -14 q8 -18 30 -12 q20 -2 24 16 q18 2 16 18 q-4 10 -18 10 l-76 0 q-20 0 -16 -18 z"/>
+        <path d="M1140 66 q16 -22 40 -16 q9 -18 30 -12 q22 -1 25 17 q17 1 15 17 q-4 9 -16 9 l-84 0 q-20 0 -15 -15 z"/>
+        <path d="M520 58 q6 -6 12 0 q6 -6 12 0"/>
+        <path d="M560 44 q5 -5 10 0 q5 -5 10 0"/>
+        <path d="M1010 52 q6 -6 12 0 q6 -6 12 0"/>
+      </svg>        </div>
+        <div class="footer-layer footer-layer--mid">
+      <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none">
+        <path d="M0 118 Q 220 92 460 110 T 900 108 T 1340 116 T 1600 110 L1600 160 L0 160 Z" fill="hsl(var(--story-accent) / 0.07)"/>
+        <path d="M0 134 Q 260 116 560 130 T 1120 128 T 1600 134 L1600 160 L0 160 Z" fill="hsl(var(--story-accent) / 0.11)"/>
+        <circle cx="360" cy="74" r="16"/>
+        <path d="M360 90 l0 28"/>
+        <path d="M760 118 l0 -22 l26 -16 l26 16 l0 22 z"/>
+        <path d="M778 118 l0 -12 l8 0 l0 12"/>
+        <circle cx="1240" cy="80" r="18"/>
+        <path d="M1240 98 l0 20"/>
+      </svg>      <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+        <path d="M0 118 Q 220 92 460 110 T 900 108 T 1340 116 T 1600 110 L1600 160 L0 160 Z" fill="hsl(var(--story-accent) / 0.07)"/>
+        <path d="M0 134 Q 260 116 560 130 T 1120 128 T 1600 134 L1600 160 L0 160 Z" fill="hsl(var(--story-accent) / 0.11)"/>
+        <circle cx="360" cy="74" r="16"/>
+        <path d="M360 90 l0 28"/>
+        <path d="M760 118 l0 -22 l26 -16 l26 16 l0 22 z"/>
+        <path d="M778 118 l0 -12 l8 0 l0 12"/>
+        <circle cx="1240" cy="80" r="18"/>
+        <path d="M1240 98 l0 20"/>
+      </svg>        </div>
+        <div class="footer-layer footer-layer--near">
+      <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none">
+        <path d="M300 158 q4 -18 2 -34 M312 158 q6 -16 8 -30 M326 158 q4 -14 6 -26"/>
+        <path d="M900 158 q4 -18 2 -34 M912 158 q6 -16 8 -30 M926 158 q4 -14 6 -26"/>
+        <path d="M1380 158 q4 -18 2 -34 M1392 158 q6 -16 8 -30 M1406 158 q4 -14 6 -26"/>
+        <path d="M640 128 q40 -16 80 0 q40 -16 80 0 l0 22 q-40 -14 -80 0 q-40 -14 -80 0 z"/>
+        <path d="M720 128 l0 22"/>
+        <path d="M880 96 l0 22 M868 104 l24 0"/>
+        <circle cx="880" cy="88" r="9"/>
+        <path d="M520 60 l10 4 l-2 10 l-10 -4 z"/>
+        <path d="M1180 48 l10 4 l-2 10 l-10 -4 z"/>
+        <path d="M40 156 H1560" stroke-dasharray="2 10"/>
+      </svg>      <svg class="footer-band__art" viewBox="0 0 1600 160" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+        <path d="M300 158 q4 -18 2 -34 M312 158 q6 -16 8 -30 M326 158 q4 -14 6 -26"/>
+        <path d="M900 158 q4 -18 2 -34 M912 158 q6 -16 8 -30 M926 158 q4 -14 6 -26"/>
+        <path d="M1380 158 q4 -18 2 -34 M1392 158 q6 -16 8 -30 M1406 158 q4 -14 6 -26"/>
+        <path d="M640 128 q40 -16 80 0 q40 -16 80 0 l0 22 q-40 -14 -80 0 q-40 -14 -80 0 z"/>
+        <path d="M720 128 l0 22"/>
+        <path d="M880 96 l0 22 M868 104 l24 0"/>
+        <circle cx="880" cy="88" r="9"/>
+        <path d="M520 60 l10 4 l-2 10 l-10 -4 z"/>
+        <path d="M1180 48 l10 4 l-2 10 l-10 -4 z"/>
+        <path d="M40 156 H1560" stroke-dasharray="2 10"/>
+      </svg>        </div>
       </div>
     </footer>
 
