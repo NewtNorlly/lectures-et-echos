@@ -46,9 +46,9 @@
 
 .article-layout {
   display: grid;
-  grid-template-columns: minmax(0, var(--reading)) minmax(11rem, 14rem);
-  justify-content: center;
-  gap: clamp(2rem, 6vw, 6rem);
+  /* 正文阅读列贴左对齐头部文本，目录沉入右侧页边距，栅格对齐 */
+  grid-template-columns: minmax(0, var(--reading)) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
   padding-top: clamp(3.5rem, 8vw, 7rem);
 }
 
@@ -64,6 +64,8 @@
 .article-aside__inner {
   position: sticky;
   top: 2rem;
+  width: 13rem;
+  margin-left: auto;
 }
 
 .article-aside__label {
@@ -139,7 +141,7 @@
   color: var(--ink-prose);
   font-family: var(--font-serif);
   font-size: var(--text-lead);
-  line-height: 2;
+  line-height: 1.95;
 }
 
 .prose > :first-child {
@@ -150,38 +152,50 @@
   margin-bottom: 0;
 }
 
-.prose h1,
 .prose h2,
 .prose h3,
 .prose h4,
 .prose h5,
 .prose h6 {
-  scroll-margin-top: 2rem;
+  scroll-margin-top: 5.5rem;
   color: var(--ink);
 }
 
-.prose h1 {
-  margin: 3.5rem 0 1.5rem;
-  font-size: var(--title-small);
+/* 正文里的锚点图标是空的，直接收起，避免悬空下划线 */
+.prose h2 > a,
+.prose h3 > a,
+.prose h4 > a {
+  display: none;
 }
 
+/* 大节（元数据 / 高亮划线 / 章节点评与书评）：开本式章节起首 */
 .prose h2 {
-  margin: 3.8rem 0 1.35rem;
-  padding-bottom: 0.65rem;
-  border-bottom: 1px solid var(--line);
-  font-size: var(--title-small);
+  margin: 4.25rem 0 1.75rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line-dark);
+  font-size: clamp(1.5rem, 1.4rem + 0.6vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
 }
 
+/* 章（第四章…）：次于大节，节奏收一档 */
 .prose h3 {
-  margin: 2.8rem 0 1rem;
-  font-size: var(--title-small);
+  margin: 2.85rem 0 1.1rem;
+  font-size: 1.32rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
 }
 
+/* 小节及以下 */
 .prose h4,
 .prose h5,
 .prose h6 {
-  margin: 2.3rem 0 0.8rem;
-  font-size: var(--title-small);
+  margin: 2.1rem 0 0.85rem;
+  font-size: 1.16rem;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .prose p,
@@ -191,7 +205,7 @@
 .prose pre,
 .prose table,
 .prose figure {
-  margin-block: 1.35rem;
+  margin-block: 1.15rem;
 }
 
 .prose ul,
@@ -200,15 +214,44 @@
 }
 
 .prose li + li {
-  margin-top: 0.35rem;
+  margin-top: 0.4rem;
 }
 
-.prose blockquote,
-.prose .obsidian-callout,
-.prose .callout {
-  padding: 1.25rem 1.5rem;
+/* 普通块引用（博主正文里的引文）：上下细带 */
+.prose blockquote {
+  padding: 1.1rem 1.4rem;
   border-block: 1px solid var(--line);
-  background: hsl(var(--muted) / 0.5);
+  background: hsl(var(--muted) / 0.45);
+  color: var(--ink-soft);
+}
+
+/* 微信读书高亮引文卡：左侧 vermillion 竖线 + 淡纸面 */
+.prose .quote-card {
+  padding: 1.15rem 1.5rem;
+  border: 0;
+  border-left: 2px solid var(--vermillion);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: hsl(var(--muted) / 0.45);
+  color: var(--ink-prose);
+}
+
+.prose .quote-card .quote-text {
+  margin: 0;
+}
+
+/* 时间戳：收小、退到次要层 */
+.prose .quote-card .quote-meta {
+  margin: 0.5rem 0 0;
+  font-size: var(--text-min);
+  color: var(--ink-faint);
+  letter-spacing: 0.03em;
+}
+
+/* 我的想法：以虚线与引文隔开，颜色转柔，像边注 */
+.prose .quote-card .quote-thought {
+  margin: 0.95rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--line-soft);
   color: var(--ink-soft);
 }
 
@@ -224,9 +267,26 @@
   margin-bottom: 0;
 }
 
+/* 元数据 callout：淡色信息带，条目节奏收紧，内嵌封面图收小避免漂浮 */
+.prose .callout {
+  padding: 1.35rem 1.6rem;
+  border-block: 1px solid var(--line);
+  background: hsl(var(--muted) / 0.45);
+  color: var(--ink-soft);
+}
+
+.prose .callout li {
+  margin-block: 0.3rem;
+}
+
+.prose .callout .markdown-image {
+  width: 180px;
+  margin: 0.4rem 0 0.9rem;
+}
+
 .prose .callout-title {
   display: block;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.5rem;
   color: var(--vermillion-dark);
   font-family: var(--font-sans);
   font-size: var(--text-min);

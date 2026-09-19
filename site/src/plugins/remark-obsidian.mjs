@@ -325,8 +325,69 @@ function transformSeparators(tree) {
 
 function normalizeHeadingLevels(tree) {
   visit(tree, 'heading', (node) => {
-    // The article template owns the single page-level heading.
-    if (node.depth === 1) node.depth = 2;
+    // 文章模板自带页面级 H1；正文标题整体下沉一级，
+    // 恢复「大节(h2) / 章(h3) / 小节(h4)」的层级节奏（原来是把 h1 压成 h2，
+    // 导致 md 的 # 与 ## 同处一层、视觉层级全平）。
+    node.depth = Math.min((node.depth ?? 1) + 1, 6);
+  });
+}
+
+// 取一个节点下全部文本（用于按 📌/⏱/💭/🕰 标记重组高亮引文）
+function nodePlainText(node) {
+  let out = '';
+  visit(node, (child) => {
+    if (child.type === 'text') out += child.value;
+  });
+  return out;
+}
+
+// 微信读书高亮引文：原来是一个 <blockquote> 里把「📌原文 / ⏱时间 /
+// 💭想法 / 🕰想法时间」全塞进同一段、靠空格换行。这里按标记拆成
+// 「引文(.quote-text) / 时间戳(.quote-meta) / 我的想法(.quote-thought)」
+// 三个有序块，交给 CSS 排成出版级引文卡。仅处理含 📌 的块引用，其余原样。
+const HIGHLIGHT_MARKERS = ['📌', '💭', '🕰', '⏱'];
+function transformHighlightQuotes(tree) {
+  visit(tree, 'blockquote', (node) => {
+    if (!node.children) return;
+    const whole = nodePlainText(node);
+    if (!whole.includes('📌')) return;
+
+    const kindOf = (s) => {
+      const t = s.trimStart();
+      for (const m of HIGHLIGHT_MARKERS) if (t.startsWith(m)) return m;
+      return null;
+    };
+
+    const blocks = [];
+    let current = null;
+    for (const raw of whole.split('\n')) {
+      const line = raw.replace(/\s+$/, '');
+      const marker = kindOf(line);
+      if (marker) {
+        current = { kind: marker, text: [line.trimStart().slice(marker.length).trim()] };
+        blocks.push(current);
+      } else if (line.trim() && current) {
+        current.text.push(line.trim());
+      }
+    }
+    if (!blocks.length) return;
+
+    const clsOf = (kind) =>
+      kind === '⏱' || kind === '🕰'
+        ? 'quote-meta'
+        : kind === '💭'
+          ? 'quote-thought'
+          : 'quote-text';
+
+    node.data = {
+      ...(node.data ?? {}),
+      hProperties: { className: ['quote-card'] },
+    };
+    node.children = blocks.map((block) => ({
+      type: 'paragraph',
+      data: { hProperties: { className: [clsOf(block.kind)] } },
+      children: [{ type: 'text', value: block.text.join(' ') }],
+    }));
   });
 }
 
@@ -386,6 +447,7 @@ export function remarkObsidian(options = {}) {
     normalizeHeadingLevels(tree);
     transformSeparators(tree);
     transformCallouts(tree);
+    transformHighlightQuotes(tree);
     transformTextNodes(tree, sourcePath, base);
     transformImages(tree, sourcePath, base);
     transformMarkdownLinks(tree, sourcePath, base);
