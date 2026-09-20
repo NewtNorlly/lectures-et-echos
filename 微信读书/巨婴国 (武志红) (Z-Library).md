@@ -3,7 +3,7 @@ doc_type: weread-highlights-reviews
 title: "巨婴国 (武志红) (Z-Library)"
 bookId: "CB_CJ462w60NAIe6yC6wwGxj1Pw"
 reviewCount: 1
-noteCount: 23
+noteCount: 22
 bookmarkCount: 0
 author: "武志红"
 cover: "https://res.weread.qq.com/wrepub/CB_G0sFTqFT7BGc6ny6ooC4s9my_parsecover"
@@ -31,7 +31,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=27d42913643425f434a343632
 ## 对控制者说不，找到你的节奏
 
 > 📌 其实对谁来说，最好都是头脑为身体服务，而非相反。如头脑被别人的意志侵占，那身体会发展出各种方式，隐蔽地表达自己的意志。
-> ⏱ 2025-08-21 04:42:40
+> ⏱ 2025-08-25 20:46:32
 
 ## 全能自恋的四种展现
 
@@ -109,8 +109,3 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=27d42913643425f434a343632
 
 > 📌 关系中，“我”与“你”互为镜子，我想从你的这面镜子里，看到我是好的，当对此没有信心时，就会通过讨好、性感、权力、依赖等方式，诱惑对方对自己好。但真得到时，我会怀疑，你对我的好是假的，因我本来就是假的。
 > ⏱ 2026-09-02 12:32:29
-
-## 2
-
-> 📌 我做咨询发现，孩子的出生，是中国家庭最危险的时候，一个不严格的统计是，有六成的离婚大战，表面上看，是因为一方出轨，但真正的开始，却是从孩子出生而婆婆入住开始的。
-> ⏱ 2025-08-21 06:29:33
