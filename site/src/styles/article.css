@@ -254,19 +254,81 @@
   letter-spacing: 0.03em;
 }
 
-/* ② 💭 我的想法/评论：卡内内联批注块，次级底与原文区分（无左侧竖线） */
-.prose .quote-card .quote-thought {
-  margin: 0.95rem 0 0;
-  padding: 0.75rem 1rem;
+/* ② 💭 我的想法/评论：卡内内联批注块，次级底与原文区分（无左侧竖线）。
+   一条想法可含多个段落与列表，插件给连续块标 is-first/is-last，
+   据此拼成同一个圆角色块，内部保留手写换行（<br>）与列表。 */
+.prose .quote-card .quote-thought,
+.prose .quote-card .quote-thought-list {
+  margin: 0;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   background: hsl(var(--secondary) / 0.55);
+  color: var(--ink-soft);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.prose .quote-card .quote-thought {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.prose .quote-card .quote-thought.is-first,
+.prose .quote-card .quote-thought-list.is-first {
+  margin-top: 0.95rem;
+  padding-top: 0.7rem;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
+}
+
+.prose .quote-card .quote-thought.is-last,
+.prose .quote-card .quote-thought-list.is-last {
+  padding-bottom: 0.7rem;
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.prose .quote-card .quote-thought.is-first::before {
+  content: "💭";
+  margin-right: 0.45em;
+}
+
+/* 想法内列表：与段落同色块、内容缩进、行距舒展 */
+.prose .quote-card .quote-thought-list {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+.prose .quote-card .quote-thought-list.is-first {
+  padding-top: 0.7rem;
+}
+.prose .quote-card .quote-thought-list.is-last {
+  padding-bottom: 0.7rem;
+}
+.prose .quote-card .quote-thought-list li {
+  margin: 0.28rem 0;
+}
+.prose .quote-card .quote-thought-list li > p {
+  margin: 0;
+}
+.prose .quote-card .quote-thought-list li > p br {
+  display: block;
+  content: "";
+  margin-top: 0.15rem;
+}
+
+/* 想法里用嵌套引用（> >）摘录的书原文金句：想法色块内的左侧竖线引文 */
+.prose blockquote.quote-thought-quote {
+  margin: 0.6rem 0;
+  padding: 0.45rem 0.95rem;
+  border: 0;
+  border-left: 3px solid hsl(var(--secondary));
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: hsl(var(--secondary) / 0.3);
   color: var(--ink-soft);
 }
 
-.prose .quote-card .quote-thought::before {
-  content: "💭";
-  margin-right: 0.45em;
+.prose blockquote.quote-thought-quote p {
+  margin: 0.25rem 0;
 }
 
 /* ③ 📚 读书笔记（章节点评与书评下的独立笔记）：纸面圆角卡（无左侧竖线） */

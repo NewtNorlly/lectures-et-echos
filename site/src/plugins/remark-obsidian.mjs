@@ -348,48 +348,214 @@ function nodePlainText(node) {
 // 卡片带 --quote 修饰类：📌 原文引用卡；💭 想法是卡内「我的评论」内联块，
 // 两者用不同色条 / 底色一眼区分（Emoji 徽标由 CSS ::before 呈现，内容零丢失）。
 const HIGHLIGHT_MARKERS = ['📌', '💭', '🕰', '⏱'];
+const META_MARKERS = new Set(['⏱', '🕰']);
+
+function classOfKind(kind) {
+  if (META_MARKERS.has(kind)) return 'quote-meta';
+  if (kind === '💭') return 'quote-thought';
+  return 'quote-text';
+}
+
+// 把段落内联子节点按「行首 📌/⏱/💭/🕰 标记」切成若干段。
+// 关键：💭 想法段保留软换行（转成 break → <br>）与内联结构；
+// 📌 原文段 / 时间段不保留软换行（维持自然段落），但文字一个不丢。
+function splitParagraphByMarkers(paragraph, initialKind = '📌') {
+  const segments = [];
+  let cur = null;
+  const open = (kind) => {
+    cur = { kind, children: [] };
+    segments.push(cur);
+    return cur;
+  };
+
+  for (const child of paragraph.children ?? []) {
+    if (child.type === 'break') {
+      cur?.children.push({ type: 'break' });
+      continue;
+    }
+    if (child.type !== 'text') {
+      (cur ?? open(initialKind)).children.push(child);
+      continue;
+    }
+    const lines = child.value.split('\n');
+    lines.forEach((line, i) => {
+      if (i > 0) cur?.children.push({ type: 'break' });
+      const trimmed = line.trimStart();
+      let marker = null;
+      for (const m of HIGHLIGHT_MARKERS) {
+        if (trimmed.startsWith(m)) {
+          marker = m;
+          break;
+        }
+      }
+      if (marker) {
+        cur = open(marker);
+        const rest = trimmed.slice(marker.length).replace(/^\s+/, '');
+        if (rest) cur.children.push({ type: 'text', value: rest });
+      } else {
+        // 无标记的续行段归入「当前标记」（💭 想法的后续段落仍是想法，不是 📌 原文）
+        if (!cur) cur = open(initialKind);
+        if (line) cur.children.push({ type: 'text', value: line });
+      }
+    });
+  }
+  return segments;
+}
+
+// 列表最后一项常因 markdown 懒续行吞入后续的 🕰 时间戳、甚至整条新的 💭 想法。
+// 按标记把最后一项段落切开：第一段留在列表项，其后的想法/时间戳作为有序
+// 「溢出块」返回，由调用方还原到列表之后，保证顺序与原文一致。
+function drainListOverflow(list) {
+  const overflow = [];
+  const lastItem = list.children?.[list.children.length - 1];
+  if (!lastItem?.children) return overflow;
+  const paras = lastItem.children.filter((c) => c.type === 'paragraph');
+  const lastPara = paras[paras.length - 1];
+  if (!lastPara) return overflow;
+
+  const segs = splitParagraphByMarkers(lastPara, '💭');
+  if (segs.length <= 1) return overflow;
+
+  // 第一段留在列表项，清理首尾残留软换行
+  const head = segs[0].children;
+  while (head.length && head[0].type === 'break') head.shift();
+  while (head.length && head[head.length - 1].type === 'break') head.pop();
+  lastPara.children = head;
+
+  // 其余段（时间戳 / 新想法）按原文顺序溢出到列表之后
+  for (const seg of segs.slice(1)) {
+    let kids = seg.children;
+    if (seg.kind !== '💭') kids = kids.filter((c) => c.type !== 'break');
+    if (!segmentHasContent({ children: kids })) continue;
+    overflow.push({ kind: seg.kind, children: kids });
+  }
+  return overflow;
+}
+
+// 段落内软换行（text 里的 \n）转成硬换行 break（渲染为 <br>），
+// 用于「我的想法」「读书笔记」这类用户手写评论，保留其分行呼吸感。
+function hardenSoftBreaks(paragraph) {
+  const out = [];
+  for (const child of paragraph.children ?? []) {
+    if (child.type === 'break') {
+      out.push(child);
+    } else if (child.type === 'text' && child.value.includes('\n')) {
+      const parts = child.value.split('\n');
+      parts.forEach((part, i) => {
+        if (i > 0) out.push({ type: 'break' });
+        if (part) out.push({ type: 'text', value: part });
+      });
+    } else {
+      out.push(child);
+    }
+  }
+  paragraph.children = out;
+}
+
+function segmentHasContent(seg) {
+  return seg.children.some((c) => c.type !== 'break' && (c.type !== 'text' || c.value.trim() !== ''));
+}
+
 function transformHighlightQuotes(tree) {
   visit(tree, 'blockquote', (node) => {
     if (!node.children) return;
-    const whole = nodePlainText(node);
-    if (!whole.includes('📌')) return;
+    if (!nodePlainText(node).includes('📌')) return;
 
-    const kindOf = (s) => {
-      const t = s.trimStart();
-      for (const m of HIGHLIGHT_MARKERS) if (t.startsWith(m)) return m;
-      return null;
-    };
-
-    const blocks = [];
-    let current = null;
-    for (const raw of whole.split('\n')) {
-      const line = raw.replace(/\s+$/, '');
-      const marker = kindOf(line);
-      if (marker) {
-        current = { kind: marker, text: [line.trimStart().slice(marker.length).trim()] };
-        blocks.push(current);
-      } else if (line.trim() && current) {
-        current.text.push(line.trim());
+    // 第一步：把顶层块按标记流式归类为有序 items（保留 list 等结构）
+    const items = [];
+    let currentKind = '📌';
+    for (const child of node.children) {
+      if (child.type === 'paragraph') {
+        // 无标记的续行段归入「当前标记」，避免把 💭 后续段落误判成 📌 原文
+        const segments = splitParagraphByMarkers(child, currentKind);
+        for (const seg of segments) {
+          currentKind = seg.kind;
+          let kids = seg.children;
+          if (seg.kind !== '💭') {
+            // 📌 原文 / 时间戳：软换行不转 <br>，丢弃纯换行节点
+            kids = kids.filter((c) => c.type !== 'break');
+          }
+          if (!segmentHasContent({ children: kids })) continue;
+          items.push({ kind: seg.kind, block: 'paragraph', children: kids });
+        }
+      } else if (child.type === 'list') {
+        // 列表只可能属于「我的想法」内容；列表项段落里的软换行也转 <br>
+        visit(child, 'paragraph', (p) => hardenSoftBreaks(p));
+        items.push({ kind: '💭', block: 'list', node: child });
+        currentKind = '💭';
+        // 被懒续行吞进最后一个列表项的后续想法 / 时间戳，按序还原到列表之后
+        for (const seg of drainListOverflow(child)) {
+          items.push({ kind: seg.kind, block: 'paragraph', children: seg.children });
+          currentKind = seg.kind;
+        }
+      } else if (child.type === 'blockquote') {
+        // 想法中用嵌套引用（> >）摘录的金句：内部软换行转 <br>，挂想法内引文样式
+        visit(child, 'paragraph', (p) => hardenSoftBreaks(p));
+        child.data = child.data ?? {};
+        child.data.hProperties = {
+          ...(child.data.hProperties ?? {}),
+          className: ['quote-thought-quote'],
+        };
+        items.push({ kind: '💭', block: 'blockquote', node: child });
+        currentKind = '💭';
+      } else if (child.type) {
+        items.push({ kind: currentKind, block: child.type, node: child });
       }
     }
-    if (!blocks.length) return;
+    if (!items.length) return;
 
-    const clsOf = (kind) =>
-      kind === '⏱' || kind === '🕰'
-        ? 'quote-meta'
-        : kind === '💭'
-          ? 'quote-thought'
-          : 'quote-text';
+    // 第二步：为连续的 💭 项（段落 + 列表）标记 is-first / is-last，CSS 据此拼成一块
+    items.forEach((it) => {
+      it.thought = it.kind === '💭';
+    });
+    let runStart = -1;
+    const flushRun = (end) => {
+      if (runStart === -1) return;
+      for (let k = runStart; k <= end; k += 1) {
+        if (k === runStart) items[k].first = true;
+        if (k === end) items[k].last = true;
+      }
+      runStart = -1;
+    };
+    for (let i = 0; i < items.length; i += 1) {
+      if (items[i].thought) {
+        if (runStart === -1) runStart = i;
+      } else {
+        flushRun(i - 1);
+      }
+    }
+    flushRun(items.length - 1);
+
+    // 第三步：重建 blockquote 子节点（段落挂 class，列表保留原节点挂 class）
+    const rebuilt = items.map((it) => {
+      if (it.block === 'list') {
+        const cls = ['quote-thought-list'];
+        if (it.first) cls.push('is-first');
+        if (it.last) cls.push('is-last');
+        it.node.data = {
+          ...(it.node.data ?? {}),
+          hProperties: { ...(it.node.data?.hProperties ?? {}), className: cls },
+        };
+        return it.node;
+      }
+      if (it.block !== 'paragraph') return it.node;
+      const cls = [classOfKind(it.kind)];
+      if (it.thought) {
+        if (it.first) cls.push('is-first');
+        if (it.last) cls.push('is-last');
+      }
+      return {
+        type: 'paragraph',
+        data: { hProperties: { className: cls } },
+        children: it.children,
+      };
+    });
 
     node.data = {
       ...(node.data ?? {}),
       hProperties: { className: ['quote-card', 'quote-card--quote'] },
     };
-    node.children = blocks.map((block) => ({
-      type: 'paragraph',
-      data: { hProperties: { className: [clsOf(block.kind)] } },
-      children: [{ type: 'text', value: block.text.join(' ') }],
-    }));
+    node.children = rebuilt;
   });
 }
 
@@ -436,6 +602,8 @@ function transformWereadNotes(tree) {
     if (!meta || paras.length === 0) return;
 
     paras.forEach((p, i) => {
+      // 读书笔记是用户手写评论：保留其单换行（转 <br>），获得分行呼吸感
+      hardenSoftBreaks(p);
       const cls = i === 0 ? ['note-card__body', 'note-card__head'] : ['note-card__body'];
       p.data = { ...(p.data ?? {}), hProperties: { className: cls } };
     });
