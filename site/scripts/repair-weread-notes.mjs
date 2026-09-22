@@ -516,6 +516,19 @@ async function main() {
         // 若待删文件正好等于输出路径（如巨婴国把干净名让给合并结果），跳过删除
         if (victim && path.resolve(victim) !== path.resolve(outPath)) await unlink(victim);
       }
+      // 磁盘兜底（2026-09-22）：副本文件名可能与书名完全不同（如 CB_6fC4… 副本文件名是
+      // 「下载白鹿原201209.md」），任何索引/缓存环节漏网都会在书架留下重复书卡。合并既已成功写出，
+      // 直接扫库目录：凡 frontmatter bookId 命中 removeIds 且不是本组合并输出的文件，一律删除。
+      for (const name of await readdir(libraryDirectory)) {
+        if (!name.endsWith('.md')) continue;
+        const victim = path.join(libraryDirectory, name);
+        if (path.resolve(victim) === path.resolve(outPath)) continue;
+        const id = bookIdOf(await readFile(victim, 'utf8'));
+        if (id && group.removeIds.includes(id)) {
+          await unlink(victim);
+          console.log(`合并兜底删除残留副本: ${name} (bookId=${id})`);
+        }
+      }
     }
   }
 
