@@ -106,21 +106,53 @@ function renderBook(data) {
     chapterMap.set(Number(chapter.chapterUid), { ...current, ...chapter });
   }
   const reviews = (data.reviews?.reviews ?? []).map(reviewValue);
+  // range 只在章节内唯一、跨章可能撞号，想法归属优先用「章节uid:range」；
+  // 章节信息缺失（如公众号文章）时，退化为全书唯一 range 匹配。
+  const reviewsByKey = new Map();
   const reviewsByRange = new Map();
   const standaloneReviews = [];
+  const pushInto = (map, key, review) => {
+    const list = map.get(key) ?? [];
+    list.push(review);
+    map.set(key, list);
+  };
   for (const review of reviews) {
     if (review.range) {
-      const list = reviewsByRange.get(review.range) ?? [];
-      list.push(review);
-      reviewsByRange.set(review.range, list);
+      pushInto(reviewsByKey, `${Number(review.chapterUid ?? 0)}:${String(review.range)}`, review);
+      pushInto(reviewsByRange, String(review.range), review);
     } else standaloneReviews.push(review);
   }
   const highlightsByChapter = new Map();
+  const rangeFrequency = new Map();
   for (const highlight of data.highlights?.updated ?? []) {
     const uid = Number(highlight.chapterUid ?? 0);
     const list = highlightsByChapter.get(uid) ?? [];
     list.push(highlight);
     highlightsByChapter.set(uid, list);
+    const rangeKey = String(highlight.range);
+    rangeFrequency.set(rangeKey, (rangeFrequency.get(rangeKey) ?? 0) + 1);
+  }
+  const reviewsForHighlight = (uid, range) => {
+    const rangeKey = String(range);
+    const exact = reviewsByKey.get(`${uid}:${rangeKey}`);
+    if (exact?.length) return exact;
+    if ((rangeFrequency.get(rangeKey) ?? 0) === 1) return reviewsByRange.get(rangeKey) ?? [];
+    return [];
+  };
+
+  // 想法挂在已被删除（bookmarklist 不再返回）的划线上时，归属不到任何现存划线。
+  // 把这些「无主想法」连同其 abstract（原划线摘要）收进「章节点评与书评」，
+  // 一条想法对应一个 ## 条目，避免内容被静默丢弃（手册 §2.0 最高内容原则），
+  // 同时保持 §11 的计数恒等式：reviewCount == 内联 💭 数 + 本节 ## 条目数。
+  const attachedReviews = new Set();
+  for (const [uid, highlights] of highlightsByChapter) {
+    for (const highlight of highlights) {
+      for (const review of reviewsForHighlight(uid, highlight.range)) attachedReviews.add(review);
+    }
+  }
+  const detachedReviews = [];
+  for (const review of reviews) {
+    if (review.range && !attachedReviews.has(review)) detachedReviews.push({ ...review, detached: true });
   }
 
   lines.push('# 高亮划线', '');
@@ -133,7 +165,7 @@ function renderBook(data) {
       lines.push(quoteLines(`📌 ${highlight.markText}`));
       const timestamp = formatDateTime(highlight.createTime);
       if (timestamp) lines.push(`> ⏱ ${timestamp}`);
-      for (const review of reviewsByRange.get(highlight.range) ?? []) {
+      for (const review of reviewsForHighlight(uid, highlight.range)) {
         lines.push(`> 💭 ${cleanText(review.content).replace(/\n/g, '\n>    ')}`);
         const reviewTime = formatDateTime(review.createTime);
         if (reviewTime) lines.push(`> 🕰 ${reviewTime}`);
@@ -141,12 +173,18 @@ function renderBook(data) {
       lines.push('');
     }
   }
-  if (standaloneReviews.length) {
+  const allStandaloneReviews = [...standaloneReviews, ...detachedReviews];
+  if (allStandaloneReviews.length) {
     lines.push('# 章节点评与书评', '');
-    standaloneReviews.sort((a, b) => Number(a.createTime ?? 0) - Number(b.createTime ?? 0));
-    for (const review of standaloneReviews) {
+    allStandaloneReviews.sort((a, b) => Number(a.createTime ?? 0) - Number(b.createTime ?? 0));
+    for (const review of allStandaloneReviews) {
       const heading = cleanText(review.chapterName || review.chapterTitle || (review.type === 6 ? '本书评论' : '读书笔记'));
-      lines.push(`## ${heading}`, '', cleanText(review.content), '');
+      lines.push(`## ${heading}`, '');
+      if (review.detached) {
+        const abstract = cleanText(review.abstract);
+        if (abstract) lines.push(quoteLines(abstract), '');
+      }
+      lines.push(cleanText(review.content), '');
       const timestamp = formatDateTime(review.createTime);
       if (timestamp) lines.push(`> 记录于 ${timestamp}`, '');
     }
