@@ -12,6 +12,7 @@
 import { readdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { thoughtLines, noteBody } from './seg140.mjs';
 
 const siteDirectory = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(siteDirectory, '..');
@@ -256,7 +257,8 @@ function renderSiteMarkdown(site, model) {
       out.push(quoteBlock('📌', entry.text));
       if (entry.time) { out.push(`> ⏱ ${entry.time}`); withTime += 1; }
       for (const review of entry.reviews) {
-        out.push(quoteBlock('💭', review.content));
+        // 💭 想法按 140 怀疑线多段输出（同一条目内 blockquote 续接，💭/🕰 各只出现一次）
+        out.push(...thoughtLines(review.content));
         if (review.time) out.push(`> 🕰 ${review.time}`);
       }
       out.push('');
@@ -267,7 +269,7 @@ function renderSiteMarkdown(site, model) {
     out.push('# 章节点评与书评', '');
     for (const review of model.standalone) {
       const heading = review.type === 6 ? '本书评论' : '读书笔记';
-      out.push(`## ${heading}`, '', clean(review.content), '');
+      out.push(`## ${heading}`, '', noteBody(review.content), '');
       if (review.time) out.push(`> 记录于 ${review.time}`, '');
     }
   }

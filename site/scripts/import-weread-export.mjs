@@ -1,6 +1,7 @@
 import { readdir, readFile, stat, writeFile, mkdir, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { thoughtLines, noteBody } from './seg140.mjs';
 
 const siteDirectory = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(siteDirectory, '..');
@@ -32,6 +33,15 @@ function formatDateTime(timestamp) {
   }).formatToParts(new Date(Number(timestamp) * 1000));
   const get = (type) => parts.find((part) => part.type === type)?.value ?? '';
   return `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')}`;
+}
+
+function formatFinishedAt(value) {
+  // finishedAt 可能是 ISO 字符串，也可能是 Unix 秒（纯数字）；后者直接 new Date() 会得到 1970 年
+  const numeric = Number(value);
+  const date = Number.isFinite(numeric) && /^\d{8,11}$/.test(String(value))
+    ? new Date(numeric * 1000)
+    : new Date(value);
+  return date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
 }
 
 function formatDuration(seconds) {
@@ -220,7 +230,8 @@ function renderBook(data) {
       if (timestamp) lines.push(`> ⏱ ${timestamp}`);
       const attached = highlight.__orphan ? (highlight.__orphanReviews ?? []) : reviewsForHighlight(uid, highlight.range);
       for (const review of attached) {
-        lines.push(`> 💭 ${cleanText(review.content).replace(/\n/g, '\n>    ')}`);
+        // 💭 想法按 140 怀疑线多段输出（同一条目内 blockquote 续接，💭/🕰 各只出现一次）
+        lines.push(...thoughtLines(review.content));
         const reviewTime = formatDateTime(review.createTime);
         if (reviewTime) lines.push(`> 🕰 ${reviewTime}`);
       }
@@ -232,7 +243,7 @@ function renderBook(data) {
     for (const review of allStandaloneReviews) {
       const heading = cleanText(review.chapterName || review.chapterTitle || (review.type === 6 ? '本书评论' : '读书笔记'));
       lines.push(`## ${heading}`, '');
-      lines.push(cleanText(review.content), '');
+      lines.push(noteBody(review.content), '');
       const timestamp = formatDateTime(review.createTime);
       if (timestamp) lines.push(`> 记录于 ${timestamp}`, '');
     }
@@ -245,7 +256,7 @@ function renderStats(overall, monthlyRecords) {
     '---', 'doc_type: weread-reading-stats', 'title: "微信读书阅读统计"',
     'description: "微信读书累计阅读时长、阅读天数与逐月记录。"', '---', '',
     '# 微信读书阅读统计', '',
-    `> 数据更新于 ${new Date(manifest.finishedAt).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false })}`,
+    `> 数据更新于 ${formatFinishedAt(manifest.finishedAt)}`,
     '', '## 总览', '', '| 指标 | 数值 |', '| --- | ---: |',
     `| 累计阅读时长 | ${formatDuration(overall.totalReadTime)} |`,
     `| 累计阅读天数 | ${Number(overall.readDays ?? 0)} 天 |`,
