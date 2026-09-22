@@ -306,7 +306,19 @@ for (const entry of bookDirectories) {
     if (occupiedPaths.has(destination.toLowerCase())) destination = path.join(libraryDirectory, `${base}-${data.bookId}.md`);
     occupiedPaths.add(destination.toLowerCase());
     created += 1;
-  } else updated += 1;
+  } else {
+    // fail-closed（2026-09-22 返工加固）：若新渲染版本划线/想法比旧文件少，说明接口数据残缺，保留旧文件不覆盖
+    const oldText = await readFile(destination, 'utf8');
+    const oldHl = (oldText.match(/📌/g) || []).length;
+    const oldTh = (oldText.match(/💭/g) || []).length;
+    const newHl = (rendered.markdown.match(/📌/g) || []).length;
+    const newTh = (rendered.markdown.match(/💭/g) || []).length;
+    if (newHl < oldHl || newTh < oldTh) {
+      console.warn(`⚠ fail-closed 跳过 ${rendered.title}：📌 ${oldHl}→${newHl} 💭 ${oldTh}→${newTh}（保留旧文件）`);
+      continue;
+    }
+    updated += 1;
+  }
   await writeFile(destination, rendered.markdown, 'utf8');
 }
 
