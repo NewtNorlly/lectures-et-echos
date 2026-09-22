@@ -86,18 +86,25 @@ function buildModel(cache) {
   }));
 
   const standalone = [];
+  // 孤儿锚点：有 range 但挂不到现存书签的想法，按 (chapterUid, range) 聚成隐式划线，
+  // 📌=abstract 锚文、⏱=该锚点最早想法时间、💭=想法内容。与 import-weread-export.mjs 同源修复。
+  const orphans = new Map();
   for (const item of cache.reviewResp?.reviews ?? []) {
     const r = item.review ?? item;
+    const thought = clean(r.content || '');
+    const abstract = clean(r.abstract || '');
     const review = {
       chapterUid: chapterUidOf(r.chapterUid),
       rangeStart: rangeOf(r.range)[0],
       rangeEnd: rangeOf(r.range)[1],
-      content: clean(r.content || r.abstract || ''),
+      content: thought || abstract,
+      abstract,
       time: formatDateTime(r.createTime),
       type: r.type,
       chapterName: r.chapterName,
+      rawTime: Number(r.createTime ?? 0),
     };
-    if (!review.content) continue;
+    if (!review.content && !abstract) continue;
     if (!r.range) { standalone.push(review); continue; }
     // 模糊挂到同章节最匹配的划线
     const candidates = highlights.filter((h) => h.chapterUid === review.chapterUid);
@@ -112,8 +119,39 @@ function buildModel(cache) {
       }
       if (score > bestScore) { bestScore = score; best = h; }
     }
-    if (best && bestScore > 0) best.reviews.push(review);
-    else standalone.push(review);
+    if (best && bestScore > 0) { best.reviews.push(review); continue; }
+    // 挂不上：归入孤儿锚点
+    const key = `${review.chapterUid}:${review.rangeStart}-${review.rangeEnd}`;
+    let g = orphans.get(key);
+    if (!g) {
+      g = {
+        chapterUid: review.chapterUid,
+        rangeStart: review.rangeStart,
+        rangeEnd: review.rangeEnd,
+        chapterName: review.chapterName || '',
+        text: '',
+        anchorRaw: null,
+        reviews: [],
+      };
+      orphans.set(key, g);
+    }
+    if (!g.text && abstract) g.text = abstract;
+    g.reviews.push(review);
+    if (g.anchorRaw === null || review.rawTime < g.anchorRaw) g.anchorRaw = review.rawTime;
+  }
+  // 孤儿锚点转成隐式划线
+  for (const g of orphans.values()) {
+    if (!g.text) continue;
+    highlights.push({
+      chapterUid: g.chapterUid,
+      rangeStart: g.rangeStart,
+      rangeEnd: g.rangeEnd,
+      text: g.text,
+      time: formatDateTime(g.anchorRaw),
+      reviews: g.reviews,
+      __orphan: true,
+      __chapterName: g.chapterName,
+    });
   }
 
   // 按章节聚合

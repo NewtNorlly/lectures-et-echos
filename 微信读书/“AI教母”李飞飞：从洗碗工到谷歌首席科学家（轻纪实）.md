@@ -8,7 +8,7 @@ bookmarkCount: 0
 author: "魏思理"
 cover: "https://cdn.weread.qq.com/weread/cover/22/cpplatform_6xbvdeebwczkuthjryafbw/t6_cpplatform_6xbvdeebwczkuthjryafbw1782978477.jpg"
 progress: "0%"
-readingTime: "17分钟"
+readingTime: "18分钟"
 readingDate: 2026-09-20
 finishedDate: 2026-09-20
 lastReadDate: 2026-09-20
@@ -31,7 +31,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=76e32c10813abbaf2g0112e0"
 > - 分类：计算机-人工智能
 > - 微信读书评分：77%
 > - 阅读进度：0%
-> - 阅读时长：17分钟
+> - 阅读时长：18分钟
 > - 最后阅读：2026-09-20
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=76e32c10813abbaf2g0112e0
 

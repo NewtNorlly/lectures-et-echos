@@ -1,10 +1,12 @@
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { readdir, readFile, stat, writeFile, mkdir, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const siteDirectory = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(siteDirectory, '..');
 const libraryDirectory = path.join(repositoryRoot, '微信读书');
+// 微信读书统计归档到网络博主栏目下的微信读书统计合集（2026-09-22 变更）
+const statsDirectory = path.join(repositoryRoot, '微信读书统计');
 const exportDirectory = path.resolve(process.argv[2] || '');
 
 if (!process.argv[2]) throw new Error('用法：pnpm import:weread -- <微信读书导出目录>');
@@ -54,14 +56,121 @@ function renderBook(data) {
   const author = cleanText(info.author || notebook.book?.author);
   const translator = cleanText(info.translator || notebook.book?.translator);
   const category = cleanText(info.category || notebook.book?.categories?.[0]?.title);
-  const noteCount = Number(notebook.noteCount ?? data.highlights?.updated?.length ?? 0);
-  const reviewCount = Number(notebook.reviewCount ?? data.reviews?.reviews?.length ?? 0);
   const bookmarkCount = Number(notebook.bookmarkCount ?? 0);
   const lastReadDate = formatDate(readingTimestamp(data));
   const readingDate = formatDate(progress.startReadingTime);
   const finishedDate = formatDate(progress.finishTime);
   const sourceUrl = cleanText(info.deepLink || notebook.book?.deepLink);
   const rating = Number(info.newRating) > 0 ? `${Math.round(Number(info.newRating) / 10)}%` : '';
+
+  /* ---------- 先建章节 / 划线 / 想法模型（含孤儿锚点归位） ---------- */
+  const chapterMap = new Map();
+  for (const chapter of data.chapters?.chapters ?? []) chapterMap.set(Number(chapter.chapterUid), chapter);
+  for (const chapter of data.highlights?.chapters ?? []) {
+    const current = chapterMap.get(Number(chapter.chapterUid)) ?? {};
+    chapterMap.set(Number(chapter.chapterUid), { ...current, ...chapter });
+  }
+  const chapterTitleOf = (uid, fallbackName) => {
+    const c = chapterMap.get(Number(uid));
+    return cleanText(c?.title || fallbackName || `章节 ${uid}`);
+  };
+
+  const reviews = (data.reviews?.reviews ?? []).map(reviewValue);
+  // range 只在章节内唯一、跨章可能撞号，想法归属优先用「章节uid:range」；
+  // 章节信息缺失（如公众号文章）时，退化为全书唯一 range 匹配。
+  const reviewsByKey = new Map();
+  const reviewsByRange = new Map();
+  const standaloneReviews = [];
+  const pushInto = (map, key, review) => {
+    const list = map.get(key) ?? [];
+    list.push(review);
+    map.set(key, list);
+  };
+  for (const review of reviews) {
+    if (review.range) {
+      pushInto(reviewsByKey, `${Number(review.chapterUid ?? 0)}:${String(review.range)}`, review);
+      pushInto(reviewsByRange, String(review.range), review);
+    } else standaloneReviews.push(review);
+  }
+  const highlightsByChapter = new Map();
+  const rangeFrequency = new Map();
+  for (const highlight of data.highlights?.updated ?? []) {
+    const uid = Number(highlight.chapterUid ?? 0);
+    const list = highlightsByChapter.get(uid) ?? [];
+    list.push(highlight);
+    highlightsByChapter.set(uid, list);
+    const rangeKey = String(highlight.range);
+    rangeFrequency.set(rangeKey, (rangeFrequency.get(rangeKey) ?? 0) + 1);
+  }
+  const reviewsForHighlight = (uid, range) => {
+    const rangeKey = String(range);
+    const exact = reviewsByKey.get(`${uid}:${rangeKey}`);
+    if (exact?.length) return exact;
+    if ((rangeFrequency.get(rangeKey) ?? 0) === 1) return reviewsByRange.get(rangeKey) ?? [];
+    return [];
+  };
+
+  // 哪些想法挂到了真实书签上
+  const attachedReviews = new Set();
+  for (const [uid, highlights] of highlightsByChapter) {
+    for (const highlight of highlights) {
+      for (const review of reviewsForHighlight(uid, highlight.range)) attachedReviews.add(review);
+    }
+  }
+
+  // 孤儿锚点归位（2026-09-22 修复，用户零容忍）：
+  // 有些划线在 bookmarklist.updated 里已不存在（前置章「献词」等、或被阅读器重排后丢失），
+  // 但其想法（review）仍带着 abstract（原划线文本）/ range / chapterUid / chapterName。
+  // 旧逻辑把这些想法当「detached」塞进「章节点评与书评」，只输出 blockquote 摘要 + 想法时间（记录于），
+  // 丢掉了它本来就是一条划线这一身份、也没有 ⏱ 划线时间。
+  // 新逻辑：按 (chapterUid, range) 把同锚点的想法聚成一条「隐式划线」——
+  //   📌 = abstract 锚文；⏱ = 该锚点最早想法时间（划线时刻的唯一可得近似）；
+  //   每条想法 = 💭 + 🕰（其自身 createTime）。按 chapterUid/章节名归位进 # 高亮划线。
+  const orphanGroups = new Map();
+  for (const review of reviews) {
+    if (!review.range || attachedReviews.has(review)) continue;
+    const key = `${Number(review.chapterUid ?? 0)}:${String(review.range)}`;
+    let g = orphanGroups.get(key);
+    if (!g) {
+      g = {
+        uid: Number(review.chapterUid ?? 0),
+        range: String(review.range),
+        chapterName: cleanText(review.chapterName || review.chapterTitle || ''),
+        text: '',
+        anchorTime: null,
+        reviews: [],
+      };
+      orphanGroups.set(key, g);
+    }
+    const anchorText = cleanText(review.abstract || review.content || '');
+    if (!g.text && anchorText) g.text = anchorText;
+    g.reviews.push(review);
+    const t = Number(review.createTime ?? 0);
+    if (g.anchorTime === null || t < g.anchorTime) g.anchorTime = t;
+  }
+  for (const g of orphanGroups.values()) {
+    if (!g.text) continue; // 连锚文都没有，无法成划线，留作独立想法
+    const pseudo = {
+      chapterUid: g.uid,
+      range: g.range,
+      markText: g.text,
+      createTime: g.anchorTime,
+      __orphan: true,
+      __orphanReviews: g.reviews,
+    };
+    const list = highlightsByChapter.get(g.uid) ?? [];
+    list.push(pseudo);
+    highlightsByChapter.set(g.uid, list);
+  }
+  // 真正无 range 的独立想法 / 书评（保留进「章节点评与书评」）
+  const allStandaloneReviews = standaloneReviews.slice().sort((a, b) => Number(a.createTime ?? 0) - Number(b.createTime ?? 0));
+
+  /* ---------- 派生计数（保证 noteCount==📌、reviewCount==💭+独立 h2 恒等式） ---------- */
+  const noteCount = [...highlightsByChapter.values()].reduce((n, list) => n + list.length, 0);
+  const orphanReviewCount = [...orphanGroups.values()].reduce((n, g) => n + g.reviews.length, 0);
+  const inlineThoughtCount = attachedReviews.size + orphanReviewCount;
+  const reviewCount = inlineThoughtCount + allStandaloneReviews.length;
+
   const frontmatter = [
     '---', 'doc_type: weread-highlights-reviews', `title: ${yamlString(title)}`,
     `bookId: ${yamlString(data.bookId)}`, `reviewCount: ${reviewCount}`, `noteCount: ${noteCount}`,
@@ -99,73 +208,18 @@ function renderBook(data) {
   if (sourceUrl) lines.push(`> - 微信读书：${sourceUrl}`);
   lines.push('');
 
-  const chapterMap = new Map();
-  for (const chapter of data.chapters?.chapters ?? []) chapterMap.set(Number(chapter.chapterUid), chapter);
-  for (const chapter of data.highlights?.chapters ?? []) {
-    const current = chapterMap.get(Number(chapter.chapterUid)) ?? {};
-    chapterMap.set(Number(chapter.chapterUid), { ...current, ...chapter });
-  }
-  const reviews = (data.reviews?.reviews ?? []).map(reviewValue);
-  // range 只在章节内唯一、跨章可能撞号，想法归属优先用「章节uid:range」；
-  // 章节信息缺失（如公众号文章）时，退化为全书唯一 range 匹配。
-  const reviewsByKey = new Map();
-  const reviewsByRange = new Map();
-  const standaloneReviews = [];
-  const pushInto = (map, key, review) => {
-    const list = map.get(key) ?? [];
-    list.push(review);
-    map.set(key, list);
-  };
-  for (const review of reviews) {
-    if (review.range) {
-      pushInto(reviewsByKey, `${Number(review.chapterUid ?? 0)}:${String(review.range)}`, review);
-      pushInto(reviewsByRange, String(review.range), review);
-    } else standaloneReviews.push(review);
-  }
-  const highlightsByChapter = new Map();
-  const rangeFrequency = new Map();
-  for (const highlight of data.highlights?.updated ?? []) {
-    const uid = Number(highlight.chapterUid ?? 0);
-    const list = highlightsByChapter.get(uid) ?? [];
-    list.push(highlight);
-    highlightsByChapter.set(uid, list);
-    const rangeKey = String(highlight.range);
-    rangeFrequency.set(rangeKey, (rangeFrequency.get(rangeKey) ?? 0) + 1);
-  }
-  const reviewsForHighlight = (uid, range) => {
-    const rangeKey = String(range);
-    const exact = reviewsByKey.get(`${uid}:${rangeKey}`);
-    if (exact?.length) return exact;
-    if ((rangeFrequency.get(rangeKey) ?? 0) === 1) return reviewsByRange.get(rangeKey) ?? [];
-    return [];
-  };
-
-  // 想法挂在已被删除（bookmarklist 不再返回）的划线上时，归属不到任何现存划线。
-  // 把这些「无主想法」连同其 abstract（原划线摘要）收进「章节点评与书评」，
-  // 一条想法对应一个 ## 条目，避免内容被静默丢弃（手册 §2.0 最高内容原则），
-  // 同时保持 §11 的计数恒等式：reviewCount == 内联 💭 数 + 本节 ## 条目数。
-  const attachedReviews = new Set();
-  for (const [uid, highlights] of highlightsByChapter) {
-    for (const highlight of highlights) {
-      for (const review of reviewsForHighlight(uid, highlight.range)) attachedReviews.add(review);
-    }
-  }
-  const detachedReviews = [];
-  for (const review of reviews) {
-    if (review.range && !attachedReviews.has(review)) detachedReviews.push({ ...review, detached: true });
-  }
-
   lines.push('# 高亮划线', '');
   if (!highlightsByChapter.size) lines.push('> 这本书目前没有个人划线。', '');
   const chapterEntries = [...highlightsByChapter.entries()].sort((left, right) => Number(chapterMap.get(left[0])?.chapterIdx ?? left[0]) - Number(chapterMap.get(right[0])?.chapterIdx ?? right[0]));
   for (const [uid, highlights] of chapterEntries) {
-    lines.push(`## ${cleanText(chapterMap.get(uid)?.title || `章节 ${uid}`)}`, '');
+    lines.push(`## ${chapterTitleOf(uid)}`, '');
     highlights.sort((a, b) => Number(String(a.range ?? '0').split('-')[0]) - Number(String(b.range ?? '0').split('-')[0]));
     for (const highlight of highlights) {
       lines.push(quoteLines(`📌 ${highlight.markText}`));
       const timestamp = formatDateTime(highlight.createTime);
       if (timestamp) lines.push(`> ⏱ ${timestamp}`);
-      for (const review of reviewsForHighlight(uid, highlight.range)) {
+      const attached = highlight.__orphan ? (highlight.__orphanReviews ?? []) : reviewsForHighlight(uid, highlight.range);
+      for (const review of attached) {
         lines.push(`> 💭 ${cleanText(review.content).replace(/\n/g, '\n>    ')}`);
         const reviewTime = formatDateTime(review.createTime);
         if (reviewTime) lines.push(`> 🕰 ${reviewTime}`);
@@ -173,17 +227,11 @@ function renderBook(data) {
       lines.push('');
     }
   }
-  const allStandaloneReviews = [...standaloneReviews, ...detachedReviews];
   if (allStandaloneReviews.length) {
     lines.push('# 章节点评与书评', '');
-    allStandaloneReviews.sort((a, b) => Number(a.createTime ?? 0) - Number(b.createTime ?? 0));
     for (const review of allStandaloneReviews) {
       const heading = cleanText(review.chapterName || review.chapterTitle || (review.type === 6 ? '本书评论' : '读书笔记'));
       lines.push(`## ${heading}`, '');
-      if (review.detached) {
-        const abstract = cleanText(review.abstract);
-        if (abstract) lines.push(quoteLines(abstract), '');
-      }
       lines.push(cleanText(review.content), '');
       const timestamp = formatDateTime(review.createTime);
       if (timestamp) lines.push(`> 记录于 ${timestamp}`, '');
@@ -269,5 +317,9 @@ for (const entry of await readdir(monthlyDirectory, { withFileTypes: true })) {
   if (!entry.isFile() || !entry.name.endsWith('.json')) continue;
   monthlyRecords.push({ name: entry.name.slice(0, -5), data: JSON.parse(await readFile(path.join(monthlyDirectory, entry.name), 'utf8')) });
 }
-await writeFile(path.join(libraryDirectory, '微信读书阅读统计.md'), renderStats(overall, monthlyRecords), 'utf8');
+await mkdir(statsDirectory, { recursive: true });
+const statsPath = path.join(statsDirectory, '微信读书阅读统计.md');
+await writeFile(statsPath, renderStats(overall, monthlyRecords), 'utf8');
+// 清理旧位置（2026-09-22 起统计归档到微信读书统计合集）
+try { await unlink(path.join(libraryDirectory, '微信读书阅读统计.md')); } catch { /* 旧文件已不存在 */ }
 console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，阅读统计 ${monthlyRecords.length} 个月。`);

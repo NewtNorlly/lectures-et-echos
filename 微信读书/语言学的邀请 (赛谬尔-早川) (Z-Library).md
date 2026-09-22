@@ -2,7 +2,7 @@
 doc_type: weread-highlights-reviews
 title: "语言学的邀请 (赛谬尔-早川) (Z-Library)"
 bookId: "CB_5Kw60E60NAIe6yC6ww9De0o9"
-reviewCount: 1
+reviewCount: 0
 noteCount: 50
 bookmarkCount: 0
 author: "wonder"
@@ -172,8 +172,6 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b773630
 
 > 📌 说低阶层话的人使你失望，因为他啰啰嗦嗦告诉了你许多事情，却丝毫不能告诉你那许多消息有什么用。说高阶层话的人使你失望，因为他说了半天也说不出一个所以然来……你失望了，又加上受了社交礼节（或教室规则）的限制，非得静静坐着，一直等到讲话的人讲完为止。
 > ⏱ 2025-08-28 14:23:58
-> 💭 深有同感！
-> 🕰 2025-08-28 14:24:15
 
 > 📌 一个伟大的政治领袖也是能够经常在高级抽象阶层和低级抽象阶层之间来去自如的人。
 > ⏱ 2025-08-28 14:26:47

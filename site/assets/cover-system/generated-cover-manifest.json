@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T05:12:23.266Z",
+  "generatedAt": "2026-09-22T11:11:41.505Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
@@ -8,18 +8,18 @@
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 10292,
+  "totalBytes": 10704,
   "records": [
     {
-      "markdown": "微信读书/微信读书阅读统计.md",
+      "markdown": "微信读书统计/微信读书阅读统计.md",
       "title": "微信读书阅读统计",
-      "collection": "微信读书",
+      "collection": "微信读书统计",
       "category": "general",
-      "seed": "f4539c5698b5",
-      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
-      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
-      "bytes960": 7438,
-      "bytes480": 2854
+      "seed": "eccdb97e1def",
+      "cover960": "微信读书统计/文本附件/generated-cover-eccdb97e1def-960.webp",
+      "cover480": "微信读书统计/文本附件/generated-cover-eccdb97e1def-480.webp",
+      "bytes960": 7746,
+      "bytes480": 2958
     }
   ]
 }
