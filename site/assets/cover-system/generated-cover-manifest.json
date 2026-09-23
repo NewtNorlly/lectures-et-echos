@@ -1,25 +1,80 @@
 {
-  "generatedAt": "2026-09-23T08:43:22.076Z",
+  "generatedAt": "2026-09-23T10:02:45.680Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 1,
+  "count": 6,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 10704,
+  "totalBytes": 98516,
   "records": [
     {
-      "markdown": "微信读书统计/微信读书阅读统计.md",
-      "title": "微信读书阅读统计",
-      "collection": "微信读书统计",
+      "markdown": "黑纹白斑马/【中配】宇宙盡頭與時間盡頭之謎：物理學大師解答量子力學、平行宇宙與時間旅行 - GQ Taiwan KlvBiyWSI-Y.md",
+      "title": "【中配】宇宙盡頭與時間盡頭之謎：物理學大師解答量子力學、平行宇宙與時間旅行 - GQ Taiwan KlvBiyWSI-Y",
+      "collection": "黑纹白斑马",
+      "category": "nature",
+      "seed": "408df1d025d9",
+      "cover960": "黑纹白斑马/文本附件/generated-cover-408df1d025d9-960.webp",
+      "cover480": "黑纹白斑马/文本附件/generated-cover-408df1d025d9-480.webp",
+      "bytes960": 13460,
+      "bytes480": 5398
+    },
+    {
+      "markdown": "树成林林林/如果你正在摆烂，它可以阻止你。.md",
+      "title": "如果你正在摆烂，它可以阻止你。",
+      "collection": "树成林林林",
       "category": "general",
-      "seed": "eccdb97e1def",
-      "cover960": "微信读书统计/文本附件/generated-cover-eccdb97e1def-960.webp",
-      "cover480": "微信读书统计/文本附件/generated-cover-eccdb97e1def-480.webp",
-      "bytes960": 7746,
-      "bytes480": 2958
+      "seed": "03e65589c474",
+      "cover960": "树成林林林/文本附件/generated-cover-03e65589c474-960.webp",
+      "cover480": "树成林林林/文本附件/generated-cover-03e65589c474-480.webp",
+      "bytes960": 9138,
+      "bytes480": 3750
+    },
+    {
+      "markdown": "树成林林林/它，精确到秒，A4时间规划法，你逆袭唯一的药！.md",
+      "title": "它，精确到秒，A4时间规划法，你逆袭唯一的药！",
+      "collection": "树成林林林",
+      "category": "general",
+      "seed": "5075662fa5e3",
+      "cover960": "树成林林林/文本附件/generated-cover-5075662fa5e3-960.webp",
+      "cover480": "树成林林林/文本附件/generated-cover-5075662fa5e3-480.webp",
+      "bytes960": 11952,
+      "bytes480": 4888
+    },
+    {
+      "markdown": "树成林林林/用自动决策流，打造高考的无情刷卷机器！.md",
+      "title": "用自动决策流，打造高考的无情刷卷机器！",
+      "collection": "树成林林林",
+      "category": "general",
+      "seed": "5d3794990a53",
+      "cover960": "树成林林林/文本附件/generated-cover-5d3794990a53-960.webp",
+      "cover480": "树成林林林/文本附件/generated-cover-5d3794990a53-480.webp",
+      "bytes960": 12316,
+      "bytes480": 4900
+    },
+    {
+      "markdown": "树成林林林/早点知道这个道理，我应该就不会复读了.md",
+      "title": "早点知道这个道理，我应该就不会复读了",
+      "collection": "树成林林林",
+      "category": "general",
+      "seed": "09e9afbd8dab",
+      "cover960": "树成林林林/文本附件/generated-cover-09e9afbd8dab-960.webp",
+      "cover480": "树成林林林/文本附件/generated-cover-09e9afbd8dab-480.webp",
+      "bytes960": 11804,
+      "bytes480": 4794
+    },
+    {
+      "markdown": "瞎问虾猜丶/【断网补全计划148】民办太子爷，尴尬狗，驾考宝典，折叠iphone，徐福炒饭，灭火器风波，机器人破人类百米纪录，水鬼代码，刘翔事件，泥石流，铁头后续，四川芬达.md",
+      "title": "【断网补全计划148】民办太子爷，尴尬狗，驾考宝典，折叠iphone，徐福炒饭，灭火器风波，机器人破人类百米纪录，水鬼代码，刘翔事件，泥石流，铁头后续，四川芬达",
+      "collection": "瞎问虾猜丶",
+      "category": "technology",
+      "seed": "5403d2e4a68a",
+      "cover960": "瞎问虾猜丶/文本附件/generated-cover-5403d2e4a68a-960.webp",
+      "cover480": "瞎问虾猜丶/文本附件/generated-cover-5403d2e4a68a-480.webp",
+      "bytes960": 11306,
+      "bytes480": 4810
     }
   ]
 }
