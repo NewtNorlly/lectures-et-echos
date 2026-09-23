@@ -10,7 +10,7 @@ translator: "张舟"
 cover: "https://cdn.weread.qq.com/weread/cover/59/cpplatform_gnveypvmpcpiaen24cumub/t6_cpplatform_gnveypvmpcpiaen24cumub1785219967.jpg"
 progress: "0%"
 readingTime: "0分钟"
-lastReadDate: 2026-09-20
+lastReadDate: 2026-09-21
 isbn: "9787573500014"
 category: "精品小说-悬疑推理"
 publisher: "南海出版公司"
@@ -39,7 +39,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=55a32390813ab6e85g011abb"
 > - 微信读书评分：90%
 > - 阅读进度：0%
 > - 阅读时长：0分钟
-> - 最后阅读：2026-09-20
+> - 最后阅读：2026-09-21
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=55a32390813ab6e85g011abb
 
 # 高亮划线
