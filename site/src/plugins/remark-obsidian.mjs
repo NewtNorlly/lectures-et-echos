@@ -559,13 +559,19 @@ function transformHighlightQuotes(tree) {
   });
 }
 
-// 「章节点评与书评」下的独立读书笔记：md 里是 一段正文 + 一条 `> 记录于 …` 时间戳。
-// 这里按章节归属把它们标成 .note-card 系列（首段 .note-card__head 带 📚 徽标，
-// 时间戳段 .note-card__meta），CSS 把两段拼成一张与 📌/💭 都不同的「读书笔记卡」。
-// 不删任何内容：无 `记录于` 尾随时间戳的段落原样保留。
+// 「章节点评与书评」下的独立读书笔记：md 里是「## 读书笔记 / ## 本书评论」标题 +
+// 正文（可含多个段落、列表，偶有 --- 分隔线）+ 一条 `> 记录于 …` 时间戳。
+// 这里按标题把整组标成 .note-card 系列：正文块（段落 / 列表）挂 .note-card__body，
+// 首块带 .note-card__head（📚 徽标），时间戳块挂 .note-card__meta；连续块用
+// is-first / is-last 拼出同一张圆角色块（列表也包在色块内），--- 分隔线前后的
+// 色块各自收口。不删任何内容：组尾没有「记录于」块引用、或出现未支持块类型时，
+// 整组原样保留（fail-safe）。
 function transformWereadNotes(tree) {
-  let section = null;
-  visit(tree, (node) => {
+  let section = 'other';
+  const groups = [];
+  let current = null;
+
+  for (const node of tree.children) {
     if (node.type === 'heading' && node.depth === 2) {
       const text = nodePlainText(node);
       section = text.includes('高亮划线')
@@ -573,45 +579,77 @@ function transformWereadNotes(tree) {
         : text.includes('章节点评与书评')
           ? 'reviews'
           : 'other';
-      return;
+      current = null;
+      continue;
     }
-    if (section !== 'reviews') return;
-    if (node.type !== 'paragraph' || !node.children) return;
-    // 已处理过的段落跳过，避免重复挂徽标
-    if (node.data?.hProperties?.className?.some((c) => c.startsWith('note-card'))) return;
-
-    const siblings = tree.children;
-    const idx = siblings.indexOf(node);
-    if (idx === -1) return;
-
-    // 向后收：连续段落 + 尾随 `记录于` 块引用
-    let j = idx;
-    const paras = [];
-    while (j < siblings.length && siblings[j].type === 'paragraph') {
-      paras.push(siblings[j]);
-      j++;
+    if (section !== 'reviews') continue;
+    if (node.type === 'heading' && node.depth === 3) {
+      current = { blocks: [] };
+      groups.push(current);
+      continue;
     }
-    let meta = null;
-    if (j < siblings.length && siblings[j].type === 'blockquote') {
-      const mt = nodePlainText(siblings[j]);
-      if (mt.includes('记录于')) {
-        meta = siblings[j];
-        j++;
+    // h3 标题之前的游离块不属于任何笔记，原样保留
+    if (current) current.blocks.push(node);
+  }
+
+  for (const group of groups) {
+    // 组尾必须是含「记录于」的块引用，作为时间戳块；否则整组不动
+    const meta = group.blocks[group.blocks.length - 1];
+    if (!meta || meta.type !== 'blockquote' || !nodePlainText(meta).includes('记录于')) continue;
+    const bodyBlocks = group.blocks.slice(0, -1);
+    if (bodyBlocks.length === 0) continue;
+    // 只支持段落 / 列表 / 分隔线，出现别的块类型时为保内容安全整组放弃
+    if (
+      bodyBlocks.some(
+        (b) => b.type !== 'paragraph' && b.type !== 'list' && b.type !== 'thematicBreak',
+      )
+    ) {
+      continue;
+    }
+
+    // 读书笔记是用户手写评论：段落（含列表项内段落）保留单换行（转 <br>）
+    for (const b of bodyBlocks) {
+      if (b.type === 'paragraph') hardenSoftBreaks(b);
+      if (b.type === 'list') visit(b, 'paragraph', (p) => hardenSoftBreaks(p));
+    }
+
+    // 按 --- 分隔线把正文切成视觉段（相邻分隔线产生的空段忽略）；
+    // 组尾若不是分隔线，最后一段与 meta 紧邻，下角由 meta 收
+    const segments = [[]];
+    for (const b of bodyBlocks) {
+      if (b.type === 'thematicBreak') {
+        segments.push([]);
+        continue;
       }
+      segments[segments.length - 1].push(b);
     }
-    if (!meta || paras.length === 0) return;
+    const filled = segments.filter((seg) => seg.length > 0);
+    if (filled.length === 0) continue;
+    const metaAdjoins = bodyBlocks[bodyBlocks.length - 1].type !== 'thematicBreak';
 
-    paras.forEach((p, i) => {
-      // 读书笔记是用户手写评论：保留其单换行（转 <br>），获得分行呼吸感
-      hardenSoftBreaks(p);
-      const cls = i === 0 ? ['note-card__body', 'note-card__head'] : ['note-card__body'];
-      p.data = { ...(p.data ?? {}), hProperties: { className: cls } };
+    filled.forEach((seg, segIndex) => {
+      const isLastSeg = segIndex === filled.length - 1;
+      seg.forEach((b, blockIndex) => {
+        const cls = ['note-card__body'];
+        if (b.type === 'list') cls.push('note-card__body--list');
+        if (blockIndex === 0) cls.push('is-first');
+        // 最后一段与 meta 紧邻时，下角交给 meta 收，本段不留底圆角
+        if (blockIndex === seg.length - 1 && !(isLastSeg && metaAdjoins)) cls.push('is-last');
+        if (segIndex === 0 && blockIndex === 0) cls.push('note-card__head');
+        b.data = {
+          ...(b.data ?? {}),
+          hProperties: { ...(b.data?.hProperties ?? {}), className: cls },
+        };
+      });
     });
+
+    const metaCls = ['note-card', 'note-card__meta', 'is-last'];
+    if (!metaAdjoins) metaCls.push('is-first');
     meta.data = {
       ...(meta.data ?? {}),
-      hProperties: { className: ['note-card', 'note-card__meta'] },
+      hProperties: { ...(meta.data?.hProperties ?? {}), className: metaCls },
     };
-  });
+  }
 }
 
 // 展示层剥离微信读书外链：元数据 callout 里的「微信读书：https://weread.qq.com/…」

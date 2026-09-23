@@ -331,18 +331,32 @@
   margin: 0.25rem 0;
 }
 
-/* ③ 📚 读书笔记（章节点评与书评下的独立笔记）：纸面圆角卡（无左侧竖线） */
+/* ③ 📚 读书笔记（章节点评与书评下的独立笔记）：纸面圆角卡（无左侧竖线）。
+   一条笔记可含多段与列表，插件给连续块标 is-first/is-last，拼成同一块整色卡；
+   --- 分隔线前后的色块各自收口。 */
 .prose .note-card__body {
   margin: 0;
-  padding: 1.05rem 1.4rem 0.85rem;
-  background: hsl(var(--muted) / 0.45);
-  border: 0;
-  border-radius: var(--radius-sm);
+  padding: 0.55rem 1.4rem;
+  background: hsl(var(--muted) / 0.8);
+  border: 0 solid hsl(var(--muted));
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-radius: 0;
   color: var(--ink-prose);
 }
 
-.prose .note-card__body + .note-card__body {
-  border-top: 0;
+.prose .note-card__body.is-first {
+  padding-top: 1.05rem;
+  border-top-width: 1px;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
+}
+
+.prose .note-card__body.is-last {
+  padding-bottom: 0.9rem;
+  border-bottom-width: 1px;
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
 }
 
 .prose .note-card__head::before {
@@ -350,20 +364,49 @@
   margin-right: 0.45em;
 }
 
-.prose .note-card__meta {
+/* 笔记卡内的列表：与段落同底色，marker 在色块内舒展、文字与段落对齐 */
+.prose ul.note-card__body--list,
+.prose ol.note-card__body--list {
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
+  padding-block: 0.35rem;
+}
+
+.prose .note-card__body--list li > p {
   margin: 0;
+}
+
+.prose .note-card__body--list li > p br {
+  display: block;
+  content: "";
+  margin-top: 0.15rem;
+}
+
+.prose .note-card__meta {
+  margin: 0 0 1.15rem;
   padding: 0.55rem 1.4rem 0.8rem;
-  background: hsl(var(--muted) / 0.45);
-  border: 0;
-  border-radius: var(--radius-sm);
+  background: hsl(var(--muted) / 0.8);
+  border: 0 solid hsl(var(--muted));
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-radius: 0;
   font-size: var(--text-min);
   color: var(--ink-faint);
   letter-spacing: 0.02em;
 }
 
-/* 两张读书笔记卡之间留呼吸 */
-.prose .note-card__meta + .note-card__body {
-  margin-top: 1.5rem;
+.prose .note-card__meta.is-first {
+  padding-top: 0.85rem;
+  border-top-width: 1px;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
+}
+
+.prose .note-card__meta.is-last {
+  padding-bottom: 0.8rem;
+  border-bottom-width: 1px;
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
 }
 
 .prose blockquote > :first-child,

@@ -20,9 +20,15 @@ const yamlString = (value) => JSON.stringify(String(value ?? ''));
 const cleanText = (value) => String(value ?? '').replace(/\r\n/g, '\n').trim();
 const safeFileName = (value) => cleanText(value).replace(/[<>:"/\\|?*\x00-\x1f]/g, '-').replace(/[. ]+$/g, '').slice(0, 120) || '未命名书籍';
 
+// 日期一律按北京时区（Asia/Shanghai）渲染：微信读书的日/年键是本地零点，
+// 用 UTC（toISOString）会把凌晨/年首的标签打到前一天、前一年。
 function formatDate(timestamp) {
   if (!timestamp || Number(timestamp) <= 0) return undefined;
-  return new Date(Number(timestamp) * 1000).toISOString().slice(0, 10);
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date(Number(timestamp) * 1000));
+  const get = (type) => parts.find((part) => part.type === type)?.value ?? '';
+  return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
 function formatDateTime(timestamp) {
@@ -260,13 +266,18 @@ function renderStats(overall, monthlyRecords) {
     '', '## 总览', '', '| 指标 | 数值 |', '| --- | ---: |',
     `| 累计阅读时长 | ${formatDuration(overall.totalReadTime)} |`,
     `| 累计阅读天数 | ${Number(overall.readDays ?? 0)} 天 |`,
-    `| 日均阅读时长 | ${formatDuration(overall.dayAverageReadTime)} |`,
+    // dayAverageReadTime 总览字段缺失/为 0，按「累计时长 / 阅读天数」现算（与月度同口径）
+    `| 日均阅读时长 | ${formatDuration(Number(overall.readDays) > 0 ? Number(overall.totalReadTime) / Number(overall.readDays) : 0)} |`,
     `| 注册时间 | ${formatDate(overall.registTime) ?? '—'} |`,
   ];
   for (const item of overall.readStat ?? []) lines.push(`| ${item.stat} | ${item.counts} |`);
   if (overall.readTimes && Object.keys(overall.readTimes).length) {
     lines.push('', '## 历年阅读', '', '| 年份 | 阅读时长 |', '| --- | ---: |');
-    for (const [timestamp, seconds] of Object.entries(overall.readTimes)) lines.push(`| ${new Date(Number(timestamp) * 1000).getUTCFullYear()} | ${formatDuration(seconds)} |`);
+    // 年键是北京 1 月 1 日 0 点（= UTC 上年 12-31 16:00），按 UTC+8 偏移后再取年
+    for (const [timestamp, seconds] of Object.entries(overall.readTimes)) {
+      const year = new Date(Number(timestamp) * 1000 + 8 * 3600 * 1000).getUTCFullYear();
+      lines.push(`| ${year} | ${formatDuration(seconds)} |`);
+    }
   }
   if (overall.readLongest?.length) {
     lines.push('', '## 阅读时长最多', '', '| 书名 | 作者 | 时长 |', '| --- | --- | ---: |');
@@ -281,10 +292,12 @@ function renderStats(overall, monthlyRecords) {
   }
   lines.push('', '## 逐月记录', '');
   for (const { name, data } of monthlyRecords.sort((a, b) => b.name.localeCompare(a.name))) {
+    const readDays = Number(data.readDays ?? 0);
     lines.push(`### ${name}`, '', '| 指标 | 数值 |', '| --- | ---: |',
       `| 阅读时长 | ${formatDuration(data.totalReadTime)} |`,
-      `| 阅读天数 | ${Number(data.readDays ?? 0)} 天 |`,
-      `| 日均时长 | ${formatDuration(data.dayAverageReadTime)} |`);
+      `| 阅读天数 | ${readDays} 天 |`,
+      // 月日均同样按「月时长 / 阅读天数」现算，API 字段口径偏小
+      `| 日均时长 | ${formatDuration(readDays > 0 ? Number(data.totalReadTime) / readDays : 0)} |`);
     for (const item of data.readStat ?? []) lines.push(`| ${item.stat} | ${item.counts} |`);
     if (data.readTimes && Object.keys(data.readTimes).length) {
       lines.push('', '<details>', '<summary>每日阅读时长</summary>', '', '| 日期 | 时长 |', '| --- | ---: |');
