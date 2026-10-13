@@ -1,4 +1,13 @@
 ---
+cover:
+  image: '文本附件/generated-cover-0041c98ee8ee-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 doc_type: weread-highlights-reviews
 title: "曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)"
 bookId: "CB_9O6ABeABR9ZR6yP6ww9rZ4xU"
@@ -6,7 +15,6 @@ reviewCount: 0
 noteCount: 6
 bookmarkCount: 0
 author: "N.格里高利·曼昆"
-cover: "https://res.weread.qq.com/wrepub/CB_9F63yu3xJBn86jK6ke0qJA2b_parsecover"
 progress: "1%"
 readingTime: "9分钟"
 lastReadDate: 2025-09-05
@@ -16,7 +24,6 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=5c142b73643425f394f364142
 # 元数据
 
 > [!abstract] 曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)
-> - ![曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)|200](https://res.weread.qq.com/wrepub/CB_9F63yu3xJBn86jK6ke0qJA2b_parsecover)
 > - 书名：曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)
 > - 作者：N.格里高利·曼昆
 > - 阅读进度：1%
