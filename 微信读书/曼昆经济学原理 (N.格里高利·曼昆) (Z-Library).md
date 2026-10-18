@@ -1,9 +1,9 @@
 ---
 cover:
-  image: '文本附件/generated-cover-0041c98ee8ee-960.webp'
-  actualRatio: '3:2'
-  pixelWidth: 960
-  pixelHeight: 640
+  image: '文本附件/cover-CB_9O6ABeABR9ZR6yP6ww9rZ4xU-960.webp'
+  actualRatio: '3:4'
+  pixelWidth: 692
+  pixelHeight: 960
   displayWidth: 100
   displayHeight: 320
   positionX: 50
@@ -24,6 +24,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=5c142b73643425f394f364142
 # 元数据
 
 > [!abstract] 曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)
+> - ![曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)|200](文本附件/cover-CB_9O6ABeABR9ZR6yP6ww9rZ4xU-960.webp)
 > - 书名：曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)
 > - 作者：N.格里高利·曼昆
 > - 阅读进度：1%
