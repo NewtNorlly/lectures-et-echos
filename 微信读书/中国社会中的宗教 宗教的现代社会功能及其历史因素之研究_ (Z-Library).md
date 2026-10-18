@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 2
 bookmarkCount: 0
 author: ""
-cover: "https://res.weread.qq.com/wrepub/CB_5cj51Z50ZEr06jG6keFLc73R_parsecover"
+cover:
+  image: '文本附件/cover-CB_2U7B4lB6pAMn6yD6ww2q71GS-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 369
+  pixelHeight: 559
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "6分钟"
 lastReadDate: 2025-08-26
@@ -16,7 +24,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f3255374234
 # 元数据
 
 > [!abstract] 中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)
-> - ![中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)|200](https://res.weread.qq.com/wrepub/CB_5cj51Z50ZEr06jG6keFLc73R_parsecover)
+> - ![中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)|200](文本附件/cover-CB_2U7B4lB6pAMn6yD6ww2q71GS-960.webp)
 > - 书名：中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)
 > - 阅读进度：0%
 > - 阅读时长：6分钟

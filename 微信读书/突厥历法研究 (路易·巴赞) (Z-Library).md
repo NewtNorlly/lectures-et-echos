@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 1
 bookmarkCount: 0
 author: "（法）路易·巴赞"
-cover: "https://res.weread.qq.com/wrepub/CB_1w2Fr0FrjEYm6lg6kk90WCxl_parsecover"
+cover:
+  image: '文本附件/cover-CB_ABS0j80hLGAO6ya6ww818FDU-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 244
+  pixelHeight: 358
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "3分钟"
 lastReadDate: 2026-08-27
@@ -16,7 +24,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=5ef428e3643425f414253306a
 # 元数据
 
 > [!abstract] 突厥历法研究 (路易·巴赞) (Z-Library)
-> - ![突厥历法研究 (路易·巴赞) (Z-Library)|200](https://res.weread.qq.com/wrepub/CB_1w2Fr0FrjEYm6lg6kk90WCxl_parsecover)
+> - ![突厥历法研究 (路易·巴赞) (Z-Library)|200](文本附件/cover-CB_ABS0j80hLGAO6ya6ww818FDU-960.webp)
 > - 书名：突厥历法研究 (路易·巴赞) (Z-Library)
 > - 作者：（法）路易·巴赞
 > - 阅读进度：0%

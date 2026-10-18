@@ -6,7 +6,15 @@ reviewCount: 1
 noteCount: 23
 bookmarkCount: 0
 author: "武志红"
-cover: "https://res.weread.qq.com/wrepub/CB_G0sFTqFT7BGc6ny6ooC4s9my_parsecover"
+cover:
+  image: '文本附件/cover-CB_CJ462w60NAIe6yC6wwGxj1Pw-960.webp'
+  actualRatio: '3:4'
+  pixelWidth: 600
+  pixelHeight: 800
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "49%"
 readingTime: "35分钟"
 lastReadDate: 2026-09-02
@@ -17,7 +25,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=27d42913643425f434a343632
 # 元数据
 
 > [!abstract] 巨婴国 (武志红) (Z-Library)
-> - ![巨婴国 (武志红) (Z-Library)|200](https://res.weread.qq.com/wrepub/CB_G0sFTqFT7BGc6ny6ooC4s9my_parsecover)
+> - ![巨婴国 (武志红) (Z-Library)|200](文本附件/cover-CB_CJ462w60NAIe6yC6wwGxj1Pw-960.webp)
 > - 书名：巨婴国 (武志红) (Z-Library)
 > - 作者：武志红
 > - 出版社：浙江人民出版社

@@ -3,4 +3,5 @@ site/dist/
 site/.astro/
 site/assets/cover-system/previews/
 site/public/media/
+site/.cover-test/
 .weread-export/
