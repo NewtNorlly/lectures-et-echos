@@ -317,11 +317,22 @@ for (const entry of existingFiles) {
   if (id) existingByBookId.set(id, filePath);
 }
 
+// 用户明确不再收录的书（2026-10-18）：云端书架仍可能返回，导入时一律忽略，
+// 避免全量同步把已删除的书重新建回来。注意：这只影响「微信读书」书库，
+// 与根目录同名的「网络博主」创作者合集无关，后者绝不受此影响。
+const excludedBookIds = new Set(['MP_WXS_3939255758']);
+
 const bookDirectories = (await readdir(path.join(exportDirectory, 'books'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
 let updated = 0;
 let created = 0;
+let excluded = 0;
 for (const entry of bookDirectories) {
   const data = JSON.parse(await readFile(path.join(exportDirectory, 'books', entry.name, 'data.json'), 'utf8'));
+  if (excludedBookIds.has(String(data.bookId))) {
+    excluded += 1;
+    console.log(`⊘ 跳过用户已排除的书：${data.bookId}（${data.info?.title ?? data.notebook?.book?.title ?? '未知书名'}）`);
+    continue;
+  }
   const rendered = renderBook(data);
   let destination = existingByBookId.get(String(data.bookId));
   if (!destination) {
@@ -358,4 +369,4 @@ const statsPath = path.join(statsDirectory, '微信读书阅读统计.md');
 await writeFile(statsPath, renderStats(overall, monthlyRecords), 'utf8');
 // 清理旧位置（2026-09-22 起统计归档到微信读书统计合集）
 try { await unlink(path.join(libraryDirectory, '微信读书阅读统计.md')); } catch { /* 旧文件已不存在 */ }
-console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，阅读统计 ${monthlyRecords.length} 个月。`);
+console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，排除 ${excluded} 本，阅读统计 ${monthlyRecords.length} 个月。`);
