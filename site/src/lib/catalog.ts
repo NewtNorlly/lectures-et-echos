@@ -248,6 +248,8 @@ function trimExcerpt(value: string): string | undefined {
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|([^\]]+))?\]\]/g, '$2$1')
+    // Obsidian / GitHub callout 标记：[!abstract]、[!note]+、[!tip]- 等
+    .replace(/\[![a-z\d_-]+\][+-]?/gi, ' ')
     .replace(/^\s{0,3}(?:#{1,6}|>|[-*+]\s+)\s*/gm, '')
     .replace(/\^[A-Za-z0-9-]+\s*$/gm, '')
     .replace(/[*_~`=]+/g, '')
@@ -258,16 +260,50 @@ function trimExcerpt(value: string): string | undefined {
   return Array.from(clean).slice(0, 170).join('') + (Array.from(clean).length > 170 ? '…' : '');
 }
 
+/**
+ * 从微信读书书摘 md 的「# 元数据」callout 中提取「简介」原文。
+ * 导入器渲染为 blockquote 列表项：`> - 简介：第一段`，长简介以 `>   ` 续行，
+ * 直到下一个字段行（`> - 字段：`）、空行或标题为止。无简介返回 undefined。
+ * 注意：绝不能拿正文（高亮划线/想法）兜底——那不是书籍摘要。
+ */
+function extractWereadIntro(body: string): string | undefined {
+  const lines = body.split('\n');
+  const start = lines.findIndex((line) => /^\s*>?\s*-?\s*简介[：:]/.test(line));
+  if (start === -1) return undefined;
+
+  const first = lines[start].replace(/^\s*>?\s*-?\s*简介[：:]\s*/, '').trim();
+  const rest: string[] = [];
+  for (let i = start + 1; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (/^\s*>?\s*-\s+\S/.test(line)) break; // 下一个元数据字段（如 > - 出版时间：）
+    if (/^\s*#{1,6}\s/.test(line)) break; // 下一个 Markdown 标题
+    if (/^\s*$/.test(line)) break; // callout 结束空行
+    rest.push(line.replace(/^\s*>\s?/, '').trim()); // blockquote 续行（>   文本）
+  }
+
+  const intro = [first, ...rest].join(' ').trim();
+  return intro || undefined;
+}
+
 function getDescription(data: RawData, body: string | undefined): string | undefined {
   const explicit = stringValue(data.description) ?? stringValue(data.summary);
   if (explicit) return trimExcerpt(explicit);
+
+  // 微信读书书摘：正文是元数据 + 划线 + 想法，把整段正文当摘要会泄漏原始 Markdown
+  // （[!abstract]、![书名|200](url)、📌 划线等），只允许取元数据 callout 的「简介」。
+  if (data.doc_type === 'weread-highlights-reviews') {
+    const intro = body ? extractWereadIntro(body) : undefined;
+    return intro ? trimExcerpt(intro) : undefined;
+  }
+
   if (!body) return undefined;
 
   const wereadIntroduction = body.match(/^\s*>?\s*-?\s*简介[：:]\s*(.+)$/m)?.[1];
   const source = wereadIntroduction ?? body;
-  // 摘要里不暴露 weread.qq.com 外链（与正文层剥离保持一致）
+  // 摘要里不暴露 weread.qq.com 外链（与正文层剥离保持一致）；
+  // 末尾字符类排除 ) ]，避免把 Markdown 图片/链接的闭合括号一起吞掉导致语法残留。
   const cleaned = source
-    .replace(/https?:\/\/\S*weread\.qq\.com\S*/g, '')
+    .replace(/https?:\/\/\S*weread\.qq\.com[^\s)\]]*/g, '')
     .replace(/微信读书[：:]\s*$/gm, '')
     .replace(/[ \t]+/g, ' ')
     .trim();
