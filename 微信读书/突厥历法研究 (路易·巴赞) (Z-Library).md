@@ -1,11 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-title: "突厥历法研究 (路易·巴赞) (Z-Library)"
-bookId: "CB_ABS0j80hLGAO6ya6ww818FDU"
-reviewCount: 0
-noteCount: 1
-bookmarkCount: 0
-author: "（法）路易·巴赞"
 cover:
   image: '文本附件/cover-CB_ABS0j80hLGAO6ya6ww818FDU-960.webp'
   actualRatio: '2:3'
@@ -15,6 +9,12 @@ cover:
   displayHeight: 320
   positionX: 50
   positionY: 50
+title: "突厥历法研究 (路易·巴赞) (Z-Library)"
+bookId: "CB_ABS0j80hLGAO6ya6ww818FDU"
+reviewCount: 0
+noteCount: 1
+bookmarkCount: 0
+author: "（法）路易·巴赞"
 progress: "0%"
 readingTime: "3分钟"
 lastReadDate: 2026-08-27

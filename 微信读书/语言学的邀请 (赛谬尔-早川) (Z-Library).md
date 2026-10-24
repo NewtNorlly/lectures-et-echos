@@ -1,11 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-title: "语言学的邀请 (赛谬尔-早川) (Z-Library)"
-bookId: "CB_5Kw60E60NAIe6yC6ww9De0o9"
-reviewCount: 1
-noteCount: 50
-bookmarkCount: 0
-author: "wonder"
 cover:
   image: '文本附件/cover-CB_5Kw60E60NAIe6yC6ww9De0o9-960.webp'
   actualRatio: '2:3'
@@ -15,8 +9,14 @@ cover:
   displayHeight: 320
   positionX: 50
   positionY: 50
+title: "语言学的邀请 (赛谬尔-早川) (Z-Library)"
+bookId: "CB_5Kw60E60NAIe6yC6ww9De0o9"
+reviewCount: 1
+noteCount: 50
+bookmarkCount: 0
+author: "wonder"
 progress: "57%"
-readingTime: "1小时5分钟"
+readingTime: "1小时6分钟"
 lastReadDate: 2025-08-28
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b7736304536304e414965367943367777394465306f399ae"
 ---
@@ -28,7 +28,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b773630
 > - 书名：语言学的邀请 (赛谬尔-早川) (Z-Library)
 > - 作者：wonder
 > - 阅读进度：57%
-> - 阅读时长：1小时5分钟
+> - 阅读时长：1小时6分钟
 > - 最后阅读：2025-08-28
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b7736304536304e414965367943367777394465306f399ae
 

@@ -1,4 +1,5 @@
 ---
+doc_type: weread-highlights-reviews
 cover:
   image: '文本附件/cover-CB_9O6ABeABR9ZR6yP6ww9rZ4xU-960.webp'
   actualRatio: '3:4'
@@ -8,7 +9,6 @@ cover:
   displayHeight: 320
   positionX: 50
   positionY: 50
-doc_type: weread-highlights-reviews
 title: "曼昆经济学原理 (N.格里高利·曼昆) (Z-Library)"
 bookId: "CB_9O6ABeABR9ZR6yP6ww9rZ4xU"
 reviewCount: 0

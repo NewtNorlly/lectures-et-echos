@@ -1,18 +1,20 @@
 ---
 doc_type: weread-highlights-reviews
+cover: "https://cdn.weread.qq.com/weread/cover/24/cpplatform_3egrdwlejv96zwbmesblho/t6_cpplatform_3egrdwlejv96zwbmesblho1781168420.jpg"
 title: "半小时讲透Harness工程（轻科技）"
 bookId: "3300211819"
 reviewCount: 8
 noteCount: 83
 bookmarkCount: 0
 author: "魏思理"
-cover: "https://cdn.weread.qq.com/weread/cover/24/cpplatform_3egrdwlejv96zwbmesblho/t6_cpplatform_3egrdwlejv96zwbmesblho1781168420.jpg"
 progress: "98%"
 readingTime: "30分钟"
 readingDate: 2026-09-25
 finishedDate: 2026-09-26
 lastReadDate: 2026-09-26
 category: "计算机-人工智能"
+publishTime: "2026-06-15 00:00:00"
+rating: "65%"
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ed632000813abb93dg01910c"
 ---
 
@@ -22,7 +24,12 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ed632000813abb93dg01910c"
 > - ![半小时讲透Harness工程（轻科技）|200](https://cdn.weread.qq.com/weread/cover/24/cpplatform_3egrdwlejv96zwbmesblho/t6_cpplatform_3egrdwlejv96zwbmesblho1781168420.jpg)
 > - 书名：半小时讲透Harness工程（轻科技）
 > - 作者：魏思理
+> - 简介：2025年，AI界集体醒悟：再聪明的模型，没有约束也会失控，于是出现了Harness架构。
+>   本书从Anthropic游戏编辑器项目失败、OpenAI百万行代码实验等真实“翻车”案例讲起，首次向普通人讲透爆火的Harness架构。你会理解为什么“裸模型”不可靠，以及如何通过工具注册表、上下文管理器、沙箱隔离、任务编排和质量守卫这五层架构，把AI从随机输出变成稳定生产力。
+>   书中不仅有大厂案例，更提供了个人零代码上手的极简方案。如果你想看懂AI工程化的未来，或者正在为AI落地的不稳定头疼，这本书就是你的最佳入门地图。
+> - 出版时间：2026-06-15 00:00:00
 > - 分类：计算机-人工智能
+> - 微信读书评分：65%
 > - 阅读进度：98%
 > - 阅读时长：30分钟
 > - 最后阅读：2026-09-26
@@ -293,10 +300,10 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ed632000813abb93dg01910c"
 
 > 📌 本书里的Claude、Gemini、Codex都属于大模型
 > ⏱ 2026-09-26 02:54:25
-> 💭 不对吧？你再想想？
-> 🕰 2026-09-26 02:54:45
 > 💭 Codex是智能体，chatgpt5.6这个才算大语言模型。
 > 🕰 2026-09-26 02:54:33
+> 💭 不对吧？你再想想？
+> 🕰 2026-09-26 02:54:45
 
 > 📌 仅靠提示词约束AI治标不治本，换场景就失效，这也是Harness架构诞生的核心原因。
 > ⏱ 2026-09-26 02:55:20

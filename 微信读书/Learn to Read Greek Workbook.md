@@ -1,11 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-title: "Learn to Read Greek Workbook"
-bookId: "CB_68YBb8BdzGdT6yl6ww9c84uh"
-reviewCount: 0
-noteCount: 0
-bookmarkCount: 0
-author: ""
 cover:
   image: '文本附件/cover-CB_68YBb8BdzGdT6yl6ww9c84uh-960.webp'
   actualRatio: '3:4'
@@ -15,6 +9,12 @@ cover:
   displayHeight: 320
   positionX: 50
   positionY: 50
+title: "Learn to Read Greek Workbook"
+bookId: "CB_68YBb8BdzGdT6yl6ww9c84uh"
+reviewCount: 0
+noteCount: 0
+bookmarkCount: 0
+author: ""
 progress: "0%"
 readingTime: "4分钟"
 lastReadDate: 2025-09-24

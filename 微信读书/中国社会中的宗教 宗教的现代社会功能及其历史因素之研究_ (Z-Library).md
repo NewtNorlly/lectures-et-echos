@@ -1,11 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-title: "中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)"
-bookId: "CB_2U7B4lB6pAMn6yD6ww2q71GS"
-reviewCount: 0
-noteCount: 2
-bookmarkCount: 0
-author: ""
 cover:
   image: '文本附件/cover-CB_2U7B4lB6pAMn6yD6ww2q71GS-960.webp'
   actualRatio: '2:3'
@@ -15,9 +9,15 @@ cover:
   displayHeight: 320
   positionX: 50
   positionY: 50
+title: "中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)"
+bookId: "CB_2U7B4lB6pAMn6yD6ww2q71GS"
+reviewCount: 0
+noteCount: 2
+bookmarkCount: 0
+author: ""
 progress: "0%"
-readingTime: "6分钟"
-lastReadDate: 2025-08-26
+readingTime: "7分钟"
+lastReadDate: 2025-08-27
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f32553742346c423670414d6e36794436777732713731475398a"
 ---
 
@@ -27,8 +27,8 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f3255374234
 > - ![中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)|200](文本附件/cover-CB_2U7B4lB6pAMn6yD6ww2q71GS-960.webp)
 > - 书名：中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)
 > - 阅读进度：0%
-> - 阅读时长：6分钟
-> - 最后阅读：2025-08-26
+> - 阅读时长：7分钟
+> - 最后阅读：2025-08-27
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f32553742346c423670414d6e36794436777732713731475398a
 
 # 高亮划线

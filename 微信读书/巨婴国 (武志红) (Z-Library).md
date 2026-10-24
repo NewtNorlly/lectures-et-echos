@@ -1,11 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-title: "巨婴国 (武志红) (Z-Library)"
-bookId: "CB_CJ462w60NAIe6yC6wwGxj1Pw"
-reviewCount: 1
-noteCount: 23
-bookmarkCount: 0
-author: "武志红"
 cover:
   image: '文本附件/cover-CB_CJ462w60NAIe6yC6wwGxj1Pw-960.webp'
   actualRatio: '3:4'
@@ -15,6 +9,12 @@ cover:
   displayHeight: 320
   positionX: 50
   positionY: 50
+title: "巨婴国 (武志红) (Z-Library)"
+bookId: "CB_CJ462w60NAIe6yC6wwGxj1Pw"
+reviewCount: 1
+noteCount: 23
+bookmarkCount: 0
+author: "武志红"
 progress: "49%"
 readingTime: "35分钟"
 lastReadDate: 2026-09-02
