@@ -83,7 +83,7 @@ function buildModel(cache) {
   else if (Array.isArray(chapterRaw?.updated)) chapterList = chapterRaw.updated;
   else if (Array.isArray(chapterRaw?.chapters)) chapterList = chapterRaw.chapters;
   const chapterMap = new Map();
-  for (const ch of chapterList) chapterMap.set(Number(ch.chapterUid), { title: ch.title, idx: ch.chapterIdx });
+  for (const ch of chapterList) chapterMap.set(Number(ch.chapterUid), { title: ch.title, idx: ch.chapterIdx, level: ch.level });
 
   const highlights = (cache.highlightResp?.updated ?? []).map((h) => ({
     chapterUid: chapterUidOf(h.chapterUid),
@@ -175,6 +175,8 @@ function buildModel(cache) {
         name: meta?.title || (h.chapterUid === -1 ? '正文' : `章节 ${h.chapterUid}`),
         // idx 优先级：chapterMap.chapterIdx > highlight 自带 chapterIdx > uid 数值
         idx: meta?.idx ?? h.chapterIdx ?? h.chapterUid,
+        // TOC 层级（1=编/部, 2=章, 3=节, 4=小节）；缺省按 1（## 顶级）
+        level: meta?.level ?? 1,
         entries: [],
       };
       byUid.set(h.chapterUid, chapter);
@@ -277,7 +279,9 @@ function renderSiteMarkdown(site, model, opts = {}) {
   out.push('# 高亮划线', '');
   if (highlightCount === 0) out.push('> 这本书目前没有个人划线。', '');
   for (const chapter of model.chapters) {
-    out.push(`## ${chapter.name}`, '');
+    // 用 TOC 层级决定标题深度：level 1 → ##, 2 → ###, 3 → ####, 4 → #####（# 高亮划线已是 H1）
+    const depth = Math.min(Math.max((chapter.level ?? 1) + 1, 2), 6);
+    out.push('#'.repeat(depth) + ' ' + chapter.name, '');
     for (const entry of chapter.entries) {
       out.push(quoteBlock('📌', entry.text));
       if (entry.time) { out.push(`> ⏱ ${entry.time}`); withTime += 1; }
@@ -338,7 +342,7 @@ function mergeModels(models, metas) {
   models.forEach((model) => {
     for (const chapter of model.chapters) {
       if (!byName.has(chapter.name)) {
-        const merged = { name: chapter.name, entries: [] };
+        const merged = { name: chapter.name, level: chapter.level ?? 1, entries: [] };
         byName.set(chapter.name, merged);
         order.push(merged);
       }

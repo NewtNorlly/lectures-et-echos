@@ -43,7 +43,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=a72320c072289166a7200ff"
 
 # 高亮划线
 
-## 05 ConvNets和ImageNet，现代人工智能的基石
+### 05 ConvNets和ImageNet，现代人工智能的基石
 
 > 📌 ConvNets和ImageNet，现代人工智能的基石
 > ⏱ 2026-09-20 08:41:32
