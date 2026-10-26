@@ -74,12 +74,20 @@ function parseSiteFile(text) {
 
 function buildModel(cache) {
   const chapterRaw = cache.chapterResp?.data;
-  const chapterList = Array.isArray(chapterRaw) ? chapterRaw[0]?.updated ?? [] : chapterRaw?.updated ?? [];
+  // 兼容三种 shape：
+  //  1) 旧 obsidian 缓存：{updated: [...]}
+  //  2) 新导出（.weread-cache）：直接是 [{chapterUid, chapterIdx, title}, ...]
+  //  3) 新导出包了一层：{chapters: [...]}
+  let chapterList = [];
+  if (Array.isArray(chapterRaw)) chapterList = chapterRaw;
+  else if (Array.isArray(chapterRaw?.updated)) chapterList = chapterRaw.updated;
+  else if (Array.isArray(chapterRaw?.chapters)) chapterList = chapterRaw.chapters;
   const chapterMap = new Map();
   for (const ch of chapterList) chapterMap.set(Number(ch.chapterUid), { title: ch.title, idx: ch.chapterIdx });
 
   const highlights = (cache.highlightResp?.updated ?? []).map((h) => ({
     chapterUid: chapterUidOf(h.chapterUid),
+    chapterIdx: Number.isFinite(Number(h.chapterIdx)) ? Number(h.chapterIdx) : undefined,
     rangeStart: rangeOf(h.range)[0],
     rangeEnd: rangeOf(h.range)[1],
     text: clean(h.markText),
@@ -165,7 +173,8 @@ function buildModel(cache) {
       const chapter = {
         uid: h.chapterUid,
         name: meta?.title || (h.chapterUid === -1 ? '正文' : `章节 ${h.chapterUid}`),
-        idx: meta?.idx ?? Number.MAX_SAFE_INTEGER,
+        // idx 优先级：chapterMap.chapterIdx > highlight 自带 chapterIdx > uid 数值
+        idx: meta?.idx ?? h.chapterIdx ?? h.chapterUid,
         entries: [],
       };
       byUid.set(h.chapterUid, chapter);
