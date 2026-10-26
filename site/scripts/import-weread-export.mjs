@@ -324,6 +324,7 @@ for (const entry of existingFiles) {
 // 2026-10-25：法学教书匠的日常、账号已迁移两个公众号；中县干部；
 // 除巨婴国外全部 Z-Library 导入书（中国社会中的宗教/曼昆/突厥历法/语言学的邀请）；
 // 两本 Learn to Read Greek；两本「茶馆」相关 CB_ 论文/导入书。
+// 2026-10-26：理论好用吗（用户明确要求从我的书架删除）。
 const excludedBookIds = new Set([
   'MP_WXS_3939255758',
   'MP_WXS_3927666464',
@@ -338,6 +339,7 @@ const excludedBookIds = new Set([
   'CB_68YBb8BdzGdT6yl6ww9c84uh',
   'CB_6jL1XH1YYGlh6yj6ww53IASi',
   'CB_25h1l31l9Glh6yj6wwCKd2HJ',
+  'CB_7n95at5bN1oD6s16sbCJEBhW',
 ]);
 
 const bookDirectories = (await readdir(path.join(exportDirectory, 'books'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
