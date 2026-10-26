@@ -24,9 +24,10 @@ if (!note || note.draft) {
 }
 
 const { Content, headings } = await render(note.entry);
+// TOC 展示 h2-h4：h2=元数据/高亮划线 两个区块；h3=编/顶级章；h4=章/节（尊重原书 TOC 层级，不要拍平）
 const tableOfContents = headings
-  .filter((heading) => heading.depth === 2 || heading.depth === 3)
-  .slice(0, 24);
+  .filter((heading) => heading.depth >= 2 && heading.depth <= 4)
+  .slice(0, 60);
 const kindLabel = note.kind === "book" ? "阅读笔记" : note.kind === "stats" ? "阅读统计" : "影像文本";
 
 
