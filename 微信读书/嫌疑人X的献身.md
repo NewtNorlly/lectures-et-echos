@@ -1,6 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/59/cpplatform_gnveypvmpcpiaen24cumub/t6_cpplatform_gnveypvmpcpiaen24cumub1785219967.jpg"
 title: "嫌疑人X的献身"
 bookId: "3300020531"
 reviewCount: 0
@@ -8,6 +7,7 @@ noteCount: 0
 bookmarkCount: 0
 author: "东野圭吾"
 translator: "张舟"
+cover: "https://cdn.weread.qq.com/weread/cover/59/cpplatform_gnveypvmpcpiaen24cumub/t6_cpplatform_gnveypvmpcpiaen24cumub1785219967.jpg"
 progress: "0%"
 readingTime: "0分钟"
 lastReadDate: 2026-09-21

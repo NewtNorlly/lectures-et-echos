@@ -1,12 +1,12 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "http://wx.qlogo.cn/mmhead/Q3auHgzwzM6kByt1nang38SdjA63V5Xa11IrnaewGQvTXVVficKAYew/0"
 title: "波兰球Polandball"
 bookId: "MP_WXS_3268160052"
 reviewCount: 0
 noteCount: 1
 bookmarkCount: 0
 author: "公众号"
+cover: "http://wx.qlogo.cn/mmhead/Q3auHgzwzM6kByt1nang38SdjA63V5Xa11IrnaewGQvTXVVficKAYew/0"
 progress: "0%"
 readingTime: "3分钟"
 lastReadDate: 2026-09-11

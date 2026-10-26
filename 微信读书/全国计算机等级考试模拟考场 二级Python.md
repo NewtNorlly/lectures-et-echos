@@ -1,12 +1,12 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/83/cpplatform_dpamjtntixs1ea9rftzetm/t6_cpplatform_dpamjtntixs1ea9rftzetm1699849047.jpg"
 title: "全国计算机等级考试模拟考场 二级Python"
 bookId: "3300077388"
 reviewCount: 0
 noteCount: 2
 bookmarkCount: 0
 author: "策未来"
+cover: "https://cdn.weread.qq.com/weread/cover/83/cpplatform_dpamjtntixs1ea9rftzetm/t6_cpplatform_dpamjtntixs1ea9rftzetm1699849047.jpg"
 progress: "0%"
 readingTime: "1分钟"
 lastReadDate: 2026-08-25
@@ -35,7 +35,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=c3532920813ab84bag018ea9"
 
 # 高亮划线
 
-## 二级Python无纸化考试精选真题参考答案及解析
+## 章节 20
 
 > 📌 允许多个联机用户同时使用一台计算机系统进行计算的操作系统称为分时操作系统。
 > ⏱ 2026-08-25 00:09:23

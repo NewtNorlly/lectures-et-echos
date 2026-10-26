@@ -1,15 +1,15 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/31/cpplatform_4y6s7suhvm4wsptukvrrxx/t6_cpplatform_4y6s7suhvm4wsptukvrrxx1752118268.jpg"
 title: "The Lord of the Rings Boxed Set 魔戒三部曲（英文版）"
 bookId: "3300152201"
 reviewCount: 1
 noteCount: 1
 bookmarkCount: 0
 author: "[英] J.R.R.托尔金"
+cover: "https://cdn.weread.qq.com/weread/cover/31/cpplatform_4y6s7suhvm4wsptukvrrxx/t6_cpplatform_4y6s7suhvm4wsptukvrrxx1752118268.jpg"
 progress: "0%"
-readingTime: "2分钟"
-lastReadDate: 2025-08-24
+readingTime: "3分钟"
+lastReadDate: 2026-10-26
 category: "教育学习-外语"
 publishTime: "2025-07-01 00:00:00"
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a"
@@ -25,13 +25,13 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a"
 > - 出版时间：2025-07-01 00:00:00
 > - 分类：教育学习-外语
 > - 阅读进度：0%
-> - 阅读时长：2分钟
-> - 最后阅读：2025-08-24
+> - 阅读时长：3分钟
+> - 最后阅读：2026-10-26
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a
 
 # 高亮划线
 
-## BOOK SIX
+## 章节 13
 
 > 📌 Sam roused himself painfully from the ground. For a moment he wondered where he was, and then all the misery and despair returned to him.
 > ⏱ 2025-08-24 05:41:40

@@ -1,12 +1,12 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/94/cpplatform_jre1bnrf4zp3jsf9sqsegy/t6_cpplatform_jre1bnrf4zp3jsf9sqsegy1705303499.jpg"
 title: "全国计算机等级考试上机考试题库 二级Python"
 bookId: "3300084232"
 reviewCount: 0
 noteCount: 26
 bookmarkCount: 0
 author: "策未来"
+cover: "https://cdn.weread.qq.com/weread/cover/94/cpplatform_jre1bnrf4zp3jsf9sqsegy/t6_cpplatform_jre1bnrf4zp3jsf9sqsegy1705303499.jpg"
 progress: "0%"
 readingTime: "14分钟"
 readingDate: 2025-08-21
@@ -36,7 +36,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=59532af0813ab8767g012c0e"
 
 # 高亮划线
 
-## 2.1 二级公共基础知识高频考点
+## 章节 12
 
 > 📌 数据结构是指相互有关联的数据元素的集合。
 > ⏱ 2025-08-21 05:51:09
@@ -101,7 +101,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=59532af0813ab8767g012c0e"
 > 📌 栈的基本运算有3种：入栈、退栈及读栈顶元素。
 > ⏱ 2025-08-21 06:16:52
 
-## 3.2 参考答案及解析
+## 章节 16
 
 > 📌 一般把计算机完成一条指令所花费的时间称为一个指令周期。
 > ⏱ 2025-08-21 05:48:24

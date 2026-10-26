@@ -1,12 +1,12 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/77/YueWen_30918598/t6_YueWen_30918598.jpg"
 title: "Python极简讲义：一本书入门数据分析与机器学习"
 bookId: "30918598"
 reviewCount: 0
 noteCount: 0
 bookmarkCount: 0
 author: "张玉宏"
+cover: "https://cdn.weread.qq.com/weread/cover/77/YueWen_30918598/t6_YueWen_30918598.jpg"
 progress: "36%"
 readingTime: "15分钟"
 readingDate: 2025-05-16

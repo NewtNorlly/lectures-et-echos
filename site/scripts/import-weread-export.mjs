@@ -317,10 +317,28 @@ for (const entry of existingFiles) {
   if (id) existingByBookId.set(id, filePath);
 }
 
-// 用户明确不再收录的书（2026-10-18）：云端书架仍可能返回，导入时一律忽略，
+// 用户明确不再收录的书：云端书架仍可能返回，导入时一律忽略，
 // 避免全量同步把已删除的书重新建回来。注意：这只影响「微信读书」书库，
 // 与根目录同名的「网络博主」创作者合集无关，后者绝不受此影响。
-const excludedBookIds = new Set(['MP_WXS_3939255758']);
+// 2026-10-18：大猿取经公众号（MP_WXS_3939255758）。
+// 2026-10-25：法学教书匠的日常、账号已迁移两个公众号；中县干部；
+// 除巨婴国外全部 Z-Library 导入书（中国社会中的宗教/曼昆/突厥历法/语言学的邀请）；
+// 两本 Learn to Read Greek；两本「茶馆」相关 CB_ 论文/导入书。
+const excludedBookIds = new Set([
+  'MP_WXS_3939255758',
+  'MP_WXS_3927666464',
+  'MP_WXS_3878812206',
+  'CB_Bq3AExAFY9ZR6yP6ww3HkFQK',
+  'CB_FYdA1vA319ZR6yP6ww8VK6e1',
+  'CB_2U7B4lB6pAMn6yD6ww2q71GS',
+  'CB_9O6ABeABR9ZR6yP6ww9rZ4xU',
+  'CB_ABS0j80hLGAO6ya6ww818FDU',
+  'CB_5Kw60E60NAIe6yC6ww9De0o9',
+  'CB_B2h9NT9O5GdT6yl6ww4WvDPL',
+  'CB_68YBb8BdzGdT6yl6ww9c84uh',
+  'CB_6jL1XH1YYGlh6yj6ww53IASi',
+  'CB_25h1l31l9Glh6yj6wwCKd2HJ',
+]);
 
 const bookDirectories = (await readdir(path.join(exportDirectory, 'books'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
 let updated = 0;

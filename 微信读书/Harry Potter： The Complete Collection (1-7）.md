@@ -1,12 +1,12 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/10/yuewen_834436/t6_yuewen_8344361704792300.jpg"
 title: "Harry Potter： The Complete Collection (1-7）"
 bookId: "834436"
 reviewCount: 17
 noteCount: 17
 bookmarkCount: 0
 author: "J.K. Rowling"
+cover: "https://cdn.weread.qq.com/weread/cover/10/yuewen_834436/t6_yuewen_8344361704792300.jpg"
 progress: "34%"
 readingTime: "1小时"
 readingDate: 2025-08-24
@@ -38,7 +38,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 
 # 高亮划线
 
-## CHAPTER TWENTY-NINE The Dream
+## 章节 535
 
 > 📌 It comes down to this,
 > ⏱ 2025-08-24 05:45:58

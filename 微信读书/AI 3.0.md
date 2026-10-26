@@ -1,6 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://wfqqreader-1252317822.image.myqcloud.com/cover/94/36213094/t6_36213094.jpg"
 title: "AI 3.0"
 bookId: "36213094"
 reviewCount: 17
@@ -8,6 +7,7 @@ noteCount: 25
 bookmarkCount: 0
 author: "梅拉妮·米歇尔"
 translator: "王飞跃,李玉珂,王晓,张慧"
+cover: "https://wfqqreader-1252317822.image.myqcloud.com/cover/94/36213094/t6_36213094.jpg"
 progress: "0%"
 readingTime: "7分钟"
 readingDate: 2026-09-20
@@ -43,7 +43,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=a72320c072289166a7200ff"
 
 # 高亮划线
 
-## 05 ConvNets和ImageNet，现代人工智能的基石
+## 章节 14
 
 > 📌 ConvNets和ImageNet，现代人工智能的基石
 > ⏱ 2026-09-20 08:41:32

@@ -9,7 +9,9 @@
 //     removeIds=合并后要删除的副本 bookId。
 // 用法：node scripts/repair-weread-notes.mjs --dry-run [--only=关键词] [--dump]
 //      node scripts/repair-weread-notes.mjs --write
-import { readdir, readFile, writeFile, unlink } from 'node:fs/promises';
+// 缓存目录：2026-10-25 起不再使用仓库同级的 obsidian-weread-plugin-main（用户已要求
+// 彻底删除该旧工具残留），改为仓库内临时目录 <ROOT>\.weread-cache\（用完即删，见 §5.2）。
+import { readdir, readFile, writeFile, unlink, access } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { thoughtLines, noteBody } from './seg140.mjs';
@@ -17,8 +19,7 @@ import { thoughtLines, noteBody } from './seg140.mjs';
 const siteDirectory = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(siteDirectory, '..');
 const libraryDirectory = path.join(repositoryRoot, '微信读书');
-const toolRoot = path.resolve(repositoryRoot, '..', 'obsidian-weread-plugin-main', 'weread-export-tool');
-const cacheDirectory = path.join(toolRoot, '.cache');
+const cacheDirectory = path.join(repositoryRoot, '.weread-cache');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -225,7 +226,20 @@ function updateMetaRows(metaLines, patch) {
   });
 }
 
-function renderSiteMarkdown(site, model) {
+function applyTitleOverride(metaLines, newTitle) {
+  // 重命名：callout 头 / 书名行 / 图片 alt 里的旧书名统一换成新书名（2026-10-25 巨婴国）
+  return metaLines.map((line) => {
+    const m1 = line.match(/^> \[!abstract\] (.+?)\s*$/);
+    if (m1) return `> [!abstract] ${newTitle}`;
+    const m2 = line.match(/^> - 书名：(.+?)\s*$/);
+    if (m2) return `> - 书名：${newTitle}`;
+    const m3 = line.match(/^> - !\[[^\]|]*(\|[^\]]*)?\]\((.+?)\)\s*$/);
+    if (m3) return `> - ![${newTitle}${m3[1] ?? ''}](${m3[2]})`;
+    return line;
+  });
+}
+
+function renderSiteMarkdown(site, model, opts = {}) {
   const highlightCount = model.chapters.reduce((n, c) => n + c.entries.length, 0);
   const attachedReviews = model.chapters.reduce(
     (n, c) => n + c.entries.reduce((m, e) => m + e.reviews.length, 0), 0,
@@ -241,8 +255,10 @@ function renderSiteMarkdown(site, model) {
     progress: model.meta.progress,
     readingTime: model.meta.readingTime,
   };
+  if (opts.titleOverride) patch.title = opts.titleOverride;
   const fmText = updateFrontmatter(site.fmText, patch);
-  const metaLines = updateMetaRows(site.metaLines, patch);
+  let metaLines = updateMetaRows(site.metaLines, patch);
+  if (opts.titleOverride) metaLines = applyTitleOverride(metaLines, opts.titleOverride);
 
   let withTime = 0;
   const out = ['---', fmText.replace(/^---\r?\n/, '').replace(/\r?\n---$/, ''), '---', ''];
@@ -391,10 +407,14 @@ const bookIdOf = (text) => text.match(/^bookId:\s*['"]?([^'"\r\n]+)['"]?\s*$/m)?
 
 async function main() {
   const cacheById = new Map();
-  for (const name of await readdir(cacheDirectory)) {
-    if (!name.endsWith('.json')) continue;
-    const id = name.replace(/\.json$/, '');
-    cacheById.set(id, JSON.parse(await readFile(path.join(cacheDirectory, name), 'utf8')));
+  let cacheExists = true;
+  try { await access(cacheDirectory); } catch { cacheExists = false; }
+  if (cacheExists) {
+    for (const name of await readdir(cacheDirectory)) {
+      if (!name.endsWith('.json')) continue;
+      const id = name.replace(/\.json$/, '');
+      cacheById.set(id, JSON.parse(await readFile(path.join(cacheDirectory, name), 'utf8')));
+    }
   }
 
   const libraryFiles = (await readdir(libraryDirectory)).filter((n) => n.endsWith('.md'));
@@ -420,19 +440,23 @@ async function main() {
       removeIds: ['34631906', 'CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
     },
     {
+      // 2026-10-25 用户要求：去掉「(武志红)(Z-Library)」来源后缀，书名只叫《巨婴国》。
+      // titleOverride 同步改写 frontmatter title 与元数据 callout 里的标题行，
+      // 防止下次全量导入把长标题写回。
       label: '巨婴国',
-      order: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036'],
+      order: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036', 'CB_9qf03h01tFVW77G75ABBK6xb'],
       shellId: 'CB_CJ462w60NAIe6yC6wwGxj1Pw',
-      outFile: '巨婴国 (武志红) (Z-Library).md',
-      removeIds: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036'],
+      outFile: '巨婴国.md',
+      titleOverride: '巨婴国',
+      removeIds: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036', 'CB_9qf03h01tFVW77G75ABBK6xb'],
     },
     {
       // 同上：固定干净文件名《研究生论文写作与时间管理.md》（bookId=3004247422 官方本），删除带后缀壳文件与 CB_ 副本。
       label: '研究生论文写作与时间管理',
-      order: ['CB_3TmBTGBVhB5k76075A7Gi2mb', '3004247422'],
+      order: ['CB_3TmBTGBVhB5k76075A7Gi2mb', '3004247422', 'CB_3LYGncGojFht77F75AG5jFKe'],
       shellId: '3004247422',
       outFile: '研究生论文写作与时间管理.md',
-      removeIds: ['3004247422', 'CB_3TmBTGBVhB5k76075A7Gi2mb'],
+      removeIds: ['3004247422', 'CB_3TmBTGBVhB5k76075A7Gi2mb', 'CB_3LYGncGojFht77F75AG5jFKe'],
     },
     {
       label: '社会学与生活',
@@ -440,14 +464,8 @@ async function main() {
       shellId: 'CB_9eI8qk8qv9N46yQ6wwEHX8WT',
       removeIds: ['CB_0tf9kp9mZ9N46yQ6ww2SA2kb'],
     },
-    {
-      // 冯军旗博士论文同一份 Z-Library 导入的两个副本：215 页全本（25 划线，章节完整）为基准/壳，
-      // 另一份只有 1 划线且落在占位章 _5，该划线与全本「第九章结语」同文，靠跨章全局去重去掉。
-      label: '中县干部',
-      order: ['CB_Bq3AExAFY9ZR6yP6ww3HkFQK', 'CB_FYdA1vA319ZR6yP6ww8VK6e1'],
-      shellId: 'CB_Bq3AExAFY9ZR6yP6ww3HkFQK',
-      removeIds: ['CB_FYdA1vA319ZR6yP6ww8VK6e1'],
-    },
+    // 中县干部合并组（2026-10-25 用户要求整本书从书架删除，已移入
+    // import-weread-export.mjs 的 excludedBookIds，合并组随之摘除）。
     {
       // 钱穆《国史大纲》：九州官方繁体本（4 划线，元数据最全，为基准/壳）+ 个人导入简体本（1 划线），
       // 章节体系一一对应（繁简同书），并集 5 划线、无重复。
@@ -487,14 +505,22 @@ async function main() {
   // ---- 重名书多副本合并 ----
   for (const group of MERGE_GROUPS) {
     if (ONLY && !group.label.includes(ONLY) && !group.order.some((id) => id.includes(ONLY))) continue;
-    const missing = group.order.filter((id) => !cacheById.has(id));
-    if (missing.length) throw new Error(`合并组「${group.label}」缺少缓存: ${missing.join(', ')}`);
+    // 容错（2026-10-25）：副本的 md 可能在上一次合并时已被 removeIds 删除（属正常），
+    // 只要缓存还在就仍要把它的划线并进结果；只要求「有缓存」，不再要求「站内还有 md」。
+    const order = group.order.filter((id) => cacheById.has(id));
     const shellEntry = siteByBookId.get(group.shellId);
-    if (!shellEntry) throw new Error(`合并组「${group.label}」找不到壳文件 bookId=${group.shellId}`);
+    if (!shellEntry) {
+      console.log(`⊘ 合并组「${group.label}」壳文件 bookId=${group.shellId} 已不在站内，跳过`);
+      continue;
+    }
+    if (order.length < 2) {
+      console.log(`⊘ 合并组「${group.label}」有效副本 ${order.length} 个（${order.join(', ') || '无'}），跳过多副本合并`);
+      continue;
+    }
 
-    const models = group.order.map((id) => buildModel(cacheById.get(id)));
+    const models = order.map((id) => buildModel(cacheById.get(id)));
     const merged = mergeModels(models, models.map((m) => m.meta));
-    const rendered = renderSiteMarkdown(parseSiteFile(shellEntry.text), merged);
+    const rendered = renderSiteMarkdown(parseSiteFile(shellEntry.text), merged, { titleOverride: group.titleOverride });
     if (DUMP) process.stdout.write(`\n===== DUMP ${group.label}(合并) =====\n${rendered.markdown}\n`);
     report.merges.push({
       label: group.label,

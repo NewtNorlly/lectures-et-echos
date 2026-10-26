@@ -1,6 +1,5 @@
 ---
 doc_type: weread-highlights-reviews
-cover: "https://cdn.weread.qq.com/weread/cover/51/YueWen_42617548/t6_YueWen_42617548.jpg"
 title: "程序员数学：用Python学透线性代数和微积分"
 bookId: "42617548"
 reviewCount: 0
@@ -8,6 +7,7 @@ noteCount: 0
 bookmarkCount: 0
 author: "保罗·奥兰德"
 translator: "百度KFive"
+cover: "https://cdn.weread.qq.com/weread/cover/51/YueWen_42617548/t6_YueWen_42617548.jpg"
 progress: "0%"
 readingTime: "0分钟"
 lastReadDate: 2025-08-21
