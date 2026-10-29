@@ -283,6 +283,9 @@ function renderStats(overall, monthlyRecords) {
     lines.push('', '## 阅读时长最多', '', '| 书名 | 作者 | 时长 |', '| --- | --- | ---: |');
     for (const item of overall.readLongest) {
       const book = item.book ?? item.albumInfo ?? {};
+      // 用户明确删除的书不再出现在阅读榜：云端 readdata 仍会返回它的时长，
+      // 但书架里已没有这本书，统计页也不该再提它（2026-10-29）。
+      if (excludedBookIds.has(String(book.bookId))) continue;
       lines.push(`| ${cleanText(book.title || book.name)} | ${cleanText(book.author || book.authorName)} | ${formatDuration(item.readTime)} |`);
     }
   }
@@ -325,6 +328,9 @@ for (const entry of existingFiles) {
 // 除巨婴国外全部 Z-Library 导入书（中国社会中的宗教/曼昆/突厥历法/语言学的邀请）；
 // 两本 Learn to Read Greek；两本「茶馆」相关 CB_ 论文/导入书。
 // 2026-10-26：理论好用吗（用户明确要求从我的书架删除）。
+// 2026-10-29：哈佛经济学家推理系列（套装共4册）（边际谋杀+致命的均衡+夺命曲线+看不见的手）
+//   ——用户明确要求从我的书架与阅读统计里彻底删除；同名的短标题「哈佛经济学家推理系列」
+//   （bookId CB_3g93LV3LbF2V77975A0w00ck）是另一本书，必须保留，勿混。
 const excludedBookIds = new Set([
   'MP_WXS_3939255758',
   'MP_WXS_3927666464',
@@ -340,6 +346,7 @@ const excludedBookIds = new Set([
   'CB_6jL1XH1YYGlh6yj6ww53IASi',
   'CB_25h1l31l9Glh6yj6wwCKd2HJ',
   'CB_7n95at5bN1oD6s16sbCJEBhW',
+  'CB_8v5Az5AyXAEZ76V75AEJv735',
 ]);
 
 const bookDirectories = (await readdir(path.join(exportDirectory, 'books'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
