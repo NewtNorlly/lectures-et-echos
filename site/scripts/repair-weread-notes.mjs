@@ -3,12 +3,11 @@
 //  2. 每条划线都带创建时间 ⏱（highlight.createTime，Asia/Shanghai）
 //  3. 想法（review）按 range 模糊挂到同章节对应划线（精确>同终点>最大重叠），带 🕰；挂不上的收进「章节点评与书评」
 //  4. 保留站点 frontmatter / 元数据 callout 的其余字段，仅同步数量、进度、时长、日期
-//  5. 特殊：同一本书的多个导入副本合并为一本（按章节名并章、原文去重、合并想法）。
-//     合并组在 MERGE_GROUPS 配置：order=模型合并顺序(首个为进度/时长元数据基准)，
-//     shellId=提供 frontmatter/元数据壳的书，outFile=输出文件名(缺省=shellId 现有文件)，
-//     removeIds=合并后要删除的副本 bookId。
+//  5. ★重名书多副本合并已于 2026-10-30 全面停用（手册 §2.0 第 5 条 / §5.4）：书架与微信读书
+//     严格 1:1，副本各自独立保留，不再合并、不再删除副本文件。MERGE_GROUPS 仅作历史配置保留，
+//     默认不执行；只有显式传 --allow-merge 才会跑（正常同步流程禁止使用）。
 // 用法：node scripts/repair-weread-notes.mjs --dry-run [--only=关键词] [--dump]
-//      node scripts/repair-weread-notes.mjs --write
+//      node scripts/repair-weread-notes.mjs --write        ← 注意：不带 --dry-run 就会写盘（§24.5）
 // 缓存目录：2026-10-25 起不再使用仓库同级的 obsidian-weread-plugin-main（用户已要求
 // 彻底删除该旧工具残留），改为仓库内临时目录 <ROOT>\.weread-cache\（用完即删，见 §5.2）。
 import { readdir, readFile, writeFile, unlink, access } from 'node:fs/promises';
@@ -25,6 +24,10 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const DUMP = args.includes('--dump');
 const ONLY = (args.find((a) => a.startsWith('--only=')) ?? '').slice(7);
+// 重名书合并已于 2026-10-30 全面停用（手册 §2.0 第 5 条 / §5.4）：「我的书架」必须与微信读书
+// 严格 1:1 镜像，微信读书里有几个 bookId 就有几张卡，不得把副本合并成一张（合并会产出微信读书里
+// 不存在的时间戳组合，属于凭空整合）。默认停用；只有显式传 --allow-merge 才会执行历史 MERGE_GROUPS。
+const MERGE_DISABLED = !args.includes('--allow-merge');
 
 /* ------------------------------- 基础工具 ------------------------------- */
 
@@ -515,8 +518,16 @@ async function main() {
     if (!DRY_RUN) await writeFile(siteEntry.file, rendered.markdown, 'utf8');
   }
 
-  // ---- 重名书多副本合并 ----
-  for (const group of MERGE_GROUPS) {
+  // ---- 重名书多副本合并：已于 2026-10-30 全面停用（手册 §2.0 第 5 条 / §5.4）----
+  // 新准则要求「我的书架」与微信读书严格 1:1 镜像：微信读书里有几个 bookId，书架上就有几张卡。
+  // 合并会把不同 bookId 的笔记揉进一个文件，产出微信读书里不存在的时间戳组合，属于凭空整合，禁止。
+  // 因此下面的合并段整段不再执行；MERGE_GROUPS 仅作历史配置保留，不参与任何写入与删除。
+  // 本脚本其余能力（按缓存重建笔记正文、模糊挂载想法、seg140 分段）不受影响，照常使用。
+  if (MERGE_DISABLED) {
+    console.log(`⊘ 重名书合并已停用（${MERGE_GROUPS.length} 组历史配置未执行）：书架与微信读书严格 1:1，副本各自独立保留`);
+    report.mergesDisabled = MERGE_GROUPS.map((g) => g.label);
+  }
+  for (const group of (MERGE_DISABLED ? [] : MERGE_GROUPS)) {
     if (ONLY && !group.label.includes(ONLY) && !group.order.some((id) => id.includes(ONLY))) continue;
     // 容错（2026-10-25）：副本的 md 可能在上一次合并时已被 removeIds 删除（属正常），
     // 只要缓存还在就仍要把它的划线并进结果；只要求「有缓存」，不再要求「站内还有 md」。

@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 0
 bookmarkCount: 0
 author: "Christopher Ansell"
-cover: "https://res.weread.qq.com/wrepub/CB_A2y1r61pGFVW77G75A3Rv15q_parsecover"
+cover:
+  image: '文本附件/cover-CB_A2y1r61pGFVW77G75A3Rv15q-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 640
+  pixelHeight: 960
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "4分钟"
 lastReadDate: 2026-10-26
@@ -17,7 +25,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ef842cd3643425f4132793172
 # 元数据
 
 > [!abstract] Rethinking Theories of Governance
-> - ![Rethinking Theories of Governance|200](https://res.weread.qq.com/wrepub/CB_A2y1r61pGFVW77G75A3Rv15q_parsecover)
+> - ![Rethinking Theories of Governance|200](文本附件/cover-CB_A2y1r61pGFVW77G75A3Rv15q-960.webp)
 > - 书名：Rethinking Theories of Governance
 > - 作者：Christopher Ansell
 > - 出版社：Edward Elgar Publishing

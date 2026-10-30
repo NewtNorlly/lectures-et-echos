@@ -62,15 +62,16 @@ const FALLBACK_RULES: Array<[RegExp, string]> = [
   // —— 人物传记 ——
   [/只是为了好玩/, '人物传记'],
   // —— 历史 ——
-  [/人类大历史|突厥历法|国史大纲|圣杯与剑|中国近代史/, '历史'],
+  // 「哦，加拿大（1867-2017）」是加拿大联邦史，按内容归历史（云端给的是「原版书」形式标签，见 FORMAT_CATEGORY_LABELS）
+  [/人类大历史|突厥历法|国史大纲|圣杯与剑|中国近代史|加拿大/, '历史'],
   // —— 哲学宗教 ——（刘擎西方现代思想讲义为政治哲学导论；哈特《法律的概念》为法哲学经典）
   [/培根随笔|中国社会中的宗教|信仰与德行|刘擎西方现代思想讲义|法律的概念/, '哲学宗教'],
   // —— 经济理财 ——（「哈佛经济学家推理系列」别名「奇案中的经济学」，以推理小说讲经济学原理，电商归经济通俗读物；
   // 「私产先生」为价格控制 / 经济自由主题经济学公众号；「四十个世纪的工资与价格管制」为经济史）
   [/国家为什么会失败|曼昆经济学|经济学家推理|私产先生|四十个世纪的工资与价格管制/, '经济理财'],
   // —— 政治军事 ——（央视新闻为中央官方时政媒体，与新华社/人民日报同类；「美国反对美国」为王沪宁美国政治观察著作；
-  // Rethinking Theories of Governance 为治理理论学术书；张千帆《美国立宪启示》为宪法/政治）
-  [/新华社|人民日报|央视新闻|政事儿|长安街知事|卢克文|波兰球|半月谈|美国反对美国|Rethinking Theories of Governance|张千帆/, '政治军事'],
+  // Rethinking Theories of Governance / 反思治理理论 为治理理论学术书；张千帆《美国立宪启示》为宪法/政治）
+  [/新华社|人民日报|央视新闻|政事儿|长安街知事|卢克文|波兰球|半月谈|美国反对美国|Rethinking Theories of Governance|反思治理理论|张千帆/, '政治军事'],
   // —— 文学（书评 / 文学刊物优先于通用报刊规则） ——
   [/人民文学|新京报书评/, '文学'],
   // —— 科学技术 ——（「云海观星社」名为观星，实为半导体/芯片产业科普号）
@@ -109,12 +110,19 @@ export function compareByRecent(left: Note, right: Note): number {
   return left.title.localeCompare(right.title, 'zh-CN');
 }
 
-/** 取书摘的父分类（「文学-外国文学」→「文学」），缺分类时走兜底规则 */
+/**
+ * 只表示「版本 / 语言形式」而非内容学科的 frontmatter 分类标签（如「原版书-英文原版」）。
+ * 命中这类标签时不按它归类——用户要求按书籍内容分类——改走下面的内容关键词兜底规则。
+ * 只增不减：以后发现新的形式标签（非学科）就追加进来。
+ */
+const FORMAT_CATEGORY_LABELS = new Set(['原版书']);
+
+/** 取书摘的父分类（「文学-外国文学」→「文学」），形式标签/缺分类时走内容兜底规则 */
 export function bookParentCategory(note: Note): string {
   const full = note.weread?.category?.trim();
   if (full) {
     const parent = full.split('-')[0].trim();
-    if (parent) return parent;
+    if (parent && !FORMAT_CATEGORY_LABELS.has(parent)) return parent;
   }
 
   const title = note.title ?? '';

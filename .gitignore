@@ -5,3 +5,6 @@ site/assets/cover-system/previews/
 site/public/media/
 site/.cover-test/
 .weread-export/
+__pycache__/
+*.pyc
+_sync/

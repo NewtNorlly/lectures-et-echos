@@ -1,26 +1,15 @@
 {
-  "generatedAt": "2026-10-26T07:26:11.349Z",
+  "generatedAt": "2026-10-30T10:25:42.403Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
-  "count": 3,
+  "count": 1,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 43976,
+  "totalBytes": 10704,
   "records": [
-    {
-      "markdown": "六分超超/今天的手机商战，和当年比就是小孩打架....md",
-      "title": "今天的手机商战，和当年比就是小孩打架...",
-      "collection": "六分超超",
-      "category": "general",
-      "seed": "b7c6ce528a27",
-      "cover960": "六分超超/文本附件/generated-cover-b7c6ce528a27-960.webp",
-      "cover480": "六分超超/文本附件/generated-cover-b7c6ce528a27-480.webp",
-      "bytes960": 11186,
-      "bytes480": 4668
-    },
     {
       "markdown": "微信读书统计/微信读书阅读统计.md",
       "title": "微信读书阅读统计",
@@ -31,17 +20,6 @@
       "cover480": "微信读书统计/文本附件/generated-cover-eccdb97e1def-480.webp",
       "bytes960": 7746,
       "bytes480": 2958
-    },
-    {
-      "markdown": "智能路障/贴标签、造黑话！现代人为何越来越不会说人话？【围炉夜话】.md",
-      "title": "贴标签、造黑话！现代人为何越来越不会说人话？【围炉夜话】",
-      "collection": "智能路障",
-      "category": "general",
-      "seed": "c01491bbf131",
-      "cover960": "智能路障/文本附件/generated-cover-c01491bbf131-960.webp",
-      "cover480": "智能路障/文本附件/generated-cover-c01491bbf131-480.webp",
-      "bytes960": 12444,
-      "bytes480": 4974
     }
   ]
 }

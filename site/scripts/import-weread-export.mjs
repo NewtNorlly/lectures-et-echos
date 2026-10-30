@@ -1,6 +1,7 @@
 import { readdir, readFile, stat, writeFile, mkdir, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import sharp from 'sharp';
 import { thoughtLines, noteBody } from './seg140.mjs';
 
 const siteDirectory = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
@@ -9,6 +10,52 @@ const libraryDirectory = path.join(repositoryRoot, '微信读书');
 // 微信读书统计归档到网络博主栏目下的微信读书统计合集（2026-09-22 变更）
 const statsDirectory = path.join(repositoryRoot, '微信读书统计');
 const exportDirectory = path.resolve(process.argv[2] || '');
+
+// ★本地封面保护（2026-10-30，手册 §8.4/§23/§27.7）：
+// 微信读书对 CB_ 导入书给的是 res.weread.qq.com/..._parsecover 热链（浏览器间歇性坏图）
+// 或 book_cover_default_imported 占位剪影（非原封面，零容忍）。此前已把这些下载转成本地
+// 竖版 WebP 放在 微信读书/文本附件/cover-<bookId>-960/-480.webp。
+// 但导入器整本重写 frontmatter 时只用云端 info.cover，会把本地化成果冲回热链/占位图——
+// §24（2026-10-25）全量重导就已造成该回归。故这里在建卡前先扫出「已有本地封面」的 bookId，
+// 渲染时优先用本地封面块，云端 URL 只在没有本地封面时才用。
+const attachmentDirectory = path.join(libraryDirectory, '文本附件');
+const localCoverIds = new Set();
+try {
+  for (const entry of await readdir(attachmentDirectory)) {
+    const m = entry.match(/^cover-(.+)-960\.webp$/);
+    if (m) localCoverIds.add(m[1]);
+  }
+} catch { /* 文本附件目录不存在则无本地封面 */ }
+
+// 读一张本地封面的真实像素尺寸，算出竖版比例档位（与 §8.4 的 sharp 两档一致）
+async function localCoverBlock(bookId, title) {
+  const rel960 = `文本附件/cover-${bookId}-960.webp`;
+  const rel480 = `文本附件/cover-${bookId}-480.webp`;
+  const abs960 = path.join(attachmentDirectory, `cover-${bookId}-960.webp`);
+  let width = 0;
+  let height = 0;
+  try {
+    const meta = await sharp(abs960).metadata();
+    width = Number(meta.width) || 0;
+    height = Number(meta.height) || 0;
+  } catch { return null; }
+  if (!width || !height) return null;
+  // 竖版比例档位：按 宽/高 归到 2:3 / 3:4 / 4:5（§8.4）
+  const ratio = width / height;
+  const actualRatio = ratio <= 0.7 ? '2:3' : ratio <= 0.78 ? '3:4' : '4:5';
+  const lines = [
+    'cover:',
+    `  image: '${rel960}'`,
+    `  actualRatio: '${actualRatio}'`,
+    `  pixelWidth: ${width}`,
+    `  pixelHeight: ${height}`,
+    '  displayWidth: 100',
+    '  displayHeight: 320',
+    '  positionX: 50',
+    '  positionY: 50',
+  ];
+  return { lines, calloutImage: `> - ![${title}|200](${rel960})`, rel480 };
+}
 
 if (!process.argv[2]) throw new Error('用法：pnpm import:weread -- <微信读书导出目录>');
 await stat(exportDirectory);
@@ -64,11 +111,23 @@ const reviewValue = (item) => item?.review?.review ?? item?.review ?? item ?? {}
 const existingBookId = (raw) => raw.match(/^bookId:\s*["']?([^"'\r\n]+)["']?\s*$/m)?.[1]?.trim();
 const readingTimestamp = (data) => data.notebook?.sort ?? data.shelf?.readUpdateTime ?? data.progress?.book?.updateTime;
 
-function renderBook(data) {
+// ★用户点名改过的书标题（2026-10-30 新增，手册 §27.3）：一律用用户定的标题，不被云端 info.title 冲回去。
+// 该能力原先只存在于 repair-weread-notes.mjs 的 MERGE_GROUPS.titleOverride 字段里；合并已全面作废
+// （§5.4），所以必须独立到导入器，否则每次全量同步都会把用户的改名冲掉。
+// 只改「标题」这一项展示字段，书的内容（划线/想法/元数据）仍 100% 来自微信读书，不违反 §2.0。
+// key = frontmatter bookId，value = 用户定的标题。新增改名书时在此追加。
+const titleOverrides = new Map([
+  // 云端是「巨婴国 (武志红) (Z-Library)」，2026-10-25 用户点名改为「巨婴国」（§24.3）
+  ['CB_CJ462w60NAIe6yC6wwGxj1Pw', '巨婴国'],
+  // 云端是「西行漫记（伟大的长征实录，革命的星火燎原）」，用户点名简称「西行漫记」
+  ['3300168271', '西行漫记'],
+]);
+
+async function renderBook(data) {
   const info = data.info ?? data.notebook?.book ?? data.shelf ?? {};
   const notebook = data.notebook ?? {};
   const progress = data.progress?.book ?? {};
-  const title = cleanText(info.title || notebook.book?.title || data.bookId);
+  const title = cleanText(titleOverrides.get(String(data.bookId)) || info.title || notebook.book?.title || data.bookId);
   const author = cleanText(info.author || notebook.book?.author);
   const translator = cleanText(info.translator || notebook.book?.translator);
   const category = cleanText(info.category || notebook.book?.categories?.[0]?.title);
@@ -187,12 +246,20 @@ function renderBook(data) {
   const inlineThoughtCount = attachedReviews.size + orphanReviewCount;
   const reviewCount = inlineThoughtCount + allStandaloneReviews.length;
 
+  // ★本地封面优先（2026-10-30，§8.4/§23/§27.7）：磁盘上已有该 bookId 的本地 WebP 就用它，
+  // 不被云端 parsecover 热链 / default_imported 占位图冲回。读尺寸失败则回退云端 URL。
+  const localCover = localCoverIds.has(String(data.bookId))
+    ? await localCoverBlock(String(data.bookId), title)
+    : null;
+
   const frontmatter = [
     '---', 'doc_type: weread-highlights-reviews', `title: ${yamlString(title)}`,
     `bookId: ${yamlString(data.bookId)}`, `reviewCount: ${reviewCount}`, `noteCount: ${noteCount}`,
     `bookmarkCount: ${bookmarkCount}`, `author: ${yamlString(author)}`,
     translator ? `translator: ${yamlString(translator)}` : undefined,
-    info.cover ? `cover: ${yamlString(info.cover)}` : undefined,
+    // ★本地封面优先（2026-10-30）：磁盘上已有 文本附件/cover-<bookId>-960.webp 就用本地块，
+    // 不被云端 parsecover 热链 / default_imported 占位图冲回（§8.4/§23/§27.7）。
+    ...(localCover ? localCover.lines : (info.cover ? [`cover: ${yamlString(info.cover)}`] : [])),
     `progress: ${yamlString(`${Number(progress.progress ?? notebook.readingProgress ?? 0)}%`)}`,
     `readingTime: ${yamlString(formatDuration(progress.readingTime))}`,
     readingDate ? `readingDate: ${readingDate}` : undefined,
@@ -208,7 +275,8 @@ function renderBook(data) {
   ].filter((line) => line !== undefined);
 
   const lines = [...frontmatter, '# 元数据', '', `> [!abstract] ${title}`];
-  if (info.cover) lines.push(`> - ![${title}|200](${info.cover})`);
+  if (localCover) lines.push(localCover.calloutImage);
+  else if (info.cover) lines.push(`> - ![${title}|200](${info.cover})`);
   lines.push(`> - 书名：${title}`);
   if (author) lines.push(`> - 作者：${author}`);
   if (translator) lines.push(`> - 译者：${translator}`);
@@ -353,6 +421,7 @@ const bookDirectories = (await readdir(path.join(exportDirectory, 'books'), { wi
 let updated = 0;
 let created = 0;
 let excluded = 0;
+let shrunk = 0;   // 以微信读书为准覆盖后内容变少的书（用户已在微信读书删除部分划线/想法）
 for (const entry of bookDirectories) {
   const data = JSON.parse(await readFile(path.join(exportDirectory, 'books', entry.name, 'data.json'), 'utf8'));
   if (excludedBookIds.has(String(data.bookId))) {
@@ -360,7 +429,7 @@ for (const entry of bookDirectories) {
     console.log(`⊘ 跳过用户已排除的书：${data.bookId}（${data.info?.title ?? data.notebook?.book?.title ?? '未知书名'}）`);
     continue;
   }
-  const rendered = renderBook(data);
+  const rendered = await renderBook(data);
   let destination = existingByBookId.get(String(data.bookId));
   if (!destination) {
     const base = safeFileName(rendered.title);
@@ -369,17 +438,36 @@ for (const entry of bookDirectories) {
     occupiedPaths.add(destination.toLowerCase());
     created += 1;
   } else {
-    // fail-closed（2026-09-22 返工加固）：若新渲染版本划线/想法比旧文件少，说明接口数据残缺，保留旧文件不覆盖
-    const oldText = await readFile(destination, 'utf8');
-    const oldHl = (oldText.match(/📌/g) || []).length;
-    const oldTh = (oldText.match(/💭/g) || []).length;
-    const newHl = (rendered.markdown.match(/📌/g) || []).length;
-    const newTh = (rendered.markdown.match(/💭/g) || []).length;
-    if (newHl < oldHl || newTh < oldTh) {
-      console.warn(`⚠ fail-closed 跳过 ${rendered.title}：📌 ${oldHl}→${newHl} 💭 ${oldTh}→${newTh}（保留旧文件）`);
-      continue;
+    // ★fail-closed（2026-10-30 按手册 §2.0 / §4.5 重新定义，取代 2026-09-22 旧版）：
+    // 旧规则「新版本 📌/💭 比旧文件少就跳过、保留旧文件」已作废——它会让用户在微信读书里
+    // 真删掉的划线永远赖在网站上，正是用户反感的「网站有、微信读书没有」。
+    // 新规则：只要本书 5 个接口都抓全（data._complete === true），一律以微信读书为准整本覆盖，
+    //        变少也照写（用户在微信读书删了划线，网站就该跟着少）。
+    // 唯一保护是「接口残缺不覆盖」：没有 _complete 标记（旧格式导出目录，无法证明数据完整）时，
+    //        才退回计数保护，避免拿残缺数据清空既有内容。判定依据是接口是否成功，不是计数是否变少。
+    if (data._complete === true) {
+      const oldText = await readFile(destination, 'utf8');
+      const oldHl = (oldText.match(/📌/g) || []).length;
+      const newHl = (rendered.markdown.match(/📌/g) || []).length;
+      const oldTh = (oldText.match(/💭/g) || []).length;
+      const newTh = (rendered.markdown.match(/💭/g) || []).length;
+      if (newHl < oldHl || newTh < oldTh) {
+        console.log(`↓ 以微信读书为准覆盖 ${rendered.title}：📌 ${oldHl}→${newHl} 💭 ${oldTh}→${newTh}（用户在微信读书已删除部分内容）`);
+        shrunk += 1;
+      }
+      updated += 1;
+    } else {
+      const oldText = await readFile(destination, 'utf8');
+      const oldHl = (oldText.match(/📌/g) || []).length;
+      const oldTh = (oldText.match(/💭/g) || []).length;
+      const newHl = (rendered.markdown.match(/📌/g) || []).length;
+      const newTh = (rendered.markdown.match(/💭/g) || []).length;
+      if (newHl < oldHl || newTh < oldTh) {
+        console.warn(`⚠ 数据未标记完整（缺 _complete），跳过 ${rendered.title}：📌 ${oldHl}→${newHl} 💭 ${oldTh}→${newTh}（保留旧文件，请补抓后重导）`);
+        continue;
+      }
+      updated += 1;
     }
-    updated += 1;
   }
   await writeFile(destination, rendered.markdown, 'utf8');
 }
@@ -396,4 +484,4 @@ const statsPath = path.join(statsDirectory, '微信读书阅读统计.md');
 await writeFile(statsPath, renderStats(overall, monthlyRecords), 'utf8');
 // 清理旧位置（2026-09-22 起统计归档到微信读书统计合集）
 try { await unlink(path.join(libraryDirectory, '微信读书阅读统计.md')); } catch { /* 旧文件已不存在 */ }
-console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，排除 ${excluded} 本，阅读统计 ${monthlyRecords.length} 个月。`);
+console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，排除 ${excluded} 本，其中以微信读书为准内容变少 ${shrunk} 本，阅读统计 ${monthlyRecords.length} 个月。`);
