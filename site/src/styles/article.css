@@ -130,6 +130,12 @@
   color: var(--ink-faint);
 }
 
+/* depth 4 = 章节小节 / 统计页月份：必须再缩进一级，否则会退回到与顶级标题同排（2026-11-09 修复） */
+.article-aside li[data-depth="4"] a {
+  padding-left: 1.6rem;
+  color: var(--ink-faint);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .article-aside a::before {
     transform: none;
