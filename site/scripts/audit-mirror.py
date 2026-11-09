@@ -9,9 +9,10 @@
   · 时间戳是每条内容的唯一身份凭证。网站上的 ⏱（划线）与 🕰 / 记录于（想法）都是
     Asia/Shanghai 的 `YYYY-MM-DD HH:mm:ss`，按同一时区还原成 Unix 秒后与微信读书
     的 createTime 对齐。**不按文本相似度、不按书名、不按数量差额判定。**
-  · 网站有、微信读书没有 → ORPHAN（应删）
-  · 微信读书有、网站没有 → MISSING（应补）
-  · 整本书在微信读书（书架 ∪ 笔记本）里查无此 bookId → ORPHAN_BOOK（应删）
+  · 网站有、微信读书（当前书架）没有 → ORPHAN（应删）★2026-11-09：唯一事实源是
+    「当前书架」——已移出书架的书（笔记本里还有笔记）同样判 ORPHAN，应删。
+  · 微信读书（当前书架）有、网站没有 → MISSING（应补）
+  · 整本书不在微信读书当前书架里 → ORPHAN_BOOK（应删）
   · 用户点名排除的书（excludedBookIds）→ 单列，不参与判定（用户主动意愿优先于镜像）
 """
 import argparse
@@ -184,7 +185,10 @@ def main():
         print('!! failureCount != 0：数据不完整，本次结果不得作为删除依据（手册 §2.0 第 7 条）')
 
     weread = load_weread(export_dir)
-    print('微信读书侧: %d 本（书架∪笔记本并集）' % len(weread))
+    on_shelf = [bid for bid, w in weread.items() if w['onShelf']]
+    only_notebook = [bid for bid, w in weread.items() if not w['onShelf'] and w['inNotebook']]
+    print('微信读书侧: %d 本（当前书架 %d 本 + 已移出书架但有笔记 %d 本——后者不再视为「应有」）'
+          % (len(weread), len(on_shelf), len(only_notebook)))
 
     site_files = []
     for name in sorted(os.listdir(library)):
@@ -220,7 +224,14 @@ def main():
         wr = weread.get(bid)
         if wr is None:
             orphan_books.append({'file': fname, 'bookId': bid, 'title': site['title'],
-                                 'reason': '微信读书（书架∪笔记本）查无此 bookId',
+                                 'reason': '微信读书（书架）查无此 bookId',
+                                 'highlights': site['highlightMarks'], 'thoughts': site['thoughtMarks']})
+            continue
+        # ★2026-11-09 用户钦定：唯一事实源 = 微信读书「当前书架」。已被用户移出书架的
+        # 书（笔记本里可能还有笔记）不再属于「微信读书现有资料」，网站上有的一律删。
+        if not wr['onShelf']:
+            orphan_books.append({'file': fname, 'bookId': bid, 'title': site['title'],
+                                 'reason': '已不在微信读书书架（用户移出书架）',
                                  'highlights': site['highlightMarks'], 'thoughts': site['thoughtMarks']})
             continue
         if not wr['complete']:
@@ -276,10 +287,10 @@ def main():
                 'wereadHl': len(wr['highlightTimes']), 'wereadTh': len(wr['thoughtTimes']),
             })
 
-    # 微信读书有、网站整本没有（且未被用户排除）
+    # 微信读书（当前书架）有、网站整本没有（且未被用户排除）——已移出书架的书不算「应有」
     absent_books = []
     for bid, wr in weread.items():
-        if bid in seen_ids or bid in excluded:
+        if bid in seen_ids or bid in excluded or not wr['onShelf']:
             continue
         absent_books.append({
             'bookId': bid, 'title': wr['title'],
@@ -289,7 +300,7 @@ def main():
 
     print('')
     print('--- 结果汇总 ---')
-    print('① 网站有、微信读书查无的整本书（ORPHAN_BOOK，应删）: %d' % len(orphan_books))
+    print('① 网站有、微信读书当前书架没有的整本书（ORPHAN_BOOK，应删）: %d' % len(orphan_books))
     for x in orphan_books[:40]:
         print('   · %s | bookId=%s | 📌%d 💭%d | %s' %
               (x['file'], x.get('bookId', '—'), x['highlights'], x['thoughts'], x['reason']))
@@ -315,7 +326,7 @@ def main():
     if len(per_book) > 30:
         print('   …另有 %d 本' % (len(per_book) - 30))
 
-    print('④ 微信读书有、网站整本没有的书（应补）: %d' % len(absent_books))
+    print('④ 微信读书当前书架有、网站整本没有的书（应补）: %d' % len(absent_books))
     for x in absent_books[:30]:
         print('   · %s | bookId=%s | 📌%d 💭%d | 在书架=%s 在笔记本=%s' %
               (x['title'][:36], x['bookId'], x['highlights'], x['thoughts'],

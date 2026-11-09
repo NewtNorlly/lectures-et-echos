@@ -117,10 +117,8 @@ const readingTimestamp = (data) => data.notebook?.sort ?? data.shelf?.readUpdate
 // 只改「标题」这一项展示字段，书的内容（划线/想法/元数据）仍 100% 来自微信读书，不违反 §2.0。
 // key = frontmatter bookId，value = 用户定的标题。新增改名书时在此追加。
 const titleOverrides = new Map([
-  // 云端是「巨婴国 (武志红) (Z-Library)」，2026-10-25 用户点名改为「巨婴国」（§24.3）
-  ['CB_CJ462w60NAIe6yC6wwGxj1Pw', '巨婴国'],
-  // 云端是「西行漫记（伟大的长征实录，革命的星火燎原）」，用户点名简称「西行漫记」
-  ['3300168271', '西行漫记'],
+  // ★2026-11-09：CB_CJ462…（巨婴国）与 3300168271（西行漫记）已被用户移出书架、
+  // 网站已删除，原改名条目一并移除；若日后重回书架需要改名再在此追加。
 ]);
 
 async function renderBook(data) {
@@ -357,6 +355,8 @@ function renderStats(overall, monthlyRecords) {
       // 用户明确删除的书不再出现在阅读榜：云端 readdata 仍会返回它的时长，
       // 但书架里已没有这本书，统计页也不该再提它（2026-10-29）。
       if (excludedBookIds.has(String(book.bookId))) continue;
+      // ★2026-11-09：已移出书架的书同样不得出现在统计页（用户钦定）。
+      if (!shelfBookIds.has(String(book.bookId))) continue;
       lines.push(`| ${cleanText(book.title || book.name)} | ${cleanText(book.author || book.authorName)} | ${formatDuration(item.readTime)} |`);
     }
   }
@@ -424,12 +424,25 @@ const bookDirectories = (await readdir(path.join(exportDirectory, 'books'), { wi
 let updated = 0;
 let created = 0;
 let excluded = 0;
+let removedFromShelf = 0;   // 已被用户移出微信读书书架的书（2026-11-09 用户钦定：不再收录）
 let shrunk = 0;   // 以微信读书为准覆盖后内容变少的书（用户已在微信读书删除部分划线/想法）
+// ★2026-11-09 用户钦定：唯一事实源 = 微信读书「当前书架」上的书。移出书架的书（即使
+// 笔记本里还有笔记）不算微信读书现有资料，不导入；阅读统计「阅读时长最多」也只列书架上的书。
+const shelfBookIds = new Set();
+for (const entry of bookDirectories) {
+  const data = JSON.parse(await readFile(path.join(exportDirectory, 'books', entry.name, 'data.json'), 'utf8'));
+  if (data.shelf) shelfBookIds.add(String(data.bookId));
+}
 for (const entry of bookDirectories) {
   const data = JSON.parse(await readFile(path.join(exportDirectory, 'books', entry.name, 'data.json'), 'utf8'));
   if (excludedBookIds.has(String(data.bookId))) {
     excluded += 1;
     console.log(`⊘ 跳过用户已排除的书：${data.bookId}（${data.info?.title ?? data.notebook?.book?.title ?? '未知书名'}）`);
+    continue;
+  }
+  if (!data.shelf) {
+    removedFromShelf += 1;
+    console.log(`⊘ 已移出书架，跳过：${data.bookId}（${data.info?.title ?? data.notebook?.book?.title ?? '未知书名'}）`);
     continue;
   }
   const rendered = await renderBook(data);
@@ -487,4 +500,4 @@ const statsPath = path.join(statsDirectory, '微信读书阅读统计.md');
 await writeFile(statsPath, renderStats(overall, monthlyRecords), 'utf8');
 // 清理旧位置（2026-09-22 起统计归档到微信读书统计合集）
 try { await unlink(path.join(libraryDirectory, '微信读书阅读统计.md')); } catch { /* 旧文件已不存在 */ }
-console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，排除 ${excluded} 本，其中以微信读书为准内容变少 ${shrunk} 本，阅读统计 ${monthlyRecords.length} 个月。`);
+console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，排除 ${excluded} 本，移出书架跳过 ${removedFromShelf} 本，其中以微信读书为准内容变少 ${shrunk} 本，阅读统计 ${monthlyRecords.length} 个月。`);

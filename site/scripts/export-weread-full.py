@@ -190,6 +190,7 @@ def export_one_book(book_id, shelf_entry, notebook_entry, out_root, force=False)
         'bookId': book_id,
         'shelf': shelf_entry,
         'notebook': notebook_entry,
+        'onShelf': bool(shelf_entry),   # ★2026-11-09：唯一事实源 = 当前书架，导入器/审计按此跳过移出书架的书
         '_fetchedAt': int(time.time()),
     }
     try:
@@ -364,6 +365,7 @@ def main():
             'readStat': overall.get('readStat'),
             'months': month_count,
         },
+        'shelfBookIds': sorted(shelf_by_id),
         'booksNotOnShelfButWithNotes': only_notebook,
     }
     with open(os.path.join(out_root, 'export-manifest.json'), 'w', encoding='utf-8', newline='\n') as fh:
