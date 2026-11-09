@@ -305,7 +305,10 @@ async function renderBook(data) {
       const attached = highlight.__orphan ? (highlight.__orphanReviews ?? []) : reviewsForHighlight(uid, highlight.range);
       for (const review of attached) {
         // 💭 想法按 140 怀疑线多段输出（同一条目内 blockquote 续接，💭/🕰 各只出现一次）
-        lines.push(...thoughtLines(review.content));
+        // ★content 为空的想法（微信读书里真实存在、只有时间戳没有正文）：条目必须保留，
+        //   输出裸 💭 标记行，保证 💭 数 == 🕰 数、reviewCount 恒等式成立（2026-11-09）。
+        const thought = thoughtLines(review.content);
+        lines.push(...(thought.length ? thought : ['> 💭']));
         const reviewTime = formatDateTime(review.createTime);
         if (reviewTime) lines.push(`> 🕰 ${reviewTime}`);
       }

@@ -290,7 +290,9 @@ function renderSiteMarkdown(site, model, opts = {}) {
       if (entry.time) { out.push(`> ⏱ ${entry.time}`); withTime += 1; }
       for (const review of entry.reviews) {
         // 💭 想法按 140 怀疑线多段输出（同一条目内 blockquote 续接，💭/🕰 各只出现一次）
-        out.push(...thoughtLines(review.content));
+        // ★content 为空的想法：条目必须保留，输出裸 💭 标记行，保证 💭 == 🕰（2026-11-09）
+        const thought = thoughtLines(review.content);
+        out.push(...(thought.length ? thought : ['> 💭']));
         if (review.time) out.push(`> 🕰 ${review.time}`);
       }
       out.push('');

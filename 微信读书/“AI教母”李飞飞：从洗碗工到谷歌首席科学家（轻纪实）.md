@@ -14,7 +14,7 @@ finishedDate: 2026-09-20
 lastReadDate: 2026-09-20
 category: "计算机-人工智能"
 publishTime: "2026-07-02 00:00:00"
-rating: "78%"
+rating: "77%"
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=76e32c10813abbaf2g0112e0"
 ---
 
@@ -29,7 +29,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=76e32c10813abbaf2g0112e0"
 >   她的故事不是天才神话，而是一个普通人用坚韧、共情和人文关怀，重新定义AI的底层逻辑。
 > - 出版时间：2026-07-02 00:00:00
 > - 分类：计算机-人工智能
-> - 微信读书评分：78%
+> - 微信读书评分：77%
 > - 阅读进度：0%
 > - 阅读时长：18分钟
 > - 最后阅读：2026-09-20
