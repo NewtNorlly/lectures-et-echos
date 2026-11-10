@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T14:58:07.679Z",
+  "generatedAt": "2026-11-10T13:59:38.083Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",

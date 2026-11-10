@@ -14,7 +14,7 @@ finishedDate: 2026-09-26
 lastReadDate: 2026-09-26
 category: "计算机-人工智能"
 publishTime: "2026-06-15 00:00:00"
-rating: "66%"
+rating: "65%"
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ed632000813abb93dg01910c"
 ---
 
@@ -29,7 +29,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ed632000813abb93dg01910c"
 >   书中不仅有大厂案例，更提供了个人零代码上手的极简方案。如果你想看懂AI工程化的未来，或者正在为AI落地的不稳定头疼，这本书就是你的最佳入门地图。
 > - 出版时间：2026-06-15 00:00:00
 > - 分类：计算机-人工智能
-> - 微信读书评分：66%
+> - 微信读书评分：65%
 > - 阅读进度：98%
 > - 阅读时长：30分钟
 > - 最后阅读：2026-09-26
