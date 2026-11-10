@@ -7,7 +7,15 @@ noteCount: 0
 bookmarkCount: 0
 author: "保罗·奥兰德"
 translator: "百度KFive"
-cover: "https://cdn.weread.qq.com/weread/cover/51/YueWen_42617548/t6_YueWen_42617548.jpg"
+cover:
+  image: '文本附件/cover-42617548-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 250
+  pixelHeight: 360
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "0分钟"
 lastReadDate: 2025-08-21
@@ -22,7 +30,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=818320a0728a4acc8189214"
 # 元数据
 
 > [!abstract] 程序员数学：用Python学透线性代数和微积分
-> - ![程序员数学：用Python学透线性代数和微积分|200](https://cdn.weread.qq.com/weread/cover/51/YueWen_42617548/t6_YueWen_42617548.jpg)
+> - ![程序员数学：用Python学透线性代数和微积分|200](文本附件/cover-42617548-960.webp)
 > - 书名：程序员数学：用Python学透线性代数和微积分
 > - 作者：保罗·奥兰德
 > - 译者：百度KFive

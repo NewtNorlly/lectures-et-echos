@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 1
 bookmarkCount: 0
 author: "公众号"
-cover: "http://wx.qlogo.cn/mmhead/Q3auHgzwzM6kByt1nang38SdjA63V5Xa11IrnaewGQvTXVVficKAYew/0"
+cover:
+  image: '文本附件/cover-MP_WXS_3268160052-960.webp'
+  actualRatio: '4:5'
+  pixelWidth: 369
+  pixelHeight: 369
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "3分钟"
 lastReadDate: 2026-09-11
@@ -16,7 +24,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=00542c5224d505f5758535f33
 # 元数据
 
 > [!abstract] 波兰球Polandball
-> - ![波兰球Polandball|200](http://wx.qlogo.cn/mmhead/Q3auHgzwzM6kByt1nang38SdjA63V5Xa11IrnaewGQvTXVVficKAYew/0)
+> - ![波兰球Polandball|200](文本附件/cover-MP_WXS_3268160052-960.webp)
 > - 书名：波兰球Polandball
 > - 作者：公众号
 > - 简介：波兰不能上太空

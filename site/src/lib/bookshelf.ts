@@ -96,17 +96,26 @@ export interface BookshelfData {
   totalBooks: number;
 }
 
-/** 书的最新阅读时间排序键（YYYY-MM-DD 可直接字符串比较；缺失排末尾） */
-export function bookSortKey(note: Note): string {
+/**
+ * 书的最新活动时间排序键（Unix 秒，越大越新）：
+ * 1) 优先取全书最新一条划线 / 想法 / 独立笔记的时间戳（catalog 从正文计算 lastNoteAt）；
+ * 2) 没有笔记的书回退到 lastReadDate → finishedDate → readingDate（按北京时区零点）；
+ * 3) 三个日期都没有的书为 0，沉底。
+ */
+export function bookSortKey(note: Note): number {
   const w = note.weread;
-  return w?.lastReadDate?.trim() || w?.finishedDate?.trim() || w?.readingDate?.trim() || '';
+  if (w?.lastNoteAt) return w.lastNoteAt;
+  const date = w?.lastReadDate?.trim() || w?.finishedDate?.trim() || w?.readingDate?.trim() || '';
+  if (!date) return 0;
+  const ts = Date.parse(`${date}T00:00:00+08:00`);
+  return Number.isFinite(ts) ? Math.floor(ts / 1000) : 0;
 }
 
-/** 从新到旧：最新阅读笔记时间降序，同日期以标题稳定兜底 */
+/** 从新到旧：最新笔记时间降序，同时间以标题稳定兜底 */
 export function compareByRecent(left: Note, right: Note): number {
   const lk = bookSortKey(left);
   const rk = bookSortKey(right);
-  if (lk !== rk) return rk.localeCompare(lk);
+  if (lk !== rk) return rk - lk;
   return left.title.localeCompare(right.title, 'zh-CN');
 }
 

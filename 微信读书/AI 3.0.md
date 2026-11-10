@@ -7,7 +7,15 @@ noteCount: 25
 bookmarkCount: 0
 author: "梅拉妮·米歇尔"
 translator: "王飞跃,李玉珂,王晓,张慧"
-cover: "https://wfqqreader-1252317822.image.myqcloud.com/cover/94/36213094/t6_36213094.jpg"
+cover:
+  image: '文本附件/cover-36213094-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 250
+  pixelHeight: 360
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "7分钟"
 readingDate: 2026-09-20
@@ -23,7 +31,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=a72320c072289166a7200ff"
 # 元数据
 
 > [!abstract] AI 3.0
-> - ![AI 3.0|200](https://wfqqreader-1252317822.image.myqcloud.com/cover/94/36213094/t6_36213094.jpg)
+> - ![AI 3.0|200](文本附件/cover-36213094-960.webp)
 > - 书名：AI 3.0
 > - 作者：梅拉妮·米歇尔
 > - 译者：王飞跃,李玉珂,王晓,张慧

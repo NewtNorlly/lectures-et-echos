@@ -6,7 +6,15 @@ reviewCount: 1
 noteCount: 1
 bookmarkCount: 0
 author: "[英] J.R.R.托尔金"
-cover: "https://cdn.weread.qq.com/weread/cover/31/cpplatform_4y6s7suhvm4wsptukvrrxx/t6_cpplatform_4y6s7suhvm4wsptukvrrxx1752118268.jpg"
+cover:
+  image: '文本附件/cover-3300152201-960.webp'
+  actualRatio: '3:4'
+  pixelWidth: 250
+  pixelHeight: 333
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "2分钟"
 lastReadDate: 2025-08-24
@@ -18,7 +26,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a"
 # 元数据
 
 > [!abstract] The Lord of the Rings Boxed Set 魔戒三部曲（英文版）
-> - ![The Lord of the Rings Boxed Set 魔戒三部曲（英文版）|200](https://cdn.weread.qq.com/weread/cover/31/cpplatform_4y6s7suhvm4wsptukvrrxx/t6_cpplatform_4y6s7suhvm4wsptukvrrxx1752118268.jpg)
+> - ![The Lord of the Rings Boxed Set 魔戒三部曲（英文版）|200](文本附件/cover-3300152201-960.webp)
 > - 书名：The Lord of the Rings Boxed Set 魔戒三部曲（英文版）
 > - 作者：[英] J.R.R.托尔金
 > - 简介：《魔戒三部曲》（The Lord of the Rings）又译作《指环王》，是英国作家、牛津大学教授托尔金长篇奇幻小说，被公认为西方现代经典奇幻文学。分为《魔戒现身》《双塔奇兵》《王者归来》三部。

@@ -6,7 +6,15 @@ reviewCount: 19
 noteCount: 44
 bookmarkCount: 0
 author: "魏思理"
-cover: "https://cdn.weread.qq.com/weread/cover/22/cpplatform_6xbvdeebwczkuthjryafbw/t6_cpplatform_6xbvdeebwczkuthjryafbw1782978477.jpg"
+cover:
+  image: '文本附件/cover-3300216181-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 250
+  pixelHeight: 360
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "18分钟"
 readingDate: 2026-09-20
@@ -21,7 +29,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=76e32c10813abbaf2g0112e0"
 # 元数据
 
 > [!abstract] “AI教母”李飞飞：从洗碗工到谷歌首席科学家（轻纪实）
-> - ![“AI教母”李飞飞：从洗碗工到谷歌首席科学家（轻纪实）|200](https://cdn.weread.qq.com/weread/cover/22/cpplatform_6xbvdeebwczkuthjryafbw/t6_cpplatform_6xbvdeebwczkuthjryafbw1782978477.jpg)
+> - ![“AI教母”李飞飞：从洗碗工到谷歌首席科学家（轻纪实）|200](文本附件/cover-3300216181-960.webp)
 > - 书名：“AI教母”李飞飞：从洗碗工到谷歌首席科学家（轻纪实）
 > - 作者：魏思理
 > - 简介：从16岁移民美国洗盘子、干洗店打工，到普林斯顿全额奖学金，再到斯坦福教授、ImageNet开创者——李飞飞用免费开源的数据集引爆了2012年深度学习革命，让现代AI浪潮提前十年到来。

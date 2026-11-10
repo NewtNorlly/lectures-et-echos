@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 26
 bookmarkCount: 0
 author: "策未来"
-cover: "https://cdn.weread.qq.com/weread/cover/94/cpplatform_jre1bnrf4zp3jsf9sqsegy/t6_cpplatform_jre1bnrf4zp3jsf9sqsegy1705303499.jpg"
+cover:
+  image: '文本附件/cover-3300084232-960.webp'
+  actualRatio: '3:4'
+  pixelWidth: 250
+  pixelHeight: 351
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "13分钟"
 readingDate: 2025-08-21
@@ -21,7 +29,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=59532af0813ab8767g012c0e"
 # 元数据
 
 > [!abstract] 全国计算机等级考试上机考试题库 二级Python
-> - ![全国计算机等级考试上机考试题库 二级Python|200](https://cdn.weread.qq.com/weread/cover/94/cpplatform_jre1bnrf4zp3jsf9sqsegy/t6_cpplatform_jre1bnrf4zp3jsf9sqsegy1705303499.jpg)
+> - ![全国计算机等级考试上机考试题库 二级Python|200](文本附件/cover-3300084232-960.webp)
 > - 书名：全国计算机等级考试上机考试题库 二级Python
 > - 作者：策未来
 > - 简介：《2024年全国计算机等级考试上机考试题库 二级Python》面向全国计算机等级考试二级Python语言程序设计科目，严格依据新版考试大纲整理试卷，并配有视频解析和详细的文字解析，以帮助考生在较短的时间内顺利通过考试。 《2024年全国计算机等级考试上机考试题库 二级Python》共4部分。第1部分为考试大纲、考试环境、考试流程以及Python的安装和使用方法的介绍。第2部分为二级公共基础知识和二级Python语言程序设计的高频考点讲解。第3部分为精选的10套无纸化考试题库试题及答案解析。第4部分为两套新增无纸化考试套卷及答案解析。 《2024年全国计算机等级考试上机考试题库 二级Python》配有智能考试软件，该软件主要有考试题库、专项训练、模拟考场等功能模块。其中，“考试题库”模块包含20套历年试卷，考生可用某一套试卷进行练习，并可以随时查看答案解析。“专项训练”模块将选择题按考点分类，考生可针对性地进行专项练习。“模拟考场”模块则是模拟真实考试环境，随机组卷，限时做题；若考生未能在规定的考试时间内交卷，则软件系统会强制交卷。交卷后软件系统自动评分，考生可据此自测，提高复习效率。 《2024年全国计算机等级考试上机考试题库 二级Python》可作为全国计算机等级考试二级Python语言程序设计科目的练习册，也可以作为学习Python语言的辅导书

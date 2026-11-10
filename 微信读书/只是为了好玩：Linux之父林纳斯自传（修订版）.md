@@ -7,7 +7,15 @@ noteCount: 79
 bookmarkCount: 0
 author: "[美]林纳斯·托瓦兹  [美]戴维·戴蒙德"
 translator: "陈少芸"
-cover: "https://cdn.weread.qq.com/weread/cover/45/cpplatform_mgyk9uadkqseidodhkrxqs/t6_cpplatform_mgyk9uadkqseidodhkrxqs1773108069.jpg"
+cover:
+  image: '文本附件/cover-3300197656-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 250
+  pixelHeight: 362
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "41%"
 readingTime: "38分钟"
 readingDate: 2026-09-06
@@ -23,7 +31,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=d0a32300813abb3b5g016d62"
 # 元数据
 
 > [!abstract] 只是为了好玩：Linux之父林纳斯自传（修订版）
-> - ![只是为了好玩：Linux之父林纳斯自传（修订版）|200](https://cdn.weread.qq.com/weread/cover/45/cpplatform_mgyk9uadkqseidodhkrxqs/t6_cpplatform_mgyk9uadkqseidodhkrxqs1773108069.jpg)
+> - ![只是为了好玩：Linux之父林纳斯自传（修订版）|200](文本附件/cover-3300197656-960.webp)
 > - 书名：只是为了好玩：Linux之父林纳斯自传（修订版）
 > - 作者：[美]林纳斯·托瓦兹  [美]戴维·戴蒙德
 > - 译者：陈少芸

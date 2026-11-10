@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 2
 bookmarkCount: 0
 author: "策未来"
-cover: "https://cdn.weread.qq.com/weread/cover/83/cpplatform_dpamjtntixs1ea9rftzetm/t6_cpplatform_dpamjtntixs1ea9rftzetm1699849047.jpg"
+cover:
+  image: '文本附件/cover-3300077388-960.webp'
+  actualRatio: '3:4'
+  pixelWidth: 250
+  pixelHeight: 357
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "1分钟"
 lastReadDate: 2026-08-25
@@ -20,7 +28,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=c3532920813ab84bag018ea9"
 # 元数据
 
 > [!abstract] 全国计算机等级考试模拟考场 二级Python
-> - ![全国计算机等级考试模拟考场 二级Python|200](https://cdn.weread.qq.com/weread/cover/83/cpplatform_dpamjtntixs1ea9rftzetm/t6_cpplatform_dpamjtntixs1ea9rftzetm1699849047.jpg)
+> - ![全国计算机等级考试模拟考场 二级Python|200](文本附件/cover-3300077388-960.webp)
 > - 书名：全国计算机等级考试模拟考场 二级Python
 > - 作者：策未来
 > - 简介：《2024年全国计算机等级考试模拟考场 二级Python》面向全国计算机等级考试二级Python语言程序设计科目，严格依据新版考试大纲整理专项训练题，并配有详细解析，以帮助考生在较短的时间内顺利通过考试。 《2024年全国计算机等级考试模拟考场 二级Python》共3部分。第1部分为考试大纲专家解读；第2部分为选择题专项训练及答案解析，所涉及的知识点有公共基础知识、程序设计基本方法、Python基本语法元素、基本数据类型、程序的控制结构、组合数据类型、文件和数据格式化、函数和代码的异常、Python计算生态、Python标准库、Python第三方库等；第3部分为精选的两套无纸化考试真题及答案解析，以帮助考生全面检查所学知识点。 《2024年全国计算机等级考试模拟考场 二级Python》既可作为全国计算机等级考试二级Python语言程序设计科目的练习册，也可作为学习Python语言的辅导书。

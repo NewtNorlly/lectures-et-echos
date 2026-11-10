@@ -6,7 +6,15 @@ reviewCount: 8
 noteCount: 83
 bookmarkCount: 0
 author: "魏思理"
-cover: "https://cdn.weread.qq.com/weread/cover/24/cpplatform_3egrdwlejv96zwbmesblho/t6_cpplatform_3egrdwlejv96zwbmesblho1781168420.jpg"
+cover:
+  image: '文本附件/cover-3300211819-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 250
+  pixelHeight: 360
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "98%"
 readingTime: "30分钟"
 readingDate: 2026-09-25
@@ -21,7 +29,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=ed632000813abb93dg01910c"
 # 元数据
 
 > [!abstract] 半小时讲透Harness工程（轻科技）
-> - ![半小时讲透Harness工程（轻科技）|200](https://cdn.weread.qq.com/weread/cover/24/cpplatform_3egrdwlejv96zwbmesblho/t6_cpplatform_3egrdwlejv96zwbmesblho1781168420.jpg)
+> - ![半小时讲透Harness工程（轻科技）|200](文本附件/cover-3300211819-960.webp)
 > - 书名：半小时讲透Harness工程（轻科技）
 > - 作者：魏思理
 > - 简介：2025年，AI界集体醒悟：再聪明的模型，没有约束也会失控，于是出现了Harness架构。

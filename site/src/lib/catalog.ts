@@ -47,6 +47,8 @@ export interface WereadMetadata {
   publisher?: string;
   publishTime?: string;
   rating?: string;
+  /** 该书全部划线/想法/独立笔记时间戳的最大值（Unix 秒，Asia/Shanghai 口径），用于书架「最新笔记优先」排序 */
+  lastNoteAt?: number;
 }
 
 export interface Note {
@@ -318,6 +320,19 @@ function getSourceUrl(data: RawData, body: string | undefined): string | undefin
   return validHttpUrl(bodyUrl);
 }
 
+const NOTE_TIME = /^>\s*(?:⏱|🕰|记录于)\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/gm;
+
+/** 一本书里最新一条划线 / 想法 / 独立笔记的时间戳（Unix 秒）；没有笔记返回 undefined。 */
+function getLastNoteTimestamp(body: string | undefined): number | undefined {
+  if (!body) return undefined;
+  let max: number | undefined;
+  for (const match of body.matchAll(NOTE_TIME)) {
+    const ts = Date.parse(`${match[1].replace(' ', 'T')}+08:00`);
+    if (Number.isFinite(ts) && (max === undefined || ts > max)) max = ts;
+  }
+  return max === undefined ? undefined : Math.floor(max / 1000);
+}
+
 function getWereadMetadata(data: RawData): WereadMetadata | undefined {
   if (data.doc_type !== 'weread-highlights-reviews') return undefined;
 
@@ -398,6 +413,10 @@ async function buildCatalog(): Promise<Catalog> {
     const topicNames = pathParts.slice(1, -1).filter((part) => part !== '文本附件');
     const description = getDescription(entry.data, entry.body);
     const weread = getWereadMetadata(entry.data);
+    if (weread) {
+      const lastNoteAt = getLastNoteTimestamp(entry.body);
+      if (lastNoteAt) weread.lastNoteAt = lastNoteAt;
+    }
     const isReadingStats = entry.data.doc_type === 'weread-reading-stats';
 
     return {

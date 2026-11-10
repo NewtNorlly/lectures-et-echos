@@ -7,7 +7,15 @@ noteCount: 0
 bookmarkCount: 0
 author: "东野圭吾"
 translator: "张舟"
-cover: "https://cdn.weread.qq.com/weread/cover/59/cpplatform_gnveypvmpcpiaen24cumub/t6_cpplatform_gnveypvmpcpiaen24cumub1785219967.jpg"
+cover:
+  image: '文本附件/cover-3300020531-960.webp'
+  actualRatio: '3:4'
+  pixelWidth: 250
+  pixelHeight: 341
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "0%"
 readingTime: "0分钟"
 lastReadDate: 2026-09-21
@@ -22,7 +30,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=55a32390813ab6e85g011abb"
 # 元数据
 
 > [!abstract] 嫌疑人X的献身
-> - ![嫌疑人X的献身|200](https://cdn.weread.qq.com/weread/cover/59/cpplatform_gnveypvmpcpiaen24cumub/t6_cpplatform_gnveypvmpcpiaen24cumub1785219967.jpg)
+> - ![嫌疑人X的献身|200](文本附件/cover-3300020531-960.webp)
 > - 书名：嫌疑人X的献身
 > - 作者：东野圭吾
 > - 译者：张舟

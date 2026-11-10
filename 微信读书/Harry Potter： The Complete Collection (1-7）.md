@@ -6,7 +6,15 @@ reviewCount: 17
 noteCount: 17
 bookmarkCount: 0
 author: "J.K. Rowling"
-cover: "https://cdn.weread.qq.com/weread/cover/10/yuewen_834436/t6_yuewen_8344361704792300.jpg"
+cover:
+  image: '文本附件/cover-834436-960.webp'
+  actualRatio: '2:3'
+  pixelWidth: 250
+  pixelHeight: 375
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "34%"
 readingTime: "1小时"
 readingDate: 2025-08-24
@@ -22,7 +30,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 # 元数据
 
 > [!abstract] Harry Potter： The Complete Collection (1-7）
-> - ![Harry Potter： The Complete Collection (1-7）|200](https://cdn.weread.qq.com/weread/cover/10/yuewen_834436/t6_yuewen_8344361704792300.jpg)
+> - ![Harry Potter： The Complete Collection (1-7）|200](文本附件/cover-834436-960.webp)
 > - 书名：Harry Potter： The Complete Collection (1-7）
 > - 作者：J.K. Rowling
 > - 简介：All seven eBooks in the multi-award winning, internationally bestselling Harry Potter series, available as one download with stunning cover art by Olly Moss. Enjoy the stories that have captured the imagination of millions worldwide.

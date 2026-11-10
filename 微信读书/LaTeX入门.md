@@ -6,7 +6,15 @@ reviewCount: 0
 noteCount: 1
 bookmarkCount: 0
 author: "刘海洋"
-cover: "https://cdn.weread.qq.com/weread/cover/72/cpplatform_13tjilybmezlj1ohdfc5wj/t6_cpplatform_13tjilybmezlj1ohdfc5wj1681438035.jpg"
+cover:
+  image: '文本附件/cover-3300055357-960.webp'
+  actualRatio: '4:5'
+  pixelWidth: 250
+  pixelHeight: 304
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
 progress: "11%"
 readingTime: "9分钟"
 readingDate: 2025-07-23
@@ -22,7 +30,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=30432bb0813ab7c1fg0170b8"
 # 元数据
 
 > [!abstract] LaTeX入门
-> - ![LaTeX入门|200](https://cdn.weread.qq.com/weread/cover/72/cpplatform_13tjilybmezlj1ohdfc5wj/t6_cpplatform_13tjilybmezlj1ohdfc5wj1681438035.jpg)
+> - ![LaTeX入门|200](文本附件/cover-3300055357-960.webp)
 > - 书名：LaTeX入门
 > - 作者：刘海洋
 > - 简介：LaTeX 已经成为国际上数学、物理、计算机等科技领域专业排版的实际标准，其他领域（化学、生物、工程、语言学等）也有大量用户。本书内容取材广泛，涵盖了正文组织、自动化工具、数学公式、图表制作、幻灯片演示、错误处理等方面。考虑到LaTeX 也是不断进化的，本书从数以千计的LaTeX 工具宏包中进行甄选，选择较新而且实用的版本来讲解排版技巧。为了方便读者的学习，本书给出了大量的实例和一定量的习题，并且还提供了案例代码。书中的示例大部分来自作者多年的实际排版案例，读者不断练习，肯定能掌握LaTeX 的排版技能。
