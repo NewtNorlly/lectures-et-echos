@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Residence Smith · 3D 住宅模型</title>
+<link rel="preload" href="./residence-smith.dae.gz" as="fetch" type="application/gzip">
+<link rel="preload" href="./residence-smith.js?v=20261111" as="script">
 <style>
   html, body {
     margin: 0; height: 100%; overflow: hidden;
@@ -22,7 +24,28 @@
 </head>
 <body>
 <canvas id="stage"></canvas>
-<script src="./residence-smith.js"></script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "845b4d1c84044bd3a44f165ee43031be"}'></script><!-- End Cloudflare Web Analytics -->
+<script>
+  /*
+   * 模型以 gzip 形式传输（2.53MB → 0.32MB），浏览器端用 DecompressionStream 解压后
+   * 交给同一个 ColladaLoader.parse，几何/材质与原始 .dae 完全一致。
+   * 不支持 DecompressionStream 的旧浏览器回退到原始 .dae。
+   */
+  window.__loadCollada = function (loader, cb) {
+    var fallback = function () { loader.load('residence-smith.dae', cb); };
+    if (!('DecompressionStream' in window) || !window.fetch) return fallback();
+    fetch('residence-smith.dae.gz').then(function (r) {
+      if (!r.ok) throw new Error('model fetch failed');
+      return r.arrayBuffer();
+    }).then(function (buf) {
+      var stream = new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'));
+      return new Response(stream).text();
+    }).then(function (text) {
+      var result = loader.parse(text, '');
+      if (!result || !result.scene) throw new Error('model parse failed');
+      cb(result);
+    }).catch(fallback);
+  };
+</script>
+<script src="./residence-smith.js?v=20261111"></script>
 </body>
 </html>

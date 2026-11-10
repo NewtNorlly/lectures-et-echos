@@ -6,7 +6,7 @@
 /* 思源宋体 CN（本地字体，全站正文字体） */
 @font-face {
   font-family: "Source Han Serif CN";
-  src: url("/fonts/SourceHanSerifCN-Regular.otf") format("opentype");
+  src: url("/fonts/SourceHanSerifCN-subset.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -720,7 +720,7 @@
 
   .footer-float--leaf-a {
     top: 26%;
-    background-image: url("/footer/leaf-1.png");
+    background-image: url("/footer/leaf-1.webp");
     animation: footer-leaf-a 21s linear infinite;
   }
 
@@ -728,7 +728,7 @@
     top: 48%;
     width: clamp(17px, 1.8vw, 26px);
     height: clamp(17px, 1.8vw, 26px);
-    background-image: url("/footer/leaf-2.png");
+    background-image: url("/footer/leaf-2.webp");
     animation: footer-leaf-b 27s linear infinite;
     animation-delay: -9s;
   }
@@ -737,7 +737,7 @@
     top: 12%;
     width: clamp(16px, 1.7vw, 24px);
     height: clamp(16px, 1.7vw, 24px);
-    background-image: url("/footer/leaf-2.png");
+    background-image: url("/footer/leaf-2.webp");
     animation: footer-leaf-a 33s linear infinite;
     animation-delay: -20s;
   }
@@ -750,7 +750,7 @@
 
   .footer-float--soot-a {
     top: 30%;
-    background-image: url("/footer/soot-1.png");
+    background-image: url("/footer/soot-1.webp");
     animation: footer-soot-a 38s linear infinite;
     animation-delay: -6s;
   }
@@ -759,7 +759,7 @@
     top: 58%;
     width: clamp(20px, 2.1vw, 30px);
     aspect-ratio: 190 / 164;
-    background-image: url("/footer/soot-2.png");
+    background-image: url("/footer/soot-2.webp");
     animation: footer-soot-b 47s linear infinite;
     animation-delay: -24s;
   }
