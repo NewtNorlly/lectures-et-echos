@@ -48,7 +48,7 @@ def log(msg):
         print(msg, flush=True)
 
 
-def call(payload, timeout=90, retries=4):
+def call(payload, timeout=45, retries=5):
     """单次网关调用。业务参数与 api_name / skill_version 平铺同一层（禁止 params 嵌套）。"""
     if _upgrade_flag.is_set():
         raise RuntimeError('aborted: upgrade_info received')
@@ -85,7 +85,7 @@ def call(payload, timeout=90, retries=4):
 # --------------------------------------------------------------------------
 
 def fetch_shelf():
-    data = call({'api_name': '/shelf/sync'})
+    data = call({'api_name': '/shelf/sync'}, timeout=120)
     books = data.get('books') or []
     albums = data.get('albums') or []
     mp = data.get('mp')
@@ -112,7 +112,7 @@ def fetch_notebooks():
         payload = {'api_name': '/user/notebooks', 'count': 100}
         if last_sort is not None:
             payload['lastSort'] = last_sort
-        data = call(payload)
+        data = call(payload, timeout=120)
         items = data.get('books') or []
         for it in items:
             bid = it.get('bookId')
@@ -257,7 +257,7 @@ def fetch_reading_stats(out_root):
     monthly_dir = os.path.join(stats_dir, 'monthly')
     os.makedirs(monthly_dir, exist_ok=True)
 
-    overall = call({'api_name': '/readdata/detail', 'mode': 'overall', 'baseTime': 0})
+    overall = call({'api_name': '/readdata/detail', 'mode': 'overall', 'baseTime': 0}, timeout=60)
     with open(os.path.join(stats_dir, 'overall.json'), 'w', encoding='utf-8', newline='\n') as fh:
         json.dump(overall, fh, ensure_ascii=False, indent=1)
         fh.write('\n')
@@ -266,17 +266,30 @@ def fetch_reading_stats(out_root):
 
     failures = []
     keys = month_keys(overall.get('registTime'))
+    # 逐月统计互相独立：并发抓取。旧版串行时只要有一个月挂起（网关偶发 90s 黑洞），
+    # 整轮全量导出会被拖住数分钟；并发 + 短超时可把这一阶段压到 1 分钟内。
+    def fetch_month(item):
+        name, ts = item
+        data = call({'api_name': '/readdata/detail', 'mode': 'monthly', 'baseTime': ts}, timeout=40)
+        with open(os.path.join(monthly_dir, name + '.json'), 'w', encoding='utf-8', newline='\n') as fh:
+            json.dump(data, fh, ensure_ascii=False, indent=1)
+            fh.write('\n')
+        return name
+
+    tasks = []
     for (y, m) in keys:
         # 该月 15 日 12:00 北京时区 → Unix 秒，服务端会归一化到月初
         ts = calendar.timegm(datetime.datetime(y, m, 15, 4, 0).timetuple())
         name = '%04d-%02d' % (y, m)
-        try:
-            data = call({'api_name': '/readdata/detail', 'mode': 'monthly', 'baseTime': ts})
-            with open(os.path.join(monthly_dir, name + '.json'), 'w', encoding='utf-8', newline='\n') as fh:
-                json.dump(data, fh, ensure_ascii=False, indent=1)
-                fh.write('\n')
-        except Exception as exc:
-            failures.append({'target': 'monthly/' + name, 'error': str(exc)})
+        tasks.append((name, ts))
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futures = {pool.submit(fetch_month, task): task[0] for task in tasks}
+        for fut in as_completed(futures):
+            name = futures[fut]
+            try:
+                fut.result()
+            except Exception as exc:
+                failures.append({'target': 'monthly/' + name, 'error': str(exc)})
     log('[stats] 逐月 %d 个月，失败 %d' % (len(keys), len(failures)))
     return overall, len(keys), failures
 
