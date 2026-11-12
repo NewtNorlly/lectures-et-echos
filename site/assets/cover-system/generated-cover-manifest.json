@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T16:05:15.980Z",
+  "generatedAt": "2026-11-12T16:23:58.120Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (solid category colors, single frame, serif title, library motif) -> sharp -> WebP.",
@@ -8,7 +8,7 @@
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 5602750,
+  "totalBytes": 5515918,
   "records": [
     {
       "markdown": "阿博学长/六级608口语优秀经验分享 - 口语篇.md",
@@ -29,8 +29,8 @@
       "seed": "d1dbb2b7857e",
       "cover960": "啊粥粥啊粥/文本附件/generated-cover-d1dbb2b7857e-960.webp",
       "cover480": "啊粥粥啊粥/文本附件/generated-cover-d1dbb2b7857e-480.webp",
-      "bytes960": 14952,
-      "bytes480": 6230
+      "bytes960": 13802,
+      "bytes480": 5966
     },
     {
       "markdown": "啊粥粥啊粥/啊粥粥啊粥：百姓活该被剥削？《资治通鉴》跨越1000年的历史暗线（上篇）.md",
@@ -40,8 +40,8 @@
       "seed": "3a6976956fb4",
       "cover960": "啊粥粥啊粥/文本附件/generated-cover-3a6976956fb4-960.webp",
       "cover480": "啊粥粥啊粥/文本附件/generated-cover-3a6976956fb4-480.webp",
-      "bytes960": 19886,
-      "bytes480": 8054
+      "bytes960": 18218,
+      "bytes480": 7810
     },
     {
       "markdown": "啊粥粥啊粥/啊粥粥啊粥：春秋笔法！统治者为什么喜欢《资治通鉴》？.md",
@@ -51,8 +51,8 @@
       "seed": "a1052e8be510",
       "cover960": "啊粥粥啊粥/文本附件/generated-cover-a1052e8be510-960.webp",
       "cover480": "啊粥粥啊粥/文本附件/generated-cover-a1052e8be510-480.webp",
-      "bytes960": 15732,
-      "bytes480": 6120
+      "bytes960": 14496,
+      "bytes480": 5846
     },
     {
       "markdown": "啊粥粥啊粥/啊粥粥啊粥：大战小雷音！佛教内部矛盾重重，弥勒佛为什么不开心？.md",
@@ -73,8 +73,8 @@
       "seed": "63a4ed047363",
       "cover960": "啊粥粥啊粥/文本附件/generated-cover-63a4ed047363-960.webp",
       "cover480": "啊粥粥啊粥/文本附件/generated-cover-63a4ed047363-480.webp",
-      "bytes960": 16862,
-      "bytes480": 6760
+      "bytes960": 15484,
+      "bytes480": 6498
     },
     {
       "markdown": "啊粥粥啊粥/啊粥粥啊粥：扭转乾坤，唯有变法！魏国如何完成逆袭超车？.md",
@@ -84,8 +84,8 @@
       "seed": "43f2144ad925",
       "cover960": "啊粥粥啊粥/文本附件/generated-cover-43f2144ad925-960.webp",
       "cover480": "啊粥粥啊粥/文本附件/generated-cover-43f2144ad925-480.webp",
-      "bytes960": 15898,
-      "bytes480": 6586
+      "bytes960": 14720,
+      "bytes480": 6296
     },
     {
       "markdown": "啊粥粥啊粥/啊粥粥啊粥：秦国，凭什么？从打工到称王，殷商遗民跨越千年的崛起之路.md",
@@ -95,8 +95,8 @@
       "seed": "ec610dcc0aaf",
       "cover960": "啊粥粥啊粥/文本附件/generated-cover-ec610dcc0aaf-960.webp",
       "cover480": "啊粥粥啊粥/文本附件/generated-cover-ec610dcc0aaf-480.webp",
-      "bytes960": 18178,
-      "bytes480": 7518
+      "bytes960": 16704,
+      "bytes480": 7214
     },
     {
       "markdown": "啊粥粥啊粥/啊粥粥啊粥：小人当权？礼崩乐坏与三家分晋的悲壮史诗.md",
@@ -128,8 +128,8 @@
       "seed": "2bb74db09f36",
       "cover960": "爱历史的老丁/文本附件/generated-cover-2bb74db09f36-960.webp",
       "cover480": "爱历史的老丁/文本附件/generated-cover-2bb74db09f36-480.webp",
-      "bytes960": 19786,
-      "bytes480": 8172
+      "bytes960": 18212,
+      "bytes480": 7906
     },
     {
       "markdown": "爱历史的老丁/老丁你为什么努力？这就是我的答案.md",
@@ -161,8 +161,8 @@
       "seed": "2648d57ed2ed",
       "cover960": "爱历史的老丁/文本附件/generated-cover-2648d57ed2ed-960.webp",
       "cover480": "爱历史的老丁/文本附件/generated-cover-2648d57ed2ed-480.webp",
-      "bytes960": 19796,
-      "bytes480": 8170
+      "bytes960": 18094,
+      "bytes480": 7882
     },
     {
       "markdown": "爱木爱遥/难怪这个女孩高考作文满分，采访没一句废话，思维环环相扣.md",
@@ -216,8 +216,8 @@
       "seed": "143ad303134d",
       "cover960": "安森垚/文本附件/generated-cover-143ad303134d-960.webp",
       "cover480": "安森垚/文本附件/generated-cover-143ad303134d-480.webp",
-      "bytes960": 7346,
-      "bytes480": 3018
+      "bytes960": 6560,
+      "bytes480": 2808
     },
     {
       "markdown": "安森垚/安森垚：伊朗的前世今生.md",
@@ -227,8 +227,8 @@
       "seed": "85c29cc0682b",
       "cover960": "安森垚/文本附件/generated-cover-85c29cc0682b-960.webp",
       "cover480": "安森垚/文本附件/generated-cover-85c29cc0682b-480.webp",
-      "bytes960": 7352,
-      "bytes480": 2980
+      "bytes960": 6748,
+      "bytes480": 2826
     },
     {
       "markdown": "安森垚/第一个学外语的人怎么来的？.md",
@@ -249,8 +249,8 @@
       "seed": "e261fa91d8f2",
       "cover960": "安森垚/文本附件/generated-cover-e261fa91d8f2-960.webp",
       "cover480": "安森垚/文本附件/generated-cover-e261fa91d8f2-480.webp",
-      "bytes960": 9908,
-      "bytes480": 4006
+      "bytes960": 9082,
+      "bytes480": 3744
     },
     {
       "markdown": "安森垚/非洲起源论又被推翻了？.md",
@@ -260,8 +260,8 @@
       "seed": "2f562e368bde",
       "cover960": "安森垚/文本附件/generated-cover-2f562e368bde-960.webp",
       "cover480": "安森垚/文本附件/generated-cover-2f562e368bde-480.webp",
-      "bytes960": 10390,
-      "bytes480": 4070
+      "bytes960": 9462,
+      "bytes480": 3850
     },
     {
       "markdown": "安森垚/汉字是“停止演化”的文字么？.md",
@@ -293,8 +293,8 @@
       "seed": "7e7b05d58ab6",
       "cover960": "安森垚/文本附件/generated-cover-7e7b05d58ab6-960.webp",
       "cover480": "安森垚/文本附件/generated-cover-7e7b05d58ab6-480.webp",
-      "bytes960": 9668,
-      "bytes480": 3826
+      "bytes960": 8882,
+      "bytes480": 3656
     },
     {
       "markdown": "安森垚/人类为啥喜欢捉迷藏？.md",
@@ -777,8 +777,8 @@
       "seed": "87d5a0ca10ef",
       "cover960": "毒舌的南瓜/文本附件/generated-cover-87d5a0ca10ef-960.webp",
       "cover480": "毒舌的南瓜/文本附件/generated-cover-87d5a0ca10ef-480.webp",
-      "bytes960": 15814,
-      "bytes480": 6462
+      "bytes960": 14514,
+      "bytes480": 6138
     },
     {
       "markdown": "毒舌的南瓜/高志凯巧施连环计，阿三哥大闹美利坚【毒舌的南瓜】.md",
@@ -810,8 +810,8 @@
       "seed": "76ea35e1ae23",
       "cover960": "毒舌的南瓜/文本附件/generated-cover-76ea35e1ae23-960.webp",
       "cover480": "毒舌的南瓜/文本附件/generated-cover-76ea35e1ae23-480.webp",
-      "bytes960": 15354,
-      "bytes480": 6350
+      "bytes960": 14282,
+      "bytes480": 6038
     },
     {
       "markdown": "毒舌的南瓜/互联网小作文简史.md",
@@ -909,8 +909,8 @@
       "seed": "87082812744d",
       "cover960": "毒舌的南瓜/文本附件/generated-cover-87082812744d-960.webp",
       "cover480": "毒舌的南瓜/文本附件/generated-cover-87082812744d-480.webp",
-      "bytes960": 18452,
-      "bytes480": 7716
+      "bytes960": 16906,
+      "bytes480": 7428
     },
     {
       "markdown": "毒舌的南瓜/有的“天才文学少女”才9岁就是老登了，有的人40岁还是少年.md",
@@ -1008,8 +1008,8 @@
       "seed": "fb21c517b07c",
       "cover960": "二爷故事/文本附件/generated-cover-fb21c517b07c-960.webp",
       "cover480": "二爷故事/文本附件/generated-cover-fb21c517b07c-480.webp",
-      "bytes960": 10532,
-      "bytes480": 4312
+      "bytes960": 9664,
+      "bytes480": 4112
     },
     {
       "markdown": "高耳机的诗Gorky/失业一年，你会失去什么，又会得到什么？【0基础失业指南】.md",
@@ -1052,8 +1052,8 @@
       "seed": "8b693eb40bc5",
       "cover960": "何解毒/文本附件/generated-cover-8b693eb40bc5-960.webp",
       "cover480": "何解毒/文本附件/generated-cover-8b693eb40bc5-480.webp",
-      "bytes960": 11778,
-      "bytes480": 4676
+      "bytes960": 10834,
+      "bytes480": 4464
     },
     {
       "markdown": "河畔的伯爵/【伯爵】“大洋洲”这个名字，藏着一场骗局？一期讲清太平洋岛民史.md",
@@ -1063,8 +1063,8 @@
       "seed": "982a45d6ab03",
       "cover960": "河畔的伯爵/文本附件/generated-cover-982a45d6ab03-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-982a45d6ab03-480.webp",
-      "bytes960": 16988,
-      "bytes480": 7168
+      "bytes960": 15638,
+      "bytes480": 6800
     },
     {
       "markdown": "河畔的伯爵/【伯爵】被清朝抛弃的外东北，究竟经历了什么？.md",
@@ -1074,8 +1074,8 @@
       "seed": "c159ff423ed9",
       "cover960": "河畔的伯爵/文本附件/generated-cover-c159ff423ed9-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-c159ff423ed9-480.webp",
-      "bytes960": 13556,
-      "bytes480": 5458
+      "bytes960": 12482,
+      "bytes480": 5204
     },
     {
       "markdown": "河畔的伯爵/【伯爵】鬼畜元老，中日搭桥？东亚最成功新兴宗教，日本创价学会是什么来头？.md",
@@ -1085,8 +1085,8 @@
       "seed": "b42d32938683",
       "cover960": "河畔的伯爵/文本附件/generated-cover-b42d32938683-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-b42d32938683-480.webp",
-      "bytes960": 20106,
-      "bytes480": 8420
+      "bytes960": 18504,
+      "bytes480": 8104
     },
     {
       "markdown": "河畔的伯爵/【伯爵】君主制靠什么撑到21世纪？聊聊各国王室的“续命操作”.md",
@@ -1096,8 +1096,8 @@
       "seed": "3eb6a834473a",
       "cover960": "河畔的伯爵/文本附件/generated-cover-3eb6a834473a-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-3eb6a834473a-480.webp",
-      "bytes960": 16984,
-      "bytes480": 7130
+      "bytes960": 15508,
+      "bytes480": 6778
     },
     {
       "markdown": "河畔的伯爵/【伯爵】琉球是个怎样的国家？一期讲清被谣言和神话包裹的琉球历史.md",
@@ -1107,8 +1107,8 @@
       "seed": "d6cc98791fb8",
       "cover960": "河畔的伯爵/文本附件/generated-cover-d6cc98791fb8-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-d6cc98791fb8-480.webp",
-      "bytes960": 19330,
-      "bytes480": 8052
+      "bytes960": 17836,
+      "bytes480": 7738
     },
     {
       "markdown": "河畔的伯爵/【伯爵】内蒙古自治区成立背后，隐藏着怎样的复杂和凶险？一期视频讲透近代蒙古民族主义.md",
@@ -1118,8 +1118,8 @@
       "seed": "62db6ecd5932",
       "cover960": "河畔的伯爵/文本附件/generated-cover-62db6ecd5932-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-62db6ecd5932-480.webp",
-      "bytes960": 24418,
-      "bytes480": 10266
+      "bytes960": 22594,
+      "bytes480": 9834
     },
     {
       "markdown": "河畔的伯爵/【伯爵】尼泊尔究竟是不是“小印度”.md",
@@ -1129,8 +1129,8 @@
       "seed": "67821534d4ab",
       "cover960": "河畔的伯爵/文本附件/generated-cover-67821534d4ab-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-67821534d4ab-480.webp",
-      "bytes960": 10258,
-      "bytes480": 4124
+      "bytes960": 9392,
+      "bytes480": 3884
     },
     {
       "markdown": "河畔的伯爵/【伯爵】苏丹，五千年古国为何变成世界级凶杀现场？.md",
@@ -1162,8 +1162,8 @@
       "seed": "1fa6c8441c26",
       "cover960": "河畔的伯爵/文本附件/generated-cover-1fa6c8441c26-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-1fa6c8441c26-480.webp",
-      "bytes960": 17638,
-      "bytes480": 7270
+      "bytes960": 16340,
+      "bytes480": 6978
     },
     {
       "markdown": "河畔的伯爵/河畔的伯爵：【伯爵】清朝灭亡后，八旗后人经历了什么？.md",
@@ -1173,8 +1173,8 @@
       "seed": "b912732afef2",
       "cover960": "河畔的伯爵/文本附件/generated-cover-b912732afef2-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-b912732afef2-480.webp",
-      "bytes960": 13124,
-      "bytes480": 5382
+      "bytes960": 12060,
+      "bytes480": 5100
     },
     {
       "markdown": "河畔的伯爵/河畔的伯爵：【伯爵】如何发明一个民族？复盘世界史上三波民族大觉醒.md",
@@ -1184,8 +1184,8 @@
       "seed": "be23a8fae579",
       "cover960": "河畔的伯爵/文本附件/generated-cover-be23a8fae579-960.webp",
       "cover480": "河畔的伯爵/文本附件/generated-cover-be23a8fae579-480.webp",
-      "bytes960": 16888,
-      "bytes480": 7078
+      "bytes960": 15652,
+      "bytes480": 6774
     },
     {
       "markdown": "河畔的伯爵/河畔的伯爵：钱庄票号是做什么的？别再被小说影视误导了.md",
@@ -1206,8 +1206,8 @@
       "seed": "54538329a974",
       "cover960": "黑纹白斑马/文本附件/generated-cover-54538329a974-960.webp",
       "cover480": "黑纹白斑马/文本附件/generated-cover-54538329a974-480.webp",
-      "bytes960": 10138,
-      "bytes480": 4056
+      "bytes960": 9208,
+      "bytes480": 3774
     },
     {
       "markdown": "黑纹白斑马/【中配】我让Claude Code帮我尽可能多赚钱 - Nate Herk ｜ AI Automation.md",
@@ -1250,8 +1250,8 @@
       "seed": "6624f9f1b590",
       "cover960": "花狸狐说/文本附件/generated-cover-6624f9f1b590-960.webp",
       "cover480": "花狸狐说/文本附件/generated-cover-6624f9f1b590-480.webp",
-      "bytes960": 20780,
-      "bytes480": 8926
+      "bytes960": 18990,
+      "bytes480": 8616
     },
     {
       "markdown": "加一加1加1/10min从宗教文化历史的角度了解为什么塔利班会禁止女性接受教育.md",
@@ -1283,8 +1283,8 @@
       "seed": "95f893c887c4",
       "cover960": "酒痴东梦/文本附件/generated-cover-95f893c887c4-960.webp",
       "cover480": "酒痴东梦/文本附件/generated-cover-95f893c887c4-480.webp",
-      "bytes960": 17002,
-      "bytes480": 7032
+      "bytes960": 15578,
+      "bytes480": 6756
     },
     {
       "markdown": "酒痴东梦/瘟疫爆发了也要泡澡？罗马帝国如何开进下水道1【意大利为何这么菜01】.md",
@@ -1294,8 +1294,8 @@
       "seed": "42e6625ff7c1",
       "cover960": "酒痴东梦/文本附件/generated-cover-42e6625ff7c1-960.webp",
       "cover480": "酒痴东梦/文本附件/generated-cover-42e6625ff7c1-480.webp",
-      "bytes960": 15850,
-      "bytes480": 6574
+      "bytes960": 14512,
+      "bytes480": 6220
     },
     {
       "markdown": "具象波/比特朗普还疯的人，制造朝鲜电音（上）.md",
@@ -1415,8 +1415,8 @@
       "seed": "5b6066c7fa30",
       "cover960": "历史调研室/文本附件/generated-cover-5b6066c7fa30-960.webp",
       "cover480": "历史调研室/文本附件/generated-cover-5b6066c7fa30-480.webp",
-      "bytes960": 14334,
-      "bytes480": 5796
+      "bytes960": 13442,
+      "bytes480": 5546
     },
     {
       "markdown": "历史调研室/是罪人，还是功臣？撒切尔究竟有几分功，几分过？【历史调研室87】.md",
@@ -1426,8 +1426,8 @@
       "seed": "1c16f9dd4d78",
       "cover960": "历史调研室/文本附件/generated-cover-1c16f9dd4d78-960.webp",
       "cover480": "历史调研室/文本附件/generated-cover-1c16f9dd4d78-480.webp",
-      "bytes960": 14658,
-      "bytes480": 6140
+      "bytes960": 13524,
+      "bytes480": 5862
     },
     {
       "markdown": "历史调研室/一个被憎恨的女人，最初为何能成为英国首相？【历史调研室85】.md",
@@ -1437,8 +1437,8 @@
       "seed": "9f495e54163c",
       "cover960": "历史调研室/文本附件/generated-cover-9f495e54163c-960.webp",
       "cover480": "历史调研室/文本附件/generated-cover-9f495e54163c-480.webp",
-      "bytes960": 14524,
-      "bytes480": 6064
+      "bytes960": 13388,
+      "bytes480": 5764
     },
     {
       "markdown": "历史纵横谈/第48期古代大官告老回乡后，当地的地方官有没有权力去管他们？.md",
@@ -1448,8 +1448,8 @@
       "seed": "56d9ed10d33f",
       "cover960": "历史纵横谈/文本附件/generated-cover-56d9ed10d33f-960.webp",
       "cover480": "历史纵横谈/文本附件/generated-cover-56d9ed10d33f-480.webp",
-      "bytes960": 18544,
-      "bytes480": 7834
+      "bytes960": 17112,
+      "bytes480": 7528
     },
     {
       "markdown": "历史纵横谈/第49期 为什么蒙古人能逃回草原，而满人却不能逃回东北❓.md",
@@ -1470,8 +1470,8 @@
       "seed": "130062d3099c",
       "cover960": "历史纵横谈/文本附件/generated-cover-130062d3099c-960.webp",
       "cover480": "历史纵横谈/文本附件/generated-cover-130062d3099c-480.webp",
-      "bytes960": 15432,
-      "bytes480": 6414
+      "bytes960": 14280,
+      "bytes480": 6130
     },
     {
       "markdown": "聊点不一样的聊酱/修清史最绕不开的【扬州十日】.md",
@@ -1481,8 +1481,8 @@
       "seed": "e765d44737a0",
       "cover960": "聊点不一样的聊酱/文本附件/generated-cover-e765d44737a0-960.webp",
       "cover480": "聊点不一样的聊酱/文本附件/generated-cover-e765d44737a0-480.webp",
-      "bytes960": 9618,
-      "bytes480": 3710
+      "bytes960": 8798,
+      "bytes480": 3476
     },
     {
       "markdown": "刘淼淼/扒一扒小护士真实工资条！跟你们想象的差多少？.md",
@@ -1547,8 +1547,8 @@
       "seed": "c8287bb9cce4",
       "cover960": "麦片是只小金毛/文本附件/generated-cover-c8287bb9cce4-960.webp",
       "cover480": "麦片是只小金毛/文本附件/generated-cover-c8287bb9cce4-480.webp",
-      "bytes960": 8002,
-      "bytes480": 3160
+      "bytes960": 7148,
+      "bytes480": 3002
     },
     {
       "markdown": "盲说电影/《孩子王》：献给所有寻找自己声音的人！.md",
@@ -1723,8 +1723,8 @@
       "seed": "15459e946a9f",
       "cover960": "穆金荣-穷历史/文本附件/generated-cover-15459e946a9f-960.webp",
       "cover480": "穆金荣-穷历史/文本附件/generated-cover-15459e946a9f-480.webp",
-      "bytes960": 13158,
-      "bytes480": 5284
+      "bytes960": 12060,
+      "bytes480": 5042
     },
     {
       "markdown": "欧逸漫聊/脾气古怪但是务实的“宅男首相” 【人物志 石破茂充满争议的前半生】.md",
@@ -1734,8 +1734,8 @@
       "seed": "1fff1b18ad0e",
       "cover960": "欧逸漫聊/文本附件/generated-cover-1fff1b18ad0e-960.webp",
       "cover480": "欧逸漫聊/文本附件/generated-cover-1fff1b18ad0e-480.webp",
-      "bytes960": 11256,
-      "bytes480": 4730
+      "bytes960": 10246,
+      "bytes480": 4444
     },
     {
       "markdown": "棋坛影娱说/孙中山何以成为全体中国人乃至全球华人心中唯一的国父？.md",
@@ -1844,8 +1844,8 @@
       "seed": "6a84534ecb6f",
       "cover960": "山河有声/文本附件/generated-cover-6a84534ecb6f-960.webp",
       "cover480": "山河有声/文本附件/generated-cover-6a84534ecb6f-480.webp",
-      "bytes960": 15908,
-      "bytes480": 6578
+      "bytes960": 14756,
+      "bytes480": 6330
     },
     {
       "markdown": "杉木说SamTalk/为什么千禧年的未来美学，在启发我们的审美力？.md",
@@ -1963,10 +1963,10 @@
       "collection": "苏老拳",
       "category": "history",
       "seed": "3bb1232c4829",
-      "cover960": "苏老拳/文本附件/generated-cover-3bb1232c4829-960.webp",
-      "cover480": "苏老拳/文本附件/generated-cover-3bb1232c4829-480.webp",
-      "bytes960": 21050,
-      "bytes480": 9124
+      "cover960": "苏老拳/文本附件/generated-cover-27aad3fa50f2-960.webp",
+      "cover480": "苏老拳/文本附件/generated-cover-27aad3fa50f2-480.webp",
+      "bytes960": 19502,
+      "bytes480": 8760
     },
     {
       "markdown": "酸不羁/是谁，捏造了这些妖女？.md",
@@ -2042,8 +2042,8 @@
       "seed": "7f4629cbe2c2",
       "cover960": "王局拍案/文本附件/generated-cover-7f4629cbe2c2-960.webp",
       "cover480": "王局拍案/文本附件/generated-cover-7f4629cbe2c2-480.webp",
-      "bytes960": 13488,
-      "bytes480": 5672
+      "bytes960": 12384,
+      "bytes480": 5360
     },
     {
       "markdown": "王局拍案/中共与西方媒体交往风云变幻80年_上.md",
@@ -2097,8 +2097,8 @@
       "seed": "eccdb97e1def",
       "cover960": "微信读书统计/文本附件/generated-cover-eccdb97e1def-960.webp",
       "cover480": "微信读书统计/文本附件/generated-cover-eccdb97e1def-480.webp",
-      "bytes960": 7746,
-      "bytes480": 2958
+      "bytes960": 8932,
+      "bytes480": 3544
     },
     {
       "markdown": "唯一讲述者/高级傻X，是怎样炼成的？知识分子的四种幻觉！.md",
@@ -2130,8 +2130,8 @@
       "seed": "e964eb1a676b",
       "cover960": "文化遗产搬运委员会/文本附件/generated-cover-e964eb1a676b-960.webp",
       "cover480": "文化遗产搬运委员会/文本附件/generated-cover-e964eb1a676b-480.webp",
-      "bytes960": 14970,
-      "bytes480": 6202
+      "bytes960": 13694,
+      "bytes480": 5888
     },
     {
       "markdown": "我真的是明朗/我真的是明朗：8年前的同桌，现在和我养孩子！.md",
@@ -2185,8 +2185,8 @@
       "seed": "b5546bba0fab",
       "cover960": "乌鸦校尉CaptainWuya/文本附件/generated-cover-b5546bba0fab-960.webp",
       "cover480": "乌鸦校尉CaptainWuya/文本附件/generated-cover-b5546bba0fab-480.webp",
-      "bytes960": 14906,
-      "bytes480": 5950
+      "bytes960": 13558,
+      "bytes480": 5664
     },
     {
       "markdown": "乌鸦校尉CaptainWuya/为了让你喜欢小鲜肉，你知道中情局有多努力吗？【乌鸦校尉】.md",
@@ -2207,8 +2207,8 @@
       "seed": "e3d48a9ffbf5",
       "cover960": "乌鸦校尉CaptainWuya/文本附件/generated-cover-e3d48a9ffbf5-960.webp",
       "cover480": "乌鸦校尉CaptainWuya/文本附件/generated-cover-e3d48a9ffbf5-480.webp",
-      "bytes960": 19112,
-      "bytes480": 7974
+      "bytes960": 17676,
+      "bytes480": 7636
     },
     {
       "markdown": "无穷小亮的科普日常/万人追更的终南山怪虫，只有我们拍到了真相！.md",
@@ -2262,8 +2262,8 @@
       "seed": "2b4c8ba6dc24",
       "cover960": "小岛浪吹/文本附件/generated-cover-2b4c8ba6dc24-960.webp",
       "cover480": "小岛浪吹/文本附件/generated-cover-2b4c8ba6dc24-480.webp",
-      "bytes960": 21200,
-      "bytes480": 9188
+      "bytes960": 19434,
+      "bytes480": 8878
     },
     {
       "markdown": "小岛浪吹/【小岛浪吹】毛泽东传1：叛逆中二少年从山村走向城市，聊聊少年毛泽东的不足，成长，婚姻以及导师.md",
@@ -2295,8 +2295,8 @@
       "seed": "6a0eee9b2826",
       "cover960": "小岛浪吹/文本附件/generated-cover-6a0eee9b2826-960.webp",
       "cover480": "小岛浪吹/文本附件/generated-cover-6a0eee9b2826-480.webp",
-      "bytes960": 20186,
-      "bytes480": 8644
+      "bytes960": 18392,
+      "bytes480": 8212
     },
     {
       "markdown": "小岛浪吹/【小岛浪吹】远华案！中国建国后最大的走私集团，崛起与没落的过程以及前因后果 @赖昌星.md",
@@ -2339,8 +2339,8 @@
       "seed": "11f9494f9385",
       "cover960": "小岛浪吹/文本附件/generated-cover-11f9494f9385-960.webp",
       "cover480": "小岛浪吹/文本附件/generated-cover-11f9494f9385-480.webp",
-      "bytes960": 15024,
-      "bytes480": 6400
+      "bytes960": 13888,
+      "bytes480": 6052
     },
     {
       "markdown": "小岛浪吹/【小岛浪吹】最像海外华人的族群——犹太人，为什么犹太人这么容易被针对，又这么的强大？.md",
@@ -2350,8 +2350,8 @@
       "seed": "c46bcc38b640",
       "cover960": "小岛浪吹/文本附件/generated-cover-c46bcc38b640-960.webp",
       "cover480": "小岛浪吹/文本附件/generated-cover-c46bcc38b640-480.webp",
-      "bytes960": 22100,
-      "bytes480": 9104
+      "bytes960": 20492,
+      "bytes480": 8760
     },
     {
       "markdown": "小岛浪吹/【小岛求助】百万大v的现身说法，说说共产党是怎么抢走我的财产的.md",
@@ -2361,8 +2361,8 @@
       "seed": "4d9a022edd61",
       "cover960": "小岛浪吹/文本附件/generated-cover-4d9a022edd61-960.webp",
       "cover480": "小岛浪吹/文本附件/generated-cover-4d9a022edd61-480.webp",
-      "bytes960": 19638,
-      "bytes480": 8426
+      "bytes960": 18116,
+      "bytes480": 8082
     },
     {
       "markdown": "小德MOMO/为什么上班之后就读不了书了？是你的大脑在求救！.md",
@@ -2592,8 +2592,8 @@
       "seed": "aa24de7dfefc",
       "cover960": "要当学霸的猫/文本附件/generated-cover-aa24de7dfefc-960.webp",
       "cover480": "要当学霸的猫/文本附件/generated-cover-aa24de7dfefc-480.webp",
-      "bytes960": 14396,
-      "bytes480": 5754
+      "bytes960": 13174,
+      "bytes480": 5450
     },
     {
       "markdown": "英语兔/英语兔：car 和 horse 有什么关系？.md",
@@ -2647,8 +2647,8 @@
       "seed": "139886c8420f",
       "cover960": "元日安/文本附件/generated-cover-139886c8420f-960.webp",
       "cover480": "元日安/文本附件/generated-cover-139886c8420f-480.webp",
-      "bytes960": 22432,
-      "bytes480": 9580
+      "bytes960": 20552,
+      "bytes480": 9198
     },
     {
       "markdown": "原子能/经得起时间考验的才是好代码【让编程再次伟大＃7】.md",
@@ -2669,8 +2669,8 @@
       "seed": "b01a748bb073",
       "cover960": "源史社会/文本附件/generated-cover-b01a748bb073-960.webp",
       "cover480": "源史社会/文本附件/generated-cover-b01a748bb073-480.webp",
-      "bytes960": 11608,
-      "bytes480": 4740
+      "bytes960": 10662,
+      "bytes480": 4492
     },
     {
       "markdown": "张渔顽/《讲透日本21》二条城交权：最后的将军退位.md",
@@ -2680,8 +2680,8 @@
       "seed": "6eeb52dfb9d9",
       "cover960": "张渔顽/文本附件/generated-cover-6eeb52dfb9d9-960.webp",
       "cover480": "张渔顽/文本附件/generated-cover-6eeb52dfb9d9-480.webp",
-      "bytes960": 13832,
-      "bytes480": 5840
+      "bytes960": 12982,
+      "bytes480": 5506
     },
     {
       "markdown": "张渔顽/《讲透日本22》维新：内战中完成日本大改革.md",
@@ -2691,8 +2691,8 @@
       "seed": "b9021839d8b6",
       "cover960": "张渔顽/文本附件/generated-cover-b9021839d8b6-960.webp",
       "cover480": "张渔顽/文本附件/generated-cover-b9021839d8b6-480.webp",
-      "bytes960": 13490,
-      "bytes480": 5660
+      "bytes960": 12560,
+      "bytes480": 5372
     },
     {
       "markdown": "张志浩在剥柚/赫敏的勇敢有啥不一样？谁是赫敏的伏地魔？《哈利波特》人物品评：麻瓜出身是我的光荣！.md",
@@ -2878,8 +2878,8 @@
       "seed": "539176613f2f",
       "cover960": "Raindustair/文本附件/generated-cover-539176613f2f-960.webp",
       "cover480": "Raindustair/文本附件/generated-cover-539176613f2f-480.webp",
-      "bytes960": 12822,
-      "bytes480": 5296
+      "bytes960": 11774,
+      "bytes480": 5026
     },
     {
       "markdown": "Yume梦见科学史/在四百年近代科学史上，大众爱好者如何参与科研？梦见科学史五分钟.md",

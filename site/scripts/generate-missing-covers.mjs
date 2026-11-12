@@ -75,10 +75,10 @@ const palettes = {
   },
   history: {
     label: "历史 · 地缘",
-    paper: "#fff7dc",
-    ink: "#594718",
-    line: "#e0cb88",
-    accent: "#8b7131",
+    paper: "#fbf8ee",
+    ink: "#484031",
+    line: "#e7deca",
+    accent: "#75664f",
   },
   society: {
     label: "社会 · 观察",
@@ -338,7 +338,9 @@ function coverSvg({ title, collection, category, seed }) {
   // 给未命中主题分类的博主分配稳定的颜色，同一个博主的通用封面保持一致。
   const fallbackColors = ["general", "technology", "language", "mind", "culture", "nature", "society"];
   const collectionSeed = Number.parseInt(hashHex(collection).slice(0, 8), 16);
-  const palette = palettes[category === "general" ? fallbackColors[collectionSeed % fallbackColors.length] : category];
+  const palette = collection === "微信读书统计"
+    ? palettes.history
+    : palettes[category === "general" ? fallbackColors[collectionSeed % fallbackColors.length] : category];
   const titleLines = wrapTitle(cleanTitle(displayArticleTitle(title), collection), 13, 3);
   const titleSize = 60;
   const lineHeight = 76;
@@ -405,7 +407,7 @@ async function createCover(note) {
   const smallInfo = await sharp(svgBuffer).resize(smallWidth, smallHeight, { fit: "cover" })
     .webp({ quality: 68, effort: 6, smartSubsample: true }).toFile(output480);
 
-  // regenerate-all：文件名哈希不变，md 的 cover 路径已指向同名文件，无需改写 frontmatter。
+  // 重绘沿用文章引用的文件名，旧文件名即使与当前路径哈希不同也仍然生效。
   if (!note.rewriteFrontmatter) {
     return {
       markdown: note.relativePath, title: note.title, collection: note.collection,
@@ -471,7 +473,7 @@ async function main() {
 
     if (regenerateAll) {
       // 只重生成当前引用 generated-cover 的已发布 md；无封面 md 走默认模式。
-      if (!usesGenerated || /^(?:微信读书|微信读书统计)\//u.test(relativePath)) continue;
+      if (!usesGenerated || relativePath.startsWith("微信读书/")) continue;
     } else if (previewMode) {
       // preview：取若干代表 md（不依赖是否已有封面）。
     } else {
@@ -487,13 +489,25 @@ async function main() {
     const seed = Number.parseInt(seedHex.slice(0, 8), 16) >>> 0;
     const baseName = `generated-cover-${seedHex.slice(0, 12)}`;
     const attachmentDirectory = path.join(path.dirname(markdownPath), "文本附件");
+    let output960 = path.join(attachmentDirectory, `${baseName}-960.webp`);
+    if (regenerateAll) {
+      const candidates = [path.resolve(path.dirname(markdownPath), imagePath), path.resolve(repositoryRoot, imagePath)];
+      const localCandidates = candidates.filter((candidate) => {
+        const relative = path.relative(repositoryRoot, candidate);
+        return relative && !relative.startsWith("..") && !path.isAbsolute(relative)
+          && /^generated-cover-[a-f0-9]+-960\.webp$/iu.test(path.basename(candidate));
+      });
+      output960 = localCandidates.find((candidate) => statSync(candidate, { throwIfNoEntry: false })?.isFile())
+        ?? localCandidates[0];
+      if (!output960) throw new Error(`无法重绘封面引用：${relativePath} → ${imagePath}`);
+    }
 
     notes.push({
       markdownPath, relativePath, raw, title, collection,
       category: classify(title, collection), seed, seedHex,
       attachmentDirectory,
-      output960: path.join(attachmentDirectory, `${baseName}-960.webp`),
-      output480: path.join(attachmentDirectory, `${baseName}-480.webp`),
+      output960,
+      output480: output960.replace(/-960\.webp$/iu, "-480.webp"),
       rewriteFrontmatter: !regenerateAll && !previewMode,
       missingReason: hasCoverFlag ? "cover-file-missing" : "no-cover",
       coverRef: imagePath,
