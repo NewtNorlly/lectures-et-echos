@@ -36,7 +36,7 @@ const kindLabel = collection.kind === "series" ? "专题集" : "创作者";
 
   <div class="shell" style="padding-top: 0.5rem;">
     <p class="coll-desc">
-      <strong>{collection.name}</strong>（{kindLabel}），共收录文本&nbsp;<strong>{notes.length} 篇</strong>{topics.length > 0 && `，专题&nbsp;${topics.length} 个`}。
+      <strong>{collection.name}</strong>（{kindLabel}），共收录文本&nbsp;<strong>{notes.length} 篇</strong>{topics.length > 0 && <>，专题 <strong>{topics.length} 个</strong></>}。
     </p>
 
     {topics.length > 0 && (

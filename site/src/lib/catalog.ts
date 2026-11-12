@@ -5,6 +5,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 import { getCollectionConfig, type CollectionKind } from '../config/collections';
 import { mediaUrl, stableId } from './url';
+import { displayArticleTitle } from './article-title.mjs';
 
 const siteRoot = path.resolve(process.cwd());
 const repositoryRoot = path.resolve(siteRoot, '..');
@@ -421,7 +422,7 @@ async function buildCatalog(): Promise<Catalog> {
     const pathParts = sourcePath.split('/');
     const collectionName = pathParts[0] || '未分类';
     const collectionId = stableId(collectionName, collectionName);
-    const title = stringValue(entry.data.title) ?? fileTitle(sourcePath);
+    const sourceTitle = stringValue(entry.data.title) ?? fileTitle(sourcePath);
     const topicNames = pathParts.slice(1, -1).filter((part) => part !== '文本附件');
     const weread = getWereadMetadata(entry.data);
     if (weread) {
@@ -430,12 +431,13 @@ async function buildCatalog(): Promise<Catalog> {
     }
     const isReadingStats = entry.data.doc_type === 'weread-reading-stats';
     const kind = weread ? 'book' : isReadingStats ? 'stats' : 'article';
+    const title = kind === 'article' ? displayArticleTitle(sourceTitle) : sourceTitle;
     // 网络博主模块（用户 2026-11-11 钦定）：文章与统计页不再生成摘要，
     // 摘要位置改由 frontmatter `keywords` 的 5 个记忆点承担；只有书摘保留「简介」。
     const description = kind === 'book' ? getDescription(entry.data, entry.body) : undefined;
 
     return {
-      id: stableId(title, sourcePath),
+      id: stableId(sourceTitle, sourcePath),
       title,
       collectionId,
       collectionName,

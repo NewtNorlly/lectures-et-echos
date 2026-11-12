@@ -15,6 +15,8 @@ const height = 640;
 const smallWidth = 480;
 const smallHeight = 320;
 const concurrency = 4;
+import { displayArticleTitle } from "../src/lib/article-title.mjs";
+
 const args = process.argv.slice(2);
 const previewMode = args.includes("--preview");
 const regenerateAll = args.includes("--regenerate-all");
@@ -34,63 +36,63 @@ const skippedDirectories = new Set([
   "文本附件",
 ]);
 
-// 图书馆风格：暖白纸底、细双线框、衬线标题、极淡线性母题。8 个分类仅作极淡冷暖区分，整体统一沉稳。
+// 明亮纸色与分类色呼应，标题和纹样各自留出空间。
 const palettes = {
   technology: {
     label: "科技 · 计算",
-    paper: "#eceee7",
-    ink: "#2b3336",
-    line: "#9aa4a0",
-    accent: "#5f7c84",
+    paper: "#edf7fc",
+    ink: "#21445b",
+    line: "#a9c7db",
+    accent: "#457391",
   },
   language: {
     label: "语言 · 文字",
-    paper: "#f2ebd9",
-    ink: "#332d22",
-    line: "#b3a788",
-    accent: "#9a7b4f",
+    paper: "#f4f0fc",
+    ink: "#4c3b68",
+    line: "#cdbce3",
+    accent: "#796198",
   },
   mind: {
     label: "心理 · 生活",
-    paper: "#f1e6e2",
-    ink: "#33272c",
-    line: "#b8a2a4",
-    accent: "#9c6b72",
+    paper: "#fff1f3",
+    ink: "#653844",
+    line: "#e4b8c4",
+    accent: "#a05d75",
   },
   culture: {
     label: "文学 · 影像",
-    paper: "#f0ead9",
-    ink: "#2c2a24",
-    line: "#b6ad96",
-    accent: "#8a6d4b",
+    paper: "#fff1e9",
+    ink: "#713f32",
+    line: "#edc1ad",
+    accent: "#a8634c",
   },
   nature: {
     label: "自然 · 行旅",
-    paper: "#eaeeda",
-    ink: "#2a332c",
-    line: "#a3ad97",
-    accent: "#6f8570",
+    paper: "#eff8ef",
+    ink: "#305641",
+    line: "#bfd7c4",
+    accent: "#527c62",
   },
   history: {
     label: "历史 · 地缘",
-    paper: "#f0e6d0",
-    ink: "#2e271c",
-    line: "#b6a684",
-    accent: "#96683a",
+    paper: "#fff7dc",
+    ink: "#594718",
+    line: "#e0cb88",
+    accent: "#8b7131",
   },
   society: {
     label: "社会 · 观察",
-    paper: "#efe7db",
-    ink: "#2b2620",
-    line: "#b3a894",
-    accent: "#8a6f52",
+    paper: "#eaf7f4",
+    ink: "#234e49",
+    line: "#a9d2c7",
+    accent: "#447f74",
   },
   general: {
     label: "公共文本档案",
-    paper: "#f2ecdf",
-    ink: "#2a2620",
-    line: "#b3aa97",
-    accent: "#7d6a52",
+    paper: "#f7f6ff",
+    ink: "#373e62",
+    line: "#c2c8e5",
+    accent: "#6876a6",
   },
 };
 
@@ -258,11 +260,20 @@ function wrapTitle(title, maxUnits = 10.5, maxLines = 2) {
       lineUnits += nextUnits;
       end += 1;
     }
-    while (end < characters.length && /^[，。！？、：；）》】”’…,.!?;:)]$/.test(characters[end])) {
+    // 遇到跨行的数字，把完整数字放到下一行。
+    let numberStart = end;
+    if (/^[0-9]$/.test(characters[end] ?? "")) {
+      while (numberStart > start && /^[0-9]$/.test(characters[numberStart - 1])) numberStart -= 1;
+    }
+    if (numberStart > start && numberStart < end) {
+      lineUnits -= (end - numberStart) * characterWidth("0");
+      end = numberStart;
+    }
+    while (end < characters.length && /^[，。！？、：；）》】」』”’…,.!?;:)]$/.test(characters[end])) {
       lineUnits += characterWidth(characters[end]);
       end += 1;
     }
-    if (end - start > 1 && /^[（《【“‘([]$/.test(characters[end - 1])) {
+    if (end - start > 1 && /^[（《【「『“‘([]$/.test(characters[end - 1])) {
       lineUnits -= characterWidth(characters[end - 1]);
       end -= 1;
     }
@@ -324,37 +335,35 @@ function motifSvg(category, accent) {
 }
 
 function coverSvg({ title, collection, category, seed }) {
-  const palette = palettes[category];
-  const displayTitle = cleanTitle(title, collection);
-  const titleLines = wrapTitle(displayTitle);
-  const titleSize = 54;
+  // 给未命中主题分类的博主分配稳定的颜色，同一个博主的通用封面保持一致。
+  const fallbackColors = ["general", "technology", "language", "mind", "culture", "nature", "society"];
+  const collectionSeed = Number.parseInt(hashHex(collection).slice(0, 8), 16);
+  const palette = palettes[category === "general" ? fallbackColors[collectionSeed % fallbackColors.length] : category];
+  const titleLines = wrapTitle(cleanTitle(displayArticleTitle(title), collection), 13, 3);
+  const titleSize = 60;
   const lineHeight = 76;
-  const blockTop = 300;
+  const blockTop = 354 - (titleLines.length - 1) * lineHeight / 2;
   const archiveNumber = String(seed % 1000).padStart(3, "0");
   const escapedCollection = escapeXml(shortLabel(collection, 22).toUpperCase());
-  const escapedCategory = escapeXml(palette.label);
-  const ruleY = blockTop + (titleLines.length - 1) * lineHeight + 26;
+  const escapedCategory = escapeXml(palettes[category].label);
 
-  const lineText = titleLines
-    .map((line, index) => `<text x="${width / 2}" y="${blockTop + index * lineHeight}" text-anchor="middle" class="title">${escapeXml(line)}</text>`)
-    .join("");
+  const lineText = titleLines.map((line, index) =>
+    `<text x="480" y="${blockTop + index * lineHeight}" text-anchor="middle" class="title">${escapeXml(line)}</text>`
+  ).join("");
 
   return Buffer.from(`
     <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
       <style>
         .sans { font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif; }
-        .title { font-family: "Noto Serif SC", "Songti SC", "SimSun", serif; font-size: ${titleSize}px; font-weight: 700; fill: ${palette.ink}; letter-spacing: 2px; }
+        .title { font-family: "Noto Serif SC", "Songti SC", "SimSun", serif; font-size: ${titleSize}px; font-weight: 600; fill: ${palette.ink}; letter-spacing: 1px; }
       </style>
       <rect width="${width}" height="${height}" fill="${palette.paper}"/>
-      ${motifSvg(category, palette.accent)}
-      <rect x="40" y="40" width="880" height="560" fill="none" stroke="${palette.line}" stroke-width="1.2" opacity="0.7"/>
-      <rect x="54" y="54" width="852" height="532" fill="none" stroke="${palette.line}" stroke-width="0.7" opacity="0.45"/>
-      <text x="${width / 2}" y="118" text-anchor="middle" class="sans" font-size="19" font-weight="700" fill="${palette.accent}" letter-spacing="5">${escapedCollection}</text>
-      <line x1="${width / 2 - 40}" y1="138" x2="${width / 2 + 40}" y2="138" stroke="${palette.line}" stroke-width="1" opacity="0.6"/>
+      <rect x="42" y="42" width="876" height="556" rx="6" fill="none" stroke="${palette.line}" stroke-width="1.2"/>
+      <text x="480" y="121" text-anchor="middle" class="sans" font-size="27" fill="${palette.accent}" letter-spacing="3">${escapedCollection}</text>
+      <g transform="translate(269 86) scale(.44)" opacity=".9">${motifSvg(category, palette.accent)}</g>
       ${lineText}
-      <line x1="${width / 2 - 120}" y1="${ruleY}" x2="${width / 2 + 120}" y2="${ruleY}" stroke="${palette.ink}" stroke-width="1" opacity="0.55"/>
-      <text x="${width / 2}" y="${ruleY + 34}" text-anchor="middle" class="sans" font-size="17" fill="${palette.line}" letter-spacing="3">${escapedCategory}</text>
-      <text x="${width / 2}" y="566" text-anchor="middle" class="sans" font-size="16" fill="${palette.line}" letter-spacing="4">索 书 号 · Nº ${archiveNumber}</text>
+      <text x="480" y="${blockTop + (titleLines.length - 1) * lineHeight + 53}" text-anchor="middle" class="sans" font-size="25" fill="${palette.accent}" letter-spacing="3">${escapedCategory}</text>
+      <text x="480" y="559" text-anchor="middle" class="sans" font-size="21" fill="${palette.accent}" letter-spacing="4">索 书 号 · Nº ${archiveNumber}</text>
     </svg>
   `);
 }
@@ -462,7 +471,7 @@ async function main() {
 
     if (regenerateAll) {
       // 只重生成当前引用 generated-cover 的已发布 md；无封面 md 走默认模式。
-      if (!usesGenerated) continue;
+      if (!usesGenerated || /^(?:微信读书|微信读书统计)\//u.test(relativePath)) continue;
     } else if (previewMode) {
       // preview：取若干代表 md（不依赖是否已有封面）。
     } else {
@@ -546,7 +555,7 @@ async function main() {
       generatedAt: new Date().toISOString(),
       generator: "site/scripts/generate-missing-covers.mjs",
       style: "library",
-      strategy: "Pure SVG (warm paper, double frame, serif title, single faint linear library motif) -> sharp -> WebP.",
+      strategy: "Pure SVG (solid category colors, single frame, serif title, library motif) -> sharp -> WebP.",
       count: allRecords.length,
       dimensions: { full: `${width}x${height}`, small: `${smallWidth}x${smallHeight}` },
       totalBytes,
