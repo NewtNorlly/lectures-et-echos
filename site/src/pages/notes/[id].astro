@@ -40,7 +40,7 @@ const parentUrl = isBookshelf ? undefined : collectionUrl(note.collectionId);
    meta description 用 5 个记忆点关键词兜底。 */
 const metaDescription =
   note.kind === "article" && note.keywords?.length
-    ? `关键词：${note.keywords.join("、")}`
+    ? note.keywords.join("、")
     : note.description || `${note.collectionName}收录的${kindLabel}。`;
 ---
 
@@ -65,7 +65,7 @@ const metaDescription =
           <p class="article-header__description">{note.description}</p>
         )}
         {note.kind === "article" && note.keywords && note.keywords.length > 0 && (
-          <p class="article-header__keywords">关键词：{note.keywords.join("、")}</p>
+          <p class="article-header__keywords">{note.keywords.join("、")}</p>
         )}
 
         {note.weread && (
