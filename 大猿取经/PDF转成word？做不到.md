@@ -9,6 +9,7 @@ cover:
   positionX: 50
   positionY: 50
 date: 2026-09-16
+keywords: ["字符坐标",  "重画不等于结构",  "结构猜测",  "固定模板",  "阿里百度"]
 ---
 今天我接了个活：把 PDF 转成 HTML。
 

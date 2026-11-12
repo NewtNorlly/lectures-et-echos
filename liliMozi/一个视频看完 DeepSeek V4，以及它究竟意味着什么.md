@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["DeepSeekV4",  "小鲸鱼",  "算力地狱",  "两块钱一百万token",  "MIT协议"]
 cover:
   image: 文本附件/一个视频看完-DeepSeek-V4-以及它究竟意味着什么-cover-20260531-212314.webp
   actualRatio: '4:3'

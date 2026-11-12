@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["杀死科学家",  "苏维",  "文豪野犬",  "小台心训练营",  "三话完结"]
 cover:
   image: '文本附件/generated-cover-68e08737b6ec-960.webp'
   actualRatio: '3:2'

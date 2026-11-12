@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["香积寺之战",  "李泌",  "郭子仪",  "仆固怀恩",  "收复长安"]
 cover:
   image: 文本附件/血战香积寺-西北军区VS东北军区-盛唐武德的终极汇报演出-cover-20260531-211531.webp
   actualRatio: '3:2'
@@ -10,10 +11,6 @@ cover:
   positionX: 50
   positionY: 50
 ---
-<center>================================================================================</center>
-
-<center>================================================================================</center>
-
 公元755年10月初九，渔阳鼙鼓动地来，霹雳铁骑猪突南。下半年以后，郭子仪、李光弼进军河北，形势一片大好，但大唐朽烂的官僚斗争让杨国忠和哥舒翰内斗不休，直至<span style="text-decoration: underline; color: #134C97;">世道崩塌</span>。公元756年6月初九，<span style="background:#fff88f">潼关失守</span>，天下崩乱。夕阳红跑路团逃往天府之时，太子李亨北上<span style="background:#fff88f">灵武</span>组建临时政府，开始重整旧河山。
 
 就在这个时候，太子当年好友的白衣修仙隐士<span style="background:#fff88f">李泌</span>走出深山，来到灵武，带着天下最顶级的战略眼光，<span style="text-decoration: underline; color: #134C97;">助力李亨重塑大唐</span>。

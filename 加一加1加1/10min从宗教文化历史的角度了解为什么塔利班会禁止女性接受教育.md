@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["塔利班",  "沙里亚",  "伊智提哈德之门",  "纳姆斯",  "喀布尔的地下女孩"]
 cover:
   image: '文本附件/generated-cover-97900b94cab5-960.webp'
   actualRatio: '3:2'

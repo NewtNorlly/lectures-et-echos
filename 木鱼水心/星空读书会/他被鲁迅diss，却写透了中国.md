@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["吾国与吾民",  "林语堂",  "鲁迅",  "明快打字机",  "知足常乐"]
 cover:
   image: '文本附件/generated-cover-faa7bc903c4d-960.webp'
   actualRatio: '3:2'

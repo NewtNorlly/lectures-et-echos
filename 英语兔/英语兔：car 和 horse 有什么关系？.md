@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["词根串联",  "音变",  "charge",  "curriculum",  "horse"]
 cover:
   image: '文本附件/generated-cover-722140ae9fb5-960.webp'
   actualRatio: '3:2'

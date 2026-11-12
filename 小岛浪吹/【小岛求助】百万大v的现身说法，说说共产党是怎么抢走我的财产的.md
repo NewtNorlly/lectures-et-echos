@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["4万欧",  "2000万",  "大外宣",  "岛币",  "北京哥"]
 cover:
   image: '文本附件/generated-cover-4d9a022edd61-960.webp'
   actualRatio: '3:2'

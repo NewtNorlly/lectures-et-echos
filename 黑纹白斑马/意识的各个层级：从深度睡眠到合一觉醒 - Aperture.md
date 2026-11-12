@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["七层意识",  "曼都卡奥义书",  "深眠位",  "德尔塔波",  "莉拉"]
 cover:
   image: '文本附件/generated-cover-9ec9c9d22716-960.webp'
   actualRatio: '3:2'

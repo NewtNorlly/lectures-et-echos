@@ -61,6 +61,8 @@ const notes = defineCollection({
       translator: z.string().nullish(),
       // 外部博主文章的入库/收藏日期（YYYY-MM-DD），用于合集内「最新在最前」排序
       date: dateish.nullish(),
+      // 网络博主文章的记忆点关键词（5 个，2026-11-11 用户钦定：取代摘要位置）
+      keywords: z.array(z.string()).nullish(),
       category: z.string().nullish(),
       publisher: z.string().nullish(),
       publishTime: dateish.nullish(),

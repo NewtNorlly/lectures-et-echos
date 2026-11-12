@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["微信小程序",  "开发者工具",  "云开发",  "技能压缩包",  "spec开发规范"]
 cover:
   image: '文本附件/generated-cover-1220dc9d4d48-960.webp'
   actualRatio: '3:2'

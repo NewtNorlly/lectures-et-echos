@@ -9,6 +9,7 @@ cover:
   positionX: 50
   positionY: 50
 date: 2026-09-22
+keywords: ["2007江苏卷",  "可被验证",  "默会知识",  "维特根斯坦",  "没有判官"]
 ---
 文章导读：
 

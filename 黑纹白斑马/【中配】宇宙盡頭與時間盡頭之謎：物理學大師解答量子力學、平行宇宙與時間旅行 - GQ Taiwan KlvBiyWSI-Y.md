@@ -9,6 +9,7 @@ cover:
   positionX: 50
   positionY: 50
 date: 2026-09-23
+keywords: ["布莱恩葛林",  "虫洞",  "量子隧穿",  "10的68次方年",  "直到时间的尽头"]
 ---
 
 来自 doctor J 的提问：

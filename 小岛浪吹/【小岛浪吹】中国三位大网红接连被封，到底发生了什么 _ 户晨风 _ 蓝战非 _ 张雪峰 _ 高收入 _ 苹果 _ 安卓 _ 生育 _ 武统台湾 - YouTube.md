@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["户晨风",  "张雪峰",  "蓝战非",  "苹果安卓",  "清朗行动"]
 cover:
   image: '文本附件/generated-cover-68325913c971-960.webp'
   actualRatio: '3:2'

@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["知识分子幻觉",  "路线错误",  "海德格尔",  "手术刀比喻",  "认知懒惰"]
 cover:
   image: '文本附件/generated-cover-f3b6abaa7998-960.webp'
   actualRatio: '3:2'

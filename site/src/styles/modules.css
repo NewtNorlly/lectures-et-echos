@@ -482,11 +482,10 @@
   color: var(--ink);
 }
 
+/* 装饰分隔线：用户 2026-11-12 钦定全站删除，标题右侧不再画渐变装饰线 */
 .result-section__title::after {
-  content: "";
+  content: none;
   flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, hsl(var(--border) / 0.9), transparent);
 }
 
 .text-result-list {

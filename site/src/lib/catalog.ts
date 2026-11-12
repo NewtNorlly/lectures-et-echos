@@ -59,6 +59,8 @@ export interface Note {
   topics: TopicRef[];
   description?: string;
   excerpt?: string;
+  /** 网络博主文章的记忆点关键词（frontmatter `keywords`，最多 5 个） */
+  keywords?: string[];
   cover?: Cover;
   sourceUrl?: string;
   kind: 'article' | 'book' | 'stats';
@@ -145,6 +147,16 @@ function stringValue(value: unknown): string | undefined {
 
 function numberValue(value: unknown): number | undefined {
   return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+}
+
+/** frontmatter keywords → 去空、最多 5 个；非数组一律忽略 */
+function parseKeywords(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const keywords = value
+    .map((item) => stringValue(item))
+    .filter((item): item is string => Boolean(item))
+    .slice(0, 5);
+  return keywords.length > 0 ? keywords : undefined;
 }
 
 function validHttpUrl(value: unknown): string | undefined {
@@ -411,13 +423,16 @@ async function buildCatalog(): Promise<Catalog> {
     const collectionId = stableId(collectionName, collectionName);
     const title = stringValue(entry.data.title) ?? fileTitle(sourcePath);
     const topicNames = pathParts.slice(1, -1).filter((part) => part !== '文本附件');
-    const description = getDescription(entry.data, entry.body);
     const weread = getWereadMetadata(entry.data);
     if (weread) {
       const lastNoteAt = getLastNoteTimestamp(entry.body);
       if (lastNoteAt) weread.lastNoteAt = lastNoteAt;
     }
     const isReadingStats = entry.data.doc_type === 'weread-reading-stats';
+    const kind = weread ? 'book' : isReadingStats ? 'stats' : 'article';
+    // 网络博主模块（用户 2026-11-11 钦定）：文章与统计页不再生成摘要，
+    // 摘要位置改由 frontmatter `keywords` 的 5 个记忆点承担；只有书摘保留「简介」。
+    const description = kind === 'book' ? getDescription(entry.data, entry.body) : undefined;
 
     return {
       id: stableId(title, sourcePath),
@@ -427,9 +442,10 @@ async function buildCatalog(): Promise<Catalog> {
       topics: getTopicRefs(collectionName, topicNames),
       description,
       excerpt: description,
+      keywords: parseKeywords(entry.data.keywords),
       cover: getCover(entry.data, title, sourcePath),
       sourceUrl: getSourceUrl(entry.data, entry.body),
-      kind: weread ? 'book' : isReadingStats ? 'stats' : 'article',
+      kind,
       draft: entry.data.draft,
       author: weread?.author ?? stringValue(entry.data.author),
       weread,

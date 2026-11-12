@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["Skill",  "人类蒸馏",  "渐进式披露",  "龙虾插件市场",  "小花"]
 cover:
   image: 文本附件/Skill-真的能替代你的同事吗-从0到-会写Skill-科普-cover-20260531-212314.webp
   actualRatio: '4:3'

@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["上下文腐烂",  "审批疲劳",  "Lamiddle实验",  "六个编造判例",  "Kimi集群"]
 cover:
   image: '文本附件/generated-cover-ff45447bd741-960.webp'
   actualRatio: '3:2'

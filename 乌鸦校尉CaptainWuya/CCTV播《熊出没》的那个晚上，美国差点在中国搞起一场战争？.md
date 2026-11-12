@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["南海对峙",  "里根号",  "东风21D",  "仲裁是废纸",  "哈里斯"]
 cover:
   image: '文本附件/generated-cover-e3d48a9ffbf5-960.webp'
   actualRatio: '3:2'

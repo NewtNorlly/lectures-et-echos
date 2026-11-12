@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["ClaudeCode",  "讨好倾向",  "Eleph研究",  "上下文窗口",  "子代理"]
 cover:
   image: '文本附件/generated-cover-af96c56fc4c5-960.webp'
   actualRatio: '3:2'

@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["OpenHanako",  "龙虾",  "记忆系统",  "便签纸",  "本地存储"]
 cover:
   image: 文本附件/我做了一个更完美的国产开源-OpenClaw-你不再需要部署龙虾-隆重介绍-OpenHanako-cover-20260531-212314.webp
   actualRatio: '4:3'

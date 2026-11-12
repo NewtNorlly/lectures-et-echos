@@ -31,6 +31,16 @@
   font-size: var(--text-base);
 }
 
+/* 网络博主文章的 5 个记忆点关键词：刻意与正文同字体、同字号、同行高，不做任何装饰 */
+.article-header__keywords {
+  max-width: 39rem;
+  margin-top: 1.35rem;
+  color: var(--ink-prose);
+  font-family: var(--font-serif);
+  font-size: var(--text-lead);
+  line-height: 1.95;
+}
+
 .article-header__links {
   display: flex;
   flex-wrap: wrap;
@@ -457,12 +467,10 @@
   box-shadow: 0 10px 28px hsl(var(--fg) / 8%);
 }
 
+/* 装饰分隔线：用户 2026-11-12 钦定全站删除。正文里残留的 <hr> 不再渲染成任何
+   装饰线元素，直接隐藏（内容本身不删，只是不画线）。 */
 .prose hr {
-  width: min(10rem, 35%);
-  height: 1px;
-  margin: 3.5rem auto;
-  border: 0;
-  background: var(--vermillion);
+  display: none;
 }
 
 .prose a {

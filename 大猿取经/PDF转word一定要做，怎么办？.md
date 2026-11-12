@@ -9,6 +9,7 @@ cover:
   positionX: 50
   positionY: 50
 date: 2026-09-16
+keywords: ["MinerU",  "PyMuPDF",  "版面理解",  "两套坐标",  "表格重建"]
 ---
 上一篇我已经讲了，PDF 转 Word 想完美还原，做不到。
 

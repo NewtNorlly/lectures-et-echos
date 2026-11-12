@@ -35,11 +35,18 @@ const kindLabel = note.kind === "book" ? "阅读笔记" : note.kind === "stats" 
 const isBookshelf = note.kind === "book" || note.kind === "stats";
 const homeTarget = isBookshelf ? "bookshelf" : "bloggers";
 const parentUrl = isBookshelf ? undefined : collectionUrl(note.collectionId);
+
+/* 摘要只留给书摘；网络博主文章不再输出任何摘要文本（用户 2026-11-11 钦定），
+   meta description 用 5 个记忆点关键词兜底。 */
+const metaDescription =
+  note.kind === "article" && note.keywords?.length
+    ? `关键词：${note.keywords.join("、")}`
+    : note.description || `${note.collectionName}收录的${kindLabel}。`;
 ---
 
 <BaseLayout
   title={note.title}
-  description={note.description || `${note.collectionName}收录的${kindLabel}。`}
+  description={metaDescription}
   canonicalPath={`/notes/${encodeURIComponent(note.id)}/`}
   pageClass="article-page"
 >
@@ -56,6 +63,9 @@ const parentUrl = isBookshelf ? undefined : collectionUrl(note.collectionId);
         <h1>{note.title}</h1>
         {note.description && (
           <p class="article-header__description">{note.description}</p>
+        )}
+        {note.kind === "article" && note.keywords && note.keywords.length > 0 && (
+          <p class="article-header__keywords">关键词：{note.keywords.join("、")}</p>
         )}
 
         {note.weread && (

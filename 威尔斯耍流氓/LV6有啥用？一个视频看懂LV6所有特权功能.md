@@ -1,5 +1,6 @@
 ---
 date: 2026-09-02
+keywords: ["LV6",  "28800经验",  "风纪委员",  "硬核会员",  "生日开场动画"]
 cover:
   image: '文本附件/generated-cover-d6e4a7940709-960.webp'
   actualRatio: '3:2'
