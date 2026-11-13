@@ -141,11 +141,11 @@ async function renderBook(data) {
   for (const chapter of data.chapters?.chapters ?? []) chapterMap.set(Number(chapter.chapterUid), chapter);
   for (const chapter of data.highlights?.chapters ?? []) {
     const current = chapterMap.get(Number(chapter.chapterUid)) ?? {};
-    chapterMap.set(Number(chapter.chapterUid), { ...current, ...chapter });
+    chapterMap.set(Number(chapter.chapterUid), { ...chapter, ...current });
   }
   const chapterTitleOf = (uid, fallbackName) => {
     const c = chapterMap.get(Number(uid));
-    return cleanText(c?.title || fallbackName || `章节 ${uid}`);
+    return cleanText(c?.title || fallbackName || (data._isMp ? '正文' : `章节 ${uid}`));
   };
 
   const reviews = (data.reviews?.reviews ?? []).map(reviewValue);
@@ -225,6 +225,7 @@ async function renderBook(data) {
     if (!g.text) continue; // 连锚文都没有，无法成划线，留作独立想法
     const pseudo = {
       chapterUid: g.uid,
+      chapterName: g.chapterName,
       range: g.range,
       markText: g.text,
       createTime: g.anchorTime,
@@ -294,7 +295,9 @@ async function renderBook(data) {
   if (!highlightsByChapter.size) lines.push('> 这本书目前没有个人划线。', '');
   const chapterEntries = [...highlightsByChapter.entries()].sort((left, right) => Number(chapterMap.get(left[0])?.chapterIdx ?? left[0]) - Number(chapterMap.get(right[0])?.chapterIdx ?? right[0]));
   for (const [uid, highlights] of chapterEntries) {
-    lines.push(`## ${chapterTitleOf(uid)}`, '');
+    const depth = Math.min(Math.max(Number(chapterMap.get(uid)?.level || 1) + 1, 2), 6);
+    const chapterName = highlights.find((highlight) => highlight.chapterName)?.chapterName;
+    lines.push(`${'#'.repeat(depth)} ${chapterTitleOf(uid, chapterName)}`, '');
     highlights.sort((a, b) => Number(String(a.range ?? '0').split('-')[0]) - Number(String(b.range ?? '0').split('-')[0]));
     for (const highlight of highlights) {
       lines.push(quoteLines(`📌 ${highlight.markText}`));
@@ -326,20 +329,23 @@ async function renderBook(data) {
   return { title, markdown: `${lines.join('\n').replace(/[ \t]+$/gm, '').trim()}\n` };
 }
 
-function renderStats(overall, monthlyRecords) {
+function renderStats(overall, monthlyRecords, shelfReading) {
   const lines = [
     '---', 'doc_type: weread-reading-stats', 'title: "微信读书阅读统计"',
     'description: "微信读书累计阅读时长、阅读天数与逐月记录。"', '---', '',
     '# 微信读书阅读统计', '',
     `> 数据更新于 ${formatFinishedAt(manifest.finishedAt)}`,
+    '> 时长、阅读天数与逐年、逐月、逐日明细采用微信读书全账户阅读及收听统计。日均按有阅读记录的有效天数计算。书目总数、读过、读完和榜单按当前书架统计。',
     '', '## 总览', '', '| 指标 | 数值 |', '| --- | ---: |',
-    `| 累计阅读时长 | ${formatDuration(overall.totalReadTime)} |`,
+    `| 全账户累计阅读时长 | ${formatDuration(overall.totalReadTime)} |`,
     `| 累计阅读天数 | ${Number(overall.readDays ?? 0)} 天 |`,
     // dayAverageReadTime 总览字段缺失/为 0，按「累计时长 / 阅读天数」现算（与月度同口径）
     `| 日均阅读时长 | ${formatDuration(Number(overall.readDays) > 0 ? Number(overall.totalReadTime) / Number(overall.readDays) : 0)} |`,
     `| 注册时间 | ${formatDate(overall.registTime) ?? '—'} |`,
+    `| 当前书架 | ${shelfBookIds.size} 本 |`,
+    `| 当前书架读过 | ${shelfReading.started} 本 |`,
+    `| 当前书架读完 | ${shelfReading.finished} 本 |`,
   ];
-  for (const item of overall.readStat ?? []) lines.push(`| ${item.stat} | ${item.counts} |`);
   if (overall.readTimes && Object.keys(overall.readTimes).length) {
     lines.push('', '## 历年阅读', '', '| 年份 | 阅读时长 |', '| --- | ---: |');
     // 年键是北京 1 月 1 日 0 点（= UTC 上年 12-31 16:00），按 UTC+8 偏移后再取年
@@ -352,17 +358,9 @@ function renderStats(overall, monthlyRecords) {
     lines.push('', '## 阅读时长最多', '', '| 书名 | 作者 | 时长 |', '| --- | --- | ---: |');
     for (const item of overall.readLongest) {
       const book = item.book ?? item.albumInfo ?? {};
-      // 用户明确删除的书不再出现在阅读榜：云端 readdata 仍会返回它的时长，
-      // 但书架里已没有这本书，统计页也不该再提它（2026-10-29）。
-      if (excludedBookIds.has(String(book.bookId))) continue;
-      // ★2026-11-09：已移出书架的书同样不得出现在统计页（用户钦定）。
       if (!shelfBookIds.has(String(book.bookId))) continue;
       lines.push(`| ${cleanText(book.title || book.name)} | ${cleanText(book.author || book.authorName)} | ${formatDuration(item.readTime)} |`);
     }
-  }
-  if (overall.preferCategory?.length) {
-    lines.push('', '## 阅读偏好', '', '| 分类 | 阅读本数 | 阅读时长 |', '| --- | ---: | ---: |');
-    for (const item of overall.preferCategory) lines.push(`| ${item.categoryTitle} | ${item.readingCount} | ${formatDuration(item.readingTime)} |`);
   }
   lines.push('', '## 逐月记录', '');
   for (const { name, data } of monthlyRecords.sort((a, b) => b.name.localeCompare(a.name))) {
@@ -372,7 +370,6 @@ function renderStats(overall, monthlyRecords) {
       `| 阅读天数 | ${readDays} 天 |`,
       // 月日均同样按「月时长 / 阅读天数」现算，API 字段口径偏小
       `| 日均时长 | ${formatDuration(readDays > 0 ? Number(data.totalReadTime) / readDays : 0)} |`);
-    for (const item of data.readStat ?? []) lines.push(`| ${item.stat} | ${item.counts} |`);
     if (data.readTimes && Object.keys(data.readTimes).length) {
       lines.push('', '<details>', '<summary>每日阅读时长</summary>', '', '| 日期 | 时长 |', '| --- | ---: |');
       for (const [timestamp, seconds] of Object.entries(data.readTimes)) lines.push(`| ${formatDate(timestamp)} | ${formatDuration(seconds)} |`);
@@ -429,9 +426,18 @@ let shrunk = 0;   // 以微信读书为准覆盖后内容变少的书（用户�
 // ★2026-11-09 用户钦定：唯一事实源 = 微信读书「当前书架」上的书。移出书架的书（即使
 // 笔记本里还有笔记）不算微信读书现有资料，不导入；阅读统计「阅读时长最多」也只列书架上的书。
 const shelfBookIds = new Set();
+const shelfReading = { started: 0, finished: 0 };
 for (const entry of bookDirectories) {
   const data = JSON.parse(await readFile(path.join(exportDirectory, 'books', entry.name, 'data.json'), 'utf8'));
-  if (data.shelf) shelfBookIds.add(String(data.bookId));
+  const bookId = String(data.bookId);
+  if (!data.shelf || excludedBookIds.has(bookId)) continue;
+  shelfBookIds.add(bookId);
+  const progress = data.progress?.book;
+  const finished = Number(progress?.progress) === 100 || Number(data.shelf.finishReading) === 1;
+  if (finished) shelfReading.finished += 1;
+  if (finished || Number(progress?.isStartReading) === 1 || Number(progress?.progress) > 0) {
+    shelfReading.started += 1;
+  }
 }
 for (const entry of bookDirectories) {
   const data = JSON.parse(await readFile(path.join(exportDirectory, 'books', entry.name, 'data.json'), 'utf8'));
@@ -497,7 +503,7 @@ for (const entry of await readdir(monthlyDirectory, { withFileTypes: true })) {
 }
 await mkdir(statsDirectory, { recursive: true });
 const statsPath = path.join(statsDirectory, '微信读书阅读统计.md');
-await writeFile(statsPath, renderStats(overall, monthlyRecords), 'utf8');
+await writeFile(statsPath, renderStats(overall, monthlyRecords, shelfReading), 'utf8');
 // 清理旧位置（2026-09-22 起统计归档到微信读书统计合集）
 try { await unlink(path.join(libraryDirectory, '微信读书阅读统计.md')); } catch { /* 旧文件已不存在 */ }
 console.log(`微信读书导入完成：更新 ${updated} 本，新增 ${created} 本，排除 ${excluded} 本，移出书架跳过 ${removedFromShelf} 本，其中以微信读书为准内容变少 ${shrunk} 本，阅读统计 ${monthlyRecords.length} 个月。`);
