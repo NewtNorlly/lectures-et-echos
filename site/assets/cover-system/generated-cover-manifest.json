@@ -1,25 +1,157 @@
 {
-  "generatedAt": "2026-11-13T18:14:48.496Z",
+  "generatedAt": "2026-11-14T12:16:06.079Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (solid category colors, single frame, serif title, library motif) -> sharp -> WebP.",
-  "count": 1,
+  "count": 13,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 12476,
+  "totalBytes": 306458,
   "records": [
     {
-      "markdown": "微信读书统计/微信读书阅读统计.md",
-      "title": "微信读书阅读统计",
-      "collection": "微信读书统计",
+      "markdown": "阿凡记录片/大型纪录片《互联网最不能没有的三大博主》持续为您播出！.md",
+      "title": "大型纪录片《互联网最不能没有的三大博主》持续为您播出！",
+      "collection": "阿凡记录片",
+      "category": "technology",
+      "seed": "981dae247659",
+      "cover960": "阿凡记录片/文本附件/generated-cover-981dae247659-960.webp",
+      "cover480": "阿凡记录片/文本附件/generated-cover-981dae247659-480.webp",
+      "bytes960": 19224,
+      "bytes480": 7818
+    },
+    {
+      "markdown": "科技狐/罚款几十万，狂赚几个亿，擦边经济有多疯狂？【科技狐】.md",
+      "title": "罚款几十万，狂赚几个亿，擦边经济有多疯狂？【科技狐】",
+      "collection": "科技狐",
+      "category": "technology",
+      "seed": "506449e94891",
+      "cover960": "科技狐/文本附件/generated-cover-506449e94891-960.webp",
+      "cover480": "科技狐/文本附件/generated-cover-506449e94891-480.webp",
+      "bytes960": 15258,
+      "bytes480": 6082
+    },
+    {
+      "markdown": "卢格杜努姆的奥古斯丁/西方社会最早的全面分裂与精神危机？西方教会大分裂是如何开启的？【教宗与教权X】.md",
+      "title": "西方社会最早的全面分裂与精神危机？西方教会大分裂是如何开启的？【教宗与教权X】",
+      "collection": "卢格杜努姆的奥古斯丁",
+      "category": "society",
+      "seed": "e46279d4a087",
+      "cover960": "卢格杜努姆的奥古斯丁/文本附件/generated-cover-e46279d4a087-960.webp",
+      "cover480": "卢格杜努姆的奥古斯丁/文本附件/generated-cover-e46279d4a087-480.webp",
+      "bytes960": 21014,
+      "bytes480": 8950
+    },
+    {
+      "markdown": "伦巴第宝姐/越南豪赌国运：抄完中国抄韩国，2045 年要成发达国家？丨时势系列.md",
+      "title": "越南豪赌国运：抄完中国抄韩国，2045 年要成发达国家？丨时势系列",
+      "collection": "伦巴第宝姐",
+      "category": "society",
+      "seed": "10b046799c7f",
+      "cover960": "伦巴第宝姐/文本附件/generated-cover-10b046799c7f-960.webp",
+      "cover480": "伦巴第宝姐/文本附件/generated-cover-10b046799c7f-480.webp",
+      "bytes960": 19808,
+      "bytes480": 8400
+    },
+    {
+      "markdown": "破壁狗/越南赌场：三星为何接管越南经济？【国家赌场06】.md",
+      "title": "越南赌场：三星为何接管越南经济？【国家赌场06】",
+      "collection": "破壁狗",
+      "category": "society",
+      "seed": "c6a620cf78eb",
+      "cover960": "破壁狗/文本附件/generated-cover-c6a620cf78eb-960.webp",
+      "cover480": "破壁狗/文本附件/generated-cover-c6a620cf78eb-480.webp",
+      "bytes960": 13064,
+      "bytes480": 5218
+    },
+    {
+      "markdown": "数据库kira/黄仁勋离职是被人做局？百亿芯片走私大案，背后藏着多少隐秘？.md",
+      "title": "黄仁勋离职是被人做局？百亿芯片走私大案，背后藏着多少隐秘？",
+      "collection": "数据库kira",
+      "category": "technology",
+      "seed": "38bd3d61c4d3",
+      "cover960": "数据库kira/文本附件/generated-cover-38bd3d61c4d3-960.webp",
+      "cover480": "数据库kira/文本附件/generated-cover-38bd3d61c4d3-480.webp",
+      "bytes960": 20978,
+      "bytes480": 8440
+    },
+    {
+      "markdown": "苏老拳/明明巅峰时汉族人口比台湾还多，反倒成为东南亚汉化程度最低国家！？.md",
+      "title": "明明巅峰时汉族人口比台湾还多，反倒成为东南亚汉化程度最低国家！？",
+      "collection": "苏老拳",
+      "category": "society",
+      "seed": "b65d1a95948b",
+      "cover960": "苏老拳/文本附件/generated-cover-b65d1a95948b-960.webp",
+      "cover480": "苏老拳/文本附件/generated-cover-b65d1a95948b-480.webp",
+      "bytes960": 20822,
+      "bytes480": 8802
+    },
+    {
+      "markdown": "小关Sean/产品做得不错，为什么就是传不开？｜紫牛理论.md",
+      "title": "产品做得不错，为什么就是传不开？｜紫牛理论",
+      "collection": "小关Sean",
       "category": "general",
-      "seed": "eccdb97e1def",
-      "cover960": "微信读书统计/文本附件/generated-cover-eccdb97e1def-960.webp",
-      "cover480": "微信读书统计/文本附件/generated-cover-eccdb97e1def-480.webp",
-      "bytes960": 8932,
-      "bytes480": 3544
+      "seed": "29bf90f9f12e",
+      "cover960": "小关Sean/文本附件/generated-cover-29bf90f9f12e-960.webp",
+      "cover480": "小关Sean/文本附件/generated-cover-29bf90f9f12e-480.webp",
+      "bytes960": 13252,
+      "bytes480": 5844
+    },
+    {
+      "markdown": "学院派Academia/【硬核经济学】西方经济最成功的26年，靠的竟然是“计划经济”？.md",
+      "title": "【硬核经济学】西方经济最成功的26年，靠的竟然是“计划经济”？",
+      "collection": "学院派Academia",
+      "category": "general",
+      "seed": "03fb169cbe24",
+      "cover960": "学院派Academia/文本附件/generated-cover-03fb169cbe24-960.webp",
+      "cover480": "学院派Academia/文本附件/generated-cover-03fb169cbe24-480.webp",
+      "bytes960": 16362,
+      "bytes480": 6800
+    },
+    {
+      "markdown": "野马指南/三星堆后人流落到印度？其实三星堆的真相就在现场！ 就在目瑙纵歌里.......md",
+      "title": "三星堆后人流落到印度？其实三星堆的真相就在现场！ 就在目瑙纵歌里......",
+      "collection": "野马指南",
+      "category": "general",
+      "seed": "4d188f496ca3",
+      "cover960": "野马指南/文本附件/generated-cover-4d188f496ca3-960.webp",
+      "cover480": "野马指南/文本附件/generated-cover-4d188f496ca3-480.webp",
+      "bytes960": 20878,
+      "bytes480": 8892
+    },
+    {
+      "markdown": "约士丁尼/朝鲜主义和马列主义有什么区别？.md",
+      "title": "朝鲜主义和马列主义有什么区别？",
+      "collection": "约士丁尼",
+      "category": "general",
+      "seed": "9aac5043e1cf",
+      "cover960": "约士丁尼/文本附件/generated-cover-9aac5043e1cf-960.webp",
+      "cover480": "约士丁尼/文本附件/generated-cover-9aac5043e1cf-480.webp",
+      "bytes960": 11612,
+      "bytes480": 4686
+    },
+    {
+      "markdown": "约士丁尼/为什么黑人智商那么低，连科学家都没出过？.md",
+      "title": "为什么黑人智商那么低，连科学家都没出过？",
+      "collection": "约士丁尼",
+      "category": "general",
+      "seed": "9467752ecdf6",
+      "cover960": "约士丁尼/文本附件/generated-cover-9467752ecdf6-960.webp",
+      "cover480": "约士丁尼/文本附件/generated-cover-9467752ecdf6-480.webp",
+      "bytes960": 15042,
+      "bytes480": 6090
+    },
+    {
+      "markdown": "约士丁尼/中国历史上有法西斯组织吗？.md",
+      "title": "中国历史上有法西斯组织吗？",
+      "collection": "约士丁尼",
+      "category": "history",
+      "seed": "692d75ac4096",
+      "cover960": "约士丁尼/文本附件/generated-cover-692d75ac4096-960.webp",
+      "cover480": "约士丁尼/文本附件/generated-cover-692d75ac4096-480.webp",
+      "bytes960": 9238,
+      "bytes480": 3884
     }
   ]
 }
