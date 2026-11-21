@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""微信读书全量导出（weread-skills 1.0.5）
+"""微信读书全量导出（weread-skills 1.0.6）
 
 用途：把账号里「所有」资料抓成 import-weread-export.mjs 可直接消费的导出目录。
 
@@ -21,7 +21,7 @@
 设计要点：
   · 断点续跑：data.json 已带 "_complete": true 就跳过（--force 强制重抓）
   · 线程池并发，单请求指数退避重试；网络失败记入 manifest.failures，补抓到 0 为止
-  · upgrade_info 出现即整体退出（技能版本过期，必须按 message 升级后重跑）
+  · upgrade_info 是非阻塞升级通知（1.0.6 起）：打印一次提示，业务数据照常使用，不中止
   · 只读接口，绝不写用户账号
 """
 import argparse
@@ -36,11 +36,11 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 GATEWAY = 'https://i.weread.qq.com/api/agent/gateway'
-SKILL_VERSION = '1.0.5'          # 取 weread-skills/SKILL.md 顶部 version
+SKILL_VERSION = '1.0.6'          # 取 weread-skills/SKILL.md 顶部 version
 KEY = os.environ.get('WEREAD_API_KEY')
 
 _print_lock = threading.Lock()
-_upgrade_flag = threading.Event()
+_upgrade_warned = threading.Event()
 
 
 def log(msg):
@@ -49,9 +49,11 @@ def log(msg):
 
 
 def call(payload, timeout=45, retries=5):
-    """单次网关调用。业务参数与 api_name / skill_version 平铺同一层（禁止 params 嵌套）。"""
-    if _upgrade_flag.is_set():
-        raise RuntimeError('aborted: upgrade_info received')
+    """单次网关调用。业务参数与 api_name / skill_version 平铺同一层（禁止 params 嵌套）。
+
+    upgrade_info 按 weread-skills 1.0.6 SKILL.md 第 1 条是**非阻塞**升级通知：
+    同回包的业务数据照常使用，只提示一次，不暂停/重试/重跑。
+    """
     body_payload = dict(payload)
     body_payload['skill_version'] = SKILL_VERSION
     raw = json.dumps(body_payload, ensure_ascii=False).encode('utf-8')
@@ -64,10 +66,10 @@ def call(payload, timeout=45, retries=5):
                          'Content-Type': 'application/json'})
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 data = json.loads(resp.read().decode('utf-8'))
-            if data.get('upgrade_info'):
-                _upgrade_flag.set()
-                log('!!! upgrade_info: %s' % json.dumps(data['upgrade_info'], ensure_ascii=False))
-                raise RuntimeError('upgrade_info: skill version outdated')
+            if data.get('upgrade_info') and not _upgrade_warned.is_set():
+                _upgrade_warned.set()
+                log('[notice] upgrade_info（非阻塞，业务数据照常使用）: %s'
+                    % json.dumps(data['upgrade_info'], ensure_ascii=False))
             if data.get('errcode'):
                 # 业务错误不重试（重试也是同样结果），直接抛出由上层记录
                 raise RuntimeError('errcode %s %s' % (data.get('errcode'), data.get('errmsg')))
@@ -350,11 +352,6 @@ def main():
             else:
                 failures.append({'bookId': book_id, 'error': detail})
                 log('[fail] %s: %s' % (book_id, detail))
-            if _upgrade_flag.is_set():
-                log('检测到 upgrade_info，立即中止（技能版本需升级）')
-                for f in futures:
-                    f.cancel()
-                sys.exit(3)
             if done % 25 == 0 or done == total:
                 log('[progress] %d/%d  新抓 %d 缓存 %d 失败 %d  用时 %.0fs'
                     % (done, total, ok_fresh, ok_cached, len(failures), time.time() - started))

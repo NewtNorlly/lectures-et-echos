@@ -65,7 +65,15 @@ if (manifest.failureCount !== 0) throw new Error(`导出清单仍有 ${manifest.
 
 const yamlString = (value) => JSON.stringify(String(value ?? ''));
 const cleanText = (value) => String(value ?? '').replace(/\r\n/g, '\n').trim();
-const safeFileName = (value) => cleanText(value).replace(/[<>:"/\\|?*\x00-\x1f]/g, '-').replace(/[. ]+$/g, '').slice(0, 120) || '未命名书籍';
+// 文件名清洗：Windows 非法字符 → `-`；URL 保留字 `%`/`#` 会让 astro build 在
+// decodeURIComponent/fileURLToPath 处报 `URI malformed`（§24.5 第 1 条），转全角 ％／＃ 保留可读性。
+const safeFileName = (value) =>
+  cleanText(value)
+    .replace(/[<>:"/\\|?*\x00-\x1f]/g, '-')
+    .replace(/%/g, '％')
+    .replace(/#/g, '＃')
+    .replace(/[. ]+$/g, '')
+    .slice(0, 120) || '未命名书籍';
 
 // 日期一律按北京时区（Asia/Shanghai）渲染：微信读书的日/年键是本地零点，
 // 用 UTC（toISOString）会把凌晨/年首的标签打到前一天、前一年。

@@ -1,69 +1,25 @@
 {
-  "generatedAt": "2026-11-15T15:24:59.094Z",
+  "generatedAt": "2026-11-21T13:35:20.055Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "style": "library",
   "strategy": "Pure SVG (solid category colors, single frame, serif title, library motif) -> sharp -> WebP.",
-  "count": 5,
+  "count": 1,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 133564,
+  "totalBytes": 12476,
   "records": [
     {
-      "markdown": "案件纪/离谱到家，央视《重器》大结局，是我今年看过最恶心的大结局!.md",
-      "title": "离谱到家，央视《重器》大结局，是我今年看过最恶心的大结局!",
-      "collection": "案件纪",
+      "markdown": "微信读书统计/微信读书阅读统计.md",
+      "title": "微信读书阅读统计",
+      "collection": "微信读书统计",
       "category": "general",
-      "seed": "1be53737d177",
-      "cover960": "案件纪/文本附件/generated-cover-1be53737d177-960.webp",
-      "cover480": "案件纪/文本附件/generated-cover-1be53737d177-480.webp",
-      "bytes960": 18626,
-      "bytes480": 7784
-    },
-    {
-      "markdown": "蔡雅奇刑法/观《重器》有感：一名基层试用期检察官助理的法治初心与职场迷茫.md",
-      "title": "观《重器》有感：一名基层试用期检察官助理的法治初心与职场迷茫",
-      "collection": "蔡雅奇刑法",
-      "category": "mind",
-      "seed": "228f5e395e6e",
-      "cover960": "蔡雅奇刑法/文本附件/generated-cover-228f5e395e6e-960.webp",
-      "cover480": "蔡雅奇刑法/文本附件/generated-cover-228f5e395e6e-480.webp",
-      "bytes960": 20348,
-      "bytes480": 8634
-    },
-    {
-      "markdown": "钢铁草莓8989/电视剧重器里，杜晓辉案真实原型案件，呼格吉勒图案，18岁少年因为好心报案，却被当成凶手，18年才等来无罪宣判。看到最后妈妈采访哭不行了。中国十大冤案翻案.md",
-      "title": "电视剧重器里，杜晓辉案真实原型案件，呼格吉勒图案，18岁少年因为好心报案，却被当成凶手，18年才等来无罪宣判。看到最后妈妈采访哭不行了。中国十大冤案翻案",
-      "collection": "钢铁草莓8989",
-      "category": "society",
-      "seed": "68383133e4be",
-      "cover960": "钢铁草莓8989/文本附件/generated-cover-68383133e4be-960.webp",
-      "cover480": "钢铁草莓8989/文本附件/generated-cover-68383133e4be-480.webp",
-      "bytes960": 24188,
-      "bytes480": 10334
-    },
-    {
-      "markdown": "罗翔说刑法/【罗翔】重器拍错了？县法院也能判死刑？.md",
-      "title": "【罗翔】重器拍错了？县法院也能判死刑？",
-      "collection": "罗翔说刑法",
-      "category": "general",
-      "seed": "8d52cdc8c2c4",
-      "cover960": "罗翔说刑法/文本附件/generated-cover-8d52cdc8c2c4-960.webp",
-      "cover480": "罗翔说刑法/文本附件/generated-cover-8d52cdc8c2c4-480.webp",
-      "bytes960": 12128,
-      "bytes480": 4966
-    },
-    {
-      "markdown": "山河归一脉/离谱到家，央视《重器》大结局，是我今年看过最恶心的大结局!.md",
-      "title": "离谱到家，央视《重器》大结局，是我今年看过最恶心的大结局!",
-      "collection": "山河归一脉",
-      "category": "general",
-      "seed": "6b03d34cd278",
-      "cover960": "山河归一脉/文本附件/generated-cover-6b03d34cd278-960.webp",
-      "cover480": "山河归一脉/文本附件/generated-cover-6b03d34cd278-480.webp",
-      "bytes960": 18746,
-      "bytes480": 7810
+      "seed": "eccdb97e1def",
+      "cover960": "微信读书统计/文本附件/generated-cover-eccdb97e1def-960.webp",
+      "cover480": "微信读书统计/文本附件/generated-cover-eccdb97e1def-480.webp",
+      "bytes960": 8932,
+      "bytes480": 3544
     }
   ]
 }
